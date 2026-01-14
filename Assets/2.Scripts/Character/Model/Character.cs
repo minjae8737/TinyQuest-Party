@@ -30,6 +30,12 @@ public class Character
         }
     }
 
+    public void TakeDamage(int damage)
+    {
+        if (damage - def < 0) return;
+        Hp -= (damage - def);
+    }
+
     private int maxHp;
     public int MaxHp
     {

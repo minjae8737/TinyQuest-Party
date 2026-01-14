@@ -4,12 +4,13 @@ using UnityEngine;
 public enum AnimName
 {
     Idle,
-    Speed,
+    Walk,
     Hurt,
     Death,
-    Attack1 = 50,
-    Attack2,
-    Attack3
+    Attack_Normal = 50,
+    Attack_Skill1,
+    Attack_Skill2,
+    Attack_Skill3,
 }
 
 public class CharacterView : MonoBehaviour
@@ -19,7 +20,7 @@ public class CharacterView : MonoBehaviour
 
     public void SetSpeed(float speed)
     {
-        anim.SetFloat(AnimName.Speed.ToString(), speed);
+        anim.SetFloat(AnimName.Walk.ToString(), speed); // Idle <-> Walk
     }
     
     public void SetFlipX(bool isLeft)
@@ -34,19 +35,24 @@ public class CharacterView : MonoBehaviour
         sr.sortingOrder = order;
     }
 
-    public void AttackAnim(int skillIdx)
+    public void PlayAttack(int skillIdx)
     {
         switch (skillIdx)
-        {
+        { 
             case 0:
-                anim.SetTrigger(AnimName.Attack1.ToString());
+                anim.SetTrigger(AnimName.Attack_Normal.ToString());
                 break;
             case 1:
-                anim.SetTrigger(AnimName.Attack2.ToString());
+                anim.SetTrigger(AnimName.Attack_Skill1.ToString());
                 break;
             case 2:
-                anim.SetTrigger(AnimName.Attack3.ToString());
+                anim.SetTrigger(AnimName.Attack_Skill2.ToString());
                 break;
         }
+    }
+
+    public void PlayDeath()
+    {
+        anim.SetTrigger(AnimName.Death.ToString());
     }
 }

@@ -3,7 +3,6 @@ using UnityEngine;
 public class KeyboardInput : MonoBehaviour
 {
     public CharacterController controller;
-    public GameObject target;
     public float curTime;
 
     void Update()
@@ -16,19 +15,19 @@ public class KeyboardInput : MonoBehaviour
         // 공격
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            controller.DoAttack(0, transform.position, target.transform.position, curTime);
+            controller.DoAttack(0, transform.position, curTime);
         }
 
         // 스킬 1
         if (Input.GetKeyDown(KeyCode.E))
         {
-            controller.DoAttack(1, transform.position, target.transform.position, curTime);
+            controller.DoAttack(1, transform.position, curTime);
         }
 
         //스킬 2
         if (Input.GetKeyDown(KeyCode.R))
         {
-            controller.DoAttack(2, transform.position, target.transform.position, curTime);
+            controller.DoAttack(2, transform.position, curTime);
         }
     }
 }

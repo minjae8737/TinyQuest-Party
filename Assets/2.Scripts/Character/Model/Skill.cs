@@ -10,8 +10,10 @@ public enum SkillTargetType
 public class Skill
 {
     public SkillTargetType SkillTargetType;
-    public int Damage;
+    public float Damage;
     public float Range;
+    [Range(0, 360)] public float Angle;
+    
     
     public float CastTime;       // 선딜
     public float RecoveryTime;   // 후딜
@@ -19,10 +21,11 @@ public class Skill
     
     public float lastUseTime;
     
-    public bool CanUse(Vector2 curPos,Vector2 targetPos, float curTime)
+    public bool CanUse(float curTime)
     {
-        if (Range < Vector2.Distance(curPos, targetPos)) return false;
-        if (Cooldown > curTime - lastUseTime) return false;
+        // Vector2 diff = targetPos - curPos; 
+        // if (Range * Range < diff.sqrMagnitude) return false; // 거리 체크 
+        if (Cooldown > curTime - lastUseTime) return false;  // 쿨타임 체크
         
         return true;
     }
