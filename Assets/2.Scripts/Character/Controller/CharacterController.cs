@@ -37,8 +37,7 @@ public class CharacterController : MonoBehaviour
         // Move
         Vector2 curPos = transform.position;
         transform.position = Vector2.MoveTowards(curPos, targetPos, model.Speed * Time.deltaTime);
-        // FIXME   Anim Speed 나중에 로직수정?
-        float speed = Vector2.Distance(targetPos, curPos) > 0.001f ? 1 : 0;
+        float speed = (targetPos - curPos).sqrMagnitude > 0.001f ? 1 : 0;
         view.SetSpeed(speed);
 
         // Flip
@@ -60,8 +59,8 @@ public class CharacterController : MonoBehaviour
 
         // search target
         targets = scanner.Scan(skill, isForwardLeft);
-        
-        if (targets.Count <= 0) return;  // FIXME 타겟이 없다면 취소 targets 검증방법 수정
+
+        if (targets.Count <= 0) return; // FIXME 타겟이 없다면 취소 targets 검증방법 수정
         if (skill == null || !skill.CanUse(curTime)) return; // 쿨타임중이라면 취소
 
         skill.Use(curTime);
