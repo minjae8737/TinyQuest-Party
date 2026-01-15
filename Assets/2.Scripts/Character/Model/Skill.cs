@@ -11,9 +11,7 @@ public class Skill
 {
     public SkillTargetType SkillTargetType;
     public float Damage;
-    public float Range;
-    [Range(0, 360)] public float Angle;
-    
+    [SerializeReference] public SkillTargetData TargetData;
     
     public float CastTime;       // 선딜
     public float RecoveryTime;   // 후딜
@@ -23,8 +21,6 @@ public class Skill
     
     public bool CanUse(float curTime)
     {
-        // Vector2 diff = targetPos - curPos; 
-        // if (Range * Range < diff.sqrMagnitude) return false; // 거리 체크 
         if (Cooldown > curTime - lastUseTime) return false;  // 쿨타임 체크
         
         return true;

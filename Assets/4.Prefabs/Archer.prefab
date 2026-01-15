@@ -181,6 +181,14 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
+  debugSkill:
+    SkillTargetType: 0
+    Damage: 0
+    TargetData: {fileID: 0}
+    CastTime: 0
+    RecoveryTime: 0
+    Cooldown: 0
+    lastUseTime: 0
 --- !u!114 &4206549746841870089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -196,17 +204,15 @@ MonoBehaviour:
   model:
     Skills:
     - SkillTargetType: 0
-      Damage: 0
-      Range: 5
-      Angle: 360
+      Damage: 5
+      TargetData: {fileID: 11400000, guid: 82ee76e5188a848a09b89c11702f697d, type: 2}
       CastTime: 0.59
       RecoveryTime: 0.31
       Cooldown: 0.91
       lastUseTime: 0
-    - SkillTargetType: 0
-      Damage: 0
-      Range: 6
-      Angle: 180
+    - SkillTargetType: 2
+      Damage: 10
+      TargetData: {fileID: 11400000, guid: edcbc2cc9f31a4f7f87f57446215c527, type: 2}
       CastTime: 0.89
       RecoveryTime: 0.31
       Cooldown: 2
