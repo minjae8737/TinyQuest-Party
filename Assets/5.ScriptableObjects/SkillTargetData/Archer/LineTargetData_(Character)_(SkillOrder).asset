@@ -12,6 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33cb3386bb02e46d4bec299a2bc20c53, type: 3}
   m_Name: LineTargetData_(Character)_(SkillOrder)
   m_EditorClassIdentifier: 
-  MaxDistance: 0
-  Width: 1
-  Length: 5
+  Width: 5
+  Length: 1

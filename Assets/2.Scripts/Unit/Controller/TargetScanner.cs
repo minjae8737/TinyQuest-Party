@@ -154,12 +154,23 @@ public class TargetScanner : MonoBehaviour
         debugTargetPos = targetPos; // Gizmo용 
 
         Vector2 boxArea = skillTargetData.GetBoxArea();
-        float angle = Mathf.Abs(90 - skillTargetData.GetAngle(myPos, targetPos, forward));
+        float angle = -skillTargetData.GetAngle(myPos, targetPos, forward); // OverlapBox()는 시계방향 회전 
+        
+        // 스킬 범위 중심으로 재탐색
+        Vector2 toTargetDir = (targetPos - myPos).normalized;
+        Vector2 point = myPos + toTargetDir * (boxArea.x * 0.5f);
+        
+        int enemyCounts = Physics2D.OverlapBox(point, boxArea, angle, filter, enemies);
+        
+        for (int i = 0; i < enemyCounts; i++)
+        {
+            Collider2D enemy = enemies[i];
 
-        // target 중심으로 재탐색
-        Vector2 toTargetDir = (targetPos - forward).normalized;
-        Vector2 point = targetPos + toTargetDir * (boxArea.y * 0.5f);
-        Physics2D.OverlapBox(point, boxArea, angle, filter, enemies);
+            if (enemy.TryGetComponent<UnitController>(out var controller))
+            {
+                targets.Add(controller);
+            }
+        }
     }
 
     # region Gizmo
