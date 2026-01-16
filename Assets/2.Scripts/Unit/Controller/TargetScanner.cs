@@ -94,7 +94,7 @@ public class TargetScanner : MonoBehaviour
         Vector2 myPos = transform.position;
         ConeTargetData skillTargetData = (ConeTargetData)skill.TargetData;
         debugSkill = skill;
-        
+
         for (int i = 0; i < count; i++)
         {
             Collider2D enemy = enemies[i];
@@ -148,20 +148,20 @@ public class TargetScanner : MonoBehaviour
         // 가장 가까운 대상 탐색
         Collider2D nearestEnemy = FindNearestEnemy(count);
         if (nearestEnemy == null) return;
-        
+
         Vector2 targetPos = nearestEnemy.transform.position;
         if (!skillTargetData.IsInMaxDistance(myPos, targetPos)) return;
         debugTargetPos = targetPos; // Gizmo용 
 
         Vector2 boxArea = skillTargetData.GetBoxArea();
-        float angle = -skillTargetData.GetAngle(myPos, targetPos, forward); // OverlapBox()는 시계방향 회전 
-        
+        float angle = skillTargetData.GetAngle(myPos, targetPos, forward);
+
         // 스킬 범위 중심으로 재탐색
         Vector2 toTargetDir = (targetPos - myPos).normalized;
         Vector2 point = myPos + toTargetDir * (boxArea.x * 0.5f);
-        
+
         int enemyCounts = Physics2D.OverlapBox(point, boxArea, angle, filter, enemies);
-        
+
         for (int i = 0; i < enemyCounts; i++)
         {
             Collider2D enemy = enemies[i];
@@ -174,11 +174,13 @@ public class TargetScanner : MonoBehaviour
     }
 
     # region Gizmo
+
     /// <summary>
     /// Color.green - 나의 공격 범위
     /// Color.red - 스킬 피격 범위
     /// </summary>
     private Skill debugSkill;
+
     private Vector2 debugTargetPos;
     private Vector2 debugForward => forward;
 
@@ -237,7 +239,7 @@ public class TargetScanner : MonoBehaviour
 
         Vector2 dir1 = new Vector2(Mathf.Cos(angleInRadians) * debugForward.x, Mathf.Sin(angleInRadians)) * length;
         Vector2 dir2 = new Vector2(Mathf.Cos(angleInRadians) * debugForward.x, -Mathf.Sin(angleInRadians)) * length;
-        
+
         Gizmos.color = Color.red;
         Gizmos.DrawLine(myPos, myPos + dir1); // 윗각 
         Gizmos.DrawLine(myPos, myPos + dir2); // 밑각
@@ -247,10 +249,45 @@ public class TargetScanner : MonoBehaviour
 
     void DrawLineGizmos(Vector2 myPos, LineTargetData data)
     {
-        Gizmos.color = Color.red;
-        Gizmos.color = Color.green;
+        Vector2 boxArea = data.GetBoxArea();
+        Vector2 halfSize = boxArea * 0.5f;
+        
+        Vector2 toTargetDir = (debugTargetPos - myPos).normalized;
+        Vector2 point = myPos + toTargetDir * (boxArea.x * 0.5f);
+        
+        // 박스 꼭짓점
+        Vector2[] vertexs = new Vector2[4]
+        {
+            new Vector2(-halfSize.x, -halfSize.y),
+            new Vector2(halfSize.x, -halfSize.y),
+            new Vector2(halfSize.x, halfSize.y),
+            new Vector2(-halfSize.x, halfSize.y)
+        };
 
-        Gizmos.DrawWireCube(myPos, data.GetBoxArea());
+        float angle = data.GetAngle(myPos, debugTargetPos, forward);
+        float rad = angle * Mathf.Deg2Rad; // 라디안으로 변환
+        float cos = Mathf.Cos(rad);
+        float sin = Mathf.Sin(rad);
+
+        // 좌표 회전
+        for (int i = 0; i < vertexs.Length; i++)
+        {
+            Vector2 vertex = vertexs[i];
+            vertexs[i] = new Vector2(
+                vertex.x * cos - vertex.y * sin, // 회전 변환
+                vertex.x * sin + vertex.y * cos // 회전 변환
+            ) + point;
+        }
+
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(myPos, boxArea.x); // 사거리
+
+        // 스킬 범위
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(vertexs[0], vertexs[1]);
+        Gizmos.DrawLine(vertexs[1], vertexs[2]);
+        Gizmos.DrawLine(vertexs[2], vertexs[3]);
+        Gizmos.DrawLine(vertexs[3], vertexs[0]);
     }
 
     #endregion

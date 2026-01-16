@@ -6,8 +6,8 @@ public class LineTargetData : SkillTargetData
 {
     public override SkillTargetType TargetType => SkillTargetType.Line;
     
-    public float Width; // 가로
-    public float Length; // 세로
+    public float Width; // 가로(사거리)
+    public float Length; // 세로(너비)
 
     public bool IsInMaxDistance(Vector2 myPos, Vector2 centerPos)
     {
