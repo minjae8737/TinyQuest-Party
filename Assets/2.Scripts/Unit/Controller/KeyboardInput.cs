@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class KeyboardInput : MonoBehaviour
 {
-    public CharacterController controller;
+    public UnitController controller;
     public float curTime;
 
     void Update()

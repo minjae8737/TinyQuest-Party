@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 [Serializable]
-public class Character
+public class Unit
 {
     private int level;
     public int Level

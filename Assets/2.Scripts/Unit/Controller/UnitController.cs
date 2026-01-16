@@ -3,16 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterController : MonoBehaviour
+public class UnitController : MonoBehaviour
 {
-    [SerializeField] private Character model;
-    public CharacterView view;
+    [SerializeField] private Unit model;
+    public UnitView view;
 
     private bool isForwardLeft;
     private bool canMove = true;
 
     [SerializeField] private TargetScanner scanner;
-    [SerializeField] private List<CharacterController> targets;
+    [SerializeField] private List<UnitController> targets;
 
     private void Awake()
     {
@@ -75,7 +75,7 @@ public class CharacterController : MonoBehaviour
 
         // 공격 데미지 주는 시점
         int damage = (int)Math.Round(model.Atk + (model.Atk * skill.Damage));
-        foreach (CharacterController target in targets)
+        foreach (UnitController target in targets)
         {
             target.model.TakeDamage(damage);
         }

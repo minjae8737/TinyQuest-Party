@@ -13,7 +13,7 @@ public enum AnimName
     Attack_Skill3,
 }
 
-public class CharacterView : MonoBehaviour
+public class UnitView : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private Animator anim;

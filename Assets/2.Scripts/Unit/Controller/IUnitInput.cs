@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface ICharacterInput
+public interface IUnitInput
 {
     void Move();
     void Attack1();

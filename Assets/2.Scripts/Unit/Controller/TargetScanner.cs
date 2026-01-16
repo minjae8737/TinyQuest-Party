@@ -11,7 +11,7 @@ public class TargetScanner : MonoBehaviour
     private ContactFilter2D filter;
     private Vector2 forward;
 
-    private List<CharacterController> targets;
+    private List<UnitController> targets;
 
     void Awake()
     {
@@ -21,10 +21,10 @@ public class TargetScanner : MonoBehaviour
         filter.useLayerMask = true;
         filter.useTriggers = false;
 
-        targets = new List<CharacterController>();
+        targets = new List<UnitController>();
     }
 
-    public List<CharacterController> Scan(Skill skill, bool isForwardLeft)
+    public List<UnitController> Scan(Skill skill, bool isForwardLeft)
     {
         targets.Clear();
         forward = isForwardLeft ? Vector2.left : Vector2.right;
@@ -83,7 +83,7 @@ public class TargetScanner : MonoBehaviour
         Collider2D nearestEnemy = FindNearestEnemy(count);
         if (!skillTargetData.IsInRange(myPos, nearestEnemy.transform.position, forward)) return;
 
-        if (nearestEnemy != null && nearestEnemy.TryGetComponent<CharacterController>(out var controller))
+        if (nearestEnemy != null && nearestEnemy.TryGetComponent<UnitController>(out var controller))
         {
             targets.Add(controller);
         }
@@ -102,7 +102,7 @@ public class TargetScanner : MonoBehaviour
 
             if (skillTargetData.IsInRange(myPos, enemy.transform.position, forward))
             {
-                if (enemy.TryGetComponent<CharacterController>(out var controller))
+                if (enemy.TryGetComponent<UnitController>(out var controller))
                 {
                     targets.Add(controller);
                 }
@@ -132,7 +132,7 @@ public class TargetScanner : MonoBehaviour
 
             if (!skillTargetData.IsInMaxRange(targetPos, enemy.transform.position)) continue;
 
-            if (enemy.TryGetComponent<CharacterController>(out var controller))
+            if (enemy.TryGetComponent<UnitController>(out var controller))
             {
                 targets.Add(controller);
             }
