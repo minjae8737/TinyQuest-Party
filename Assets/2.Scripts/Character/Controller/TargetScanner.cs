@@ -44,7 +44,7 @@ public class TargetScanner : MonoBehaviour
                 SelectConeTarget(count, forward, skill);
                 break;
             case SkillTargetType.Line:
-                SelecLineTarget(count, forward, skill);
+                SelectLineTarget(count, forward, skill);
                 break;
         }
 
@@ -139,7 +139,7 @@ public class TargetScanner : MonoBehaviour
         }
     }
 
-    public void SelecLineTarget(int count, Vector2 forward, Skill skill)
+    public void SelectLineTarget(int count, Vector2 forward, Skill skill)
     {
         Vector2 myPos = transform.position;
         LineTargetData skillTargetData = (LineTargetData)skill.TargetData;
@@ -154,13 +154,12 @@ public class TargetScanner : MonoBehaviour
         debugTargetPos = targetPos; // Gizmo용 
 
         Vector2 boxArea = skillTargetData.GetBoxArea();
-        float angle = skillTargetData.GetAngle(myPos, targetPos, forward);
+        float angle = Mathf.Abs(90 - skillTargetData.GetAngle(myPos, targetPos, forward));
 
         // target 중심으로 재탐색
         Vector2 toTargetDir = (targetPos - forward).normalized;
         Vector2 point = targetPos + toTargetDir * (boxArea.y * 0.5f);
         Physics2D.OverlapBox(point, boxArea, angle, filter, enemies);
-        
     }
 
     # region Gizmo
@@ -239,6 +238,8 @@ public class TargetScanner : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.color = Color.green;
+
+        Gizmos.DrawWireCube(myPos, data.GetBoxArea());
     }
 
     #endregion

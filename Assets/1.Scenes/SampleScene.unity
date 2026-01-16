@@ -150,6 +150,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 816725046}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &102369213
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2678067271735477746, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_Name
+      value: Armored Orc (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
 --- !u!1 &415365984
 GameObject:
   m_ObjectHideFlags: 0
@@ -2027,6 +2084,63 @@ Transform:
   m_Children: []
   m_Father: {fileID: 415365985}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1899682385
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2678067271735477746, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: m_Name
+      value: Armored Orc (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
 --- !u!1 &1993595211
 GameObject:
   m_ObjectHideFlags: 0
@@ -2164,10 +2278,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Skills.Array.size
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Skills.Array.data[2].Damage
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+      propertyPath: model.Skills.Array.data[3].Damage
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
@@ -2179,11 +2297,23 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+      propertyPath: model.Skills.Array.data[3].CastTime
+      value: 0.89
+      objectReference: {fileID: 0}
+    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+      propertyPath: model.Skills.Array.data[3].Cooldown
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Skills.Array.data[1].TargetData
+      value: 
+      objectReference: {fileID: 11400000, guid: eabc657382764407d993d7021673c0a8, type: 2}
+    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+      propertyPath: model.Skills.Array.data[2].TargetData
       value: 
       objectReference: {fileID: 11400000, guid: edcbc2cc9f31a4f7f87f57446215c527, type: 2}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
-      propertyPath: model.Skills.Array.data[2].TargetData
+      propertyPath: model.Skills.Array.data[3].TargetData
       value: 
       objectReference: {fileID: 11400000, guid: 80a0d1192710944fea61bdb2d21ba2d6, type: 2}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
@@ -2191,11 +2321,19 @@ PrefabInstance:
       value: 0.31
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+      propertyPath: model.Skills.Array.data[3].RecoveryTime
+      value: 0.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Skills.Array.data[1].SkillTargetType
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Skills.Array.data[2].SkillTargetType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+      propertyPath: model.Skills.Array.data[3].SkillTargetType
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4940244618192904066, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
@@ -2274,3 +2412,5 @@ SceneRoots:
   - {fileID: 415365985}
   - {fileID: 4434145972631300673}
   - {fileID: 5619468782143111680}
+  - {fileID: 1899682385}
+  - {fileID: 102369213}
