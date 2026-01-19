@@ -6,7 +6,7 @@ using UnityEngine;
 public class UnitController : MonoBehaviour
 {
     [SerializeField] private Unit model;
-    public UnitView view;
+    [SerializeField] private UnitView view;
 
     private bool isForwardLeft;
     private bool canMove = true;
@@ -30,22 +30,18 @@ public class UnitController : MonoBehaviour
         model.OnHpChanged -= OnHpChanged;
     }
 
-    public void DoMove(Vector2 targetPos)
+    public void DoMove(Vector2 nextPos)
     {
         if (!canMove) return;
 
         // Move
         Vector2 curPos = transform.position;
-        transform.position = Vector2.MoveTowards(curPos, targetPos, model.Speed * Time.deltaTime);
-        float speed = (targetPos - curPos).sqrMagnitude > 0.001f ? 1 : 0;
+        transform.position = Vector2.MoveTowards(curPos, nextPos, model.Speed * Time.deltaTime);
+        float speed = (nextPos - curPos).sqrMagnitude > 0.001f ? 1 : 0;
         view.SetSpeed(speed);
 
         // Flip
-        bool isLeft = curPos.x > targetPos.x;
-        // FIXME curPos.x == targetPos.x  float값이니 근사값이면 같은거로 할수있게 
-        if (curPos.x == targetPos.x) isLeft = isForwardLeft;
-        view.SetFlipX(isLeft);
-        isForwardLeft = isLeft;
+        LookAt(curPos, nextPos);
 
         // Character Order
         view.SetOrderInLayer((int)(-transform.position.y * 100));
@@ -65,6 +61,7 @@ public class UnitController : MonoBehaviour
 
         skill.Use(curTime);
         view.PlayAttack(skillIdx);
+        LookAt(curPos, targets[0].transform.position);
         StartCoroutine(UseSkill(skill));
     }
 
@@ -72,7 +69,7 @@ public class UnitController : MonoBehaviour
     {
         canMove = false;
         yield return new WaitForSeconds(skill.CastTime); // 선딜
-
+        
         // 공격 데미지 주는 시점
         int damage = (int)Math.Round(model.Atk + (model.Atk * skill.Damage));
         foreach (UnitController target in targets)
@@ -82,6 +79,16 @@ public class UnitController : MonoBehaviour
 
         yield return new WaitForSeconds(skill.RecoveryTime); // 후딜
         canMove = true;
+    }
+
+    private void LookAt(Vector2 curPos, Vector2 nextPos)
+    {
+        bool isLeft = curPos.x > nextPos.x;
+        
+        if (Mathf.Abs(curPos.x - nextPos.x) < 0.001f) isLeft = isForwardLeft;
+        view.SetFlipX(isLeft);
+        
+        isForwardLeft = isLeft;
     }
 
     public void OnHpChanged(int hp)
