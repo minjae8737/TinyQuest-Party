@@ -268,67 +268,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 1000, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1001 &102369213
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2678067271735477746, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_Name
-      value: Armored Orc (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 2678067271735477746, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
 --- !u!1 &186823060
 GameObject:
   m_ObjectHideFlags: 0
@@ -2336,67 +2275,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 415365985}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1899682385
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143756107899005543, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2678067271735477746, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_Name
-      value: Armored Orc (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 2678067271735477746, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
 --- !u!1 &1993595211
 GameObject:
   m_ObjectHideFlags: 0
@@ -2533,16 +2411,44 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+      propertyPath: model.hp
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+      propertyPath: model.atk
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+      propertyPath: model.def
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+      propertyPath: model.level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+      propertyPath: model.maxHp
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+      propertyPath: model.speed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Skills.Array.size
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+      propertyPath: model.Skills.Array.data[1].Damage
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Skills.Array.data[2].Damage
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Skills.Array.data[3].Damage
-      value: 10
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Skills.Array.data[2].CastTime
@@ -2657,6 +2563,30 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: model.hp
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: model.atk
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: model.def
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: model.level
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: model.maxHp
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: model.speed
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2672,7 +2602,5 @@ SceneRoots:
   - {fileID: 415365985}
   - {fileID: 4434145972631300673}
   - {fileID: 5619468782143111680}
-  - {fileID: 1899682385}
-  - {fileID: 102369213}
   - {fileID: 80696930}
   - {fileID: 186823063}

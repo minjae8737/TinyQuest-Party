@@ -16,8 +16,7 @@ public class UnitController : MonoBehaviour
 
     private void Awake()
     {
-        // FIXME 임시값 초기화
-        model.Speed = 5;
+        // Unit model 데이터 초기화
     }
 
     private void OnEnable()
@@ -32,7 +31,7 @@ public class UnitController : MonoBehaviour
 
     public void DoMove(Vector2 nextPos)
     {
-        if (!canMove) return;
+        if (!canMove || model.IsDeath) return;
 
         // Move
         Vector2 curPos = transform.position;
@@ -49,7 +48,7 @@ public class UnitController : MonoBehaviour
 
     public void DoAttack(int skillIdx, Vector2 curPos, float curTime)
     {
-        if (!canMove) return;
+        if (!canMove || model.IsDeath) return;
 
         Skill skill = model.GetSkill(skillIdx);
 
@@ -70,8 +69,8 @@ public class UnitController : MonoBehaviour
         canMove = false;
         yield return new WaitForSeconds(skill.CastTime); // 선딜
         
-        // 공격 데미지 주는 시점
-        int damage = (int)Math.Round(model.Atk + (model.Atk * skill.Damage));
+        // 공격 데미지 주는 시점 (공격력 + 스킬 데미지)
+        int damage = (int)Math.Round(model.Atk + skill.Damage);
         foreach (UnitController target in targets)
         {
             target.model.TakeDamage(damage);
@@ -93,6 +92,8 @@ public class UnitController : MonoBehaviour
 
     public void OnHpChanged(int maxHp, int hp)
     {
+        if (model.IsDeath) return;
+        
         view.RefreshHp(maxHp, hp);
         if (hp <= 0) view.PlayDeath();
     }

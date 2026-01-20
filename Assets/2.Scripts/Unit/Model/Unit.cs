@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 [Serializable]
 public class Unit
 {
-    private int level;
+    [SerializeField] private int level;
     public int Level
     {
         get => level;
@@ -15,7 +16,7 @@ public class Unit
         }
     }
     
-    private int hp;
+    [SerializeField] private int hp;
     public int Hp
     {
         get => hp;
@@ -25,7 +26,9 @@ public class Unit
             int newValue = Math.Clamp(value, 0, maxHp);
             
             hp = newValue;
-            OnHpChanged?.Invoke(hp);
+            OnHpChanged?.Invoke(maxHp, hp);
+
+            isDeath = Hp <= 0;
         }
     }
 
@@ -35,14 +38,14 @@ public class Unit
         Hp -= (damage - def);
     }
 
-    private int maxHp;
+    [SerializeField] private int maxHp;
     public int MaxHp
     {
         get => maxHp;
         set => maxHp = value;
     }
 
-    private int atk;
+    [SerializeField] private int atk;
     public int Atk
     {
         get => atk;
@@ -53,7 +56,7 @@ public class Unit
         }
     }
 
-    private int def;
+    [SerializeField] private int def;
     public int Def
     {
         get => def;
@@ -64,7 +67,7 @@ public class Unit
         }
     }
 
-    private int speed;
+    [SerializeField] private int speed;
     public int Speed
     {
         get => speed;
@@ -83,8 +86,11 @@ public class Unit
         return Skills[skillIdx];
     }
 
+    [SerializeField] private bool isDeath;
+    public bool IsDeath => isDeath;
+
     public Action<int> OnLevelChanged;
-    public Action<int> OnHpChanged;
+    public Action<int,int> OnHpChanged;
     public Action<int> OnAtkChanged;
     public Action<int> OnDefChanged;
     public Action<int> OnSpeedChanged;
