@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
         if (hpBar != null)
         {
             unitHpBars.Add(hpBar);
-            hpBar.transform.parent = unitHpBarsRect;
+            hpBar.transform.SetParent(unitHpBarsRect, false);
         }
         
         return hpBar;
