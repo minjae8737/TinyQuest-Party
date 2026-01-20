@@ -91,8 +91,9 @@ public class UnitController : MonoBehaviour
         isForwardLeft = isLeft;
     }
 
-    public void OnHpChanged(int hp)
+    public void OnHpChanged(int maxHp, int hp)
     {
+        view.RefreshHp(maxHp, hp);
         if (hp <= 0) view.PlayDeath();
     }
 }

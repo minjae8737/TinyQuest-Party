@@ -28,7 +28,7 @@ public class PoolManager : MonoBehaviour
         for (int i = 0; i < prefabs.Count; i++)
         {
             ObjPrefab objPrefab = prefabs[i];
-            if (objPrefab.Prefab != null)
+            if (!prefabDic.ContainsKey(objPrefab.Type) && objPrefab.Prefab != null)
             {
                 prefabDic.Add(objPrefab.Type, objPrefab.Prefab);
                 poolDic.Add(objPrefab.Type, new List<GameObject>());
@@ -39,21 +39,30 @@ public class PoolManager : MonoBehaviour
 
     public GameObject Get(ObjType type)
     {
-        List<GameObject> pool = poolDic[type];
+        if (!poolDic.TryGetValue(type, out List<GameObject> pool))
+        {
+            Debug.LogError("pool is Null. Type : " + type);
+        }
+
         GameObject obj;
 
         for (int i = 0; i < pool.Count; i++)
         {
-            if (!pool[i].activeSelf)
+            if (pool[i] != null && !pool[i].activeSelf)
             {
                 obj = pool[i];
                 return obj;
             }
         }
 
-        obj = Instantiate(prefabDic[type]);
+        if (!prefabDic.TryGetValue(type, out GameObject prefab))
+        {
+            Debug.LogError("prefab is Null. Type : " + type);
+        }
+
+        obj = Instantiate(prefab);
         pool.Add(obj);
-        
+
         return obj;
     }
 }

@@ -27,7 +27,7 @@ public class UnitView : MonoBehaviour
         {
             hpBar = UIManager.Instance.GetUnitHpBar();
         }
-        hpBar.Init(transform);
+        hpBar?.Init(transform);
     }
 
     public void SetSpeed(float speed)
@@ -66,5 +66,10 @@ public class UnitView : MonoBehaviour
     public void PlayDeath()
     {
         anim.SetTrigger(AnimName.Death.ToString());
+    }
+
+    public void RefreshHp(int maxHp, int hp)
+    {
+        hpBar.SetHp(maxHp, hp);
     }
 }

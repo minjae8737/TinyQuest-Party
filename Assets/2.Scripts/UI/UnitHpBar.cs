@@ -14,7 +14,7 @@ public class UnitHpBar : MonoBehaviour
 
     private void OnEnable()
     {
-        SetHp(1f);
+        SetHpFillAmount(1f);
     }
 
     public void Init(Transform target)
@@ -26,9 +26,15 @@ public class UnitHpBar : MonoBehaviour
         targetUnit = target;
     }
     
-    private void SetHp(float fill)
+    private void SetHpFillAmount(float fill)
     {
         hpImg.fillAmount = fill;
+    }
+
+    public void SetHp(float maxHp, float hp)
+    {
+        float fill = maxHp == 0 ? 0 : hp / maxHp;
+        SetHpFillAmount(fill);
     }
 
     private void SetPosition(Vector3 unitPos)

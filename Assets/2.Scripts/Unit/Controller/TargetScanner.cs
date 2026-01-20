@@ -31,7 +31,7 @@ public class TargetScanner : MonoBehaviour
 
         // 캐릭터 주변 MAX_SCAN_RADIUS 안 대상 타깃
         int count = Physics2D.OverlapCircle(transform.position, MAX_SCAN_RADIUS, filter, enemies);
-        Debug.Log("Targets Count : " + count);
+        
         switch (skill.SkillTargetType)
         {
             case SkillTargetType.Single:

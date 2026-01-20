@@ -24,6 +24,7 @@ public class UIManager : MonoBehaviour
     {
         GameObject hpBarObj = PoolManager.Instance.Get(ObjType.UnitHpBar);
         if (hpBarObj == null) return null;
+        
         hpBarObj.TryGetComponent<UnitHpBar>(out var hpBar);
 
         if (hpBar != null)
