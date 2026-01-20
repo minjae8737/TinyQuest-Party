@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: ConeTargetData_Archer_Skill1
   m_EditorClassIdentifier: 
   Angle: 80
-  Length: 8
+  Length: 6

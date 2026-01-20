@@ -1,3 +1,4 @@
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -17,6 +18,17 @@ public class UnitView : MonoBehaviour
 {
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private Animator anim;
+
+    private UnitHpBar hpBar;
+
+    private void OnEnable()
+    {
+        if (hpBar == null)
+        {
+            hpBar = UIManager.Instance.GetUnitHpBar();
+        }
+        hpBar.Init(transform);
+    }
 
     public void SetSpeed(float speed)
     {
