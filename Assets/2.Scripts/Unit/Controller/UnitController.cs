@@ -14,9 +14,18 @@ public class UnitController : MonoBehaviour
     [SerializeField] private TargetScanner scanner;
     [SerializeField] private List<UnitController> targets;
 
-    private void Awake()
+    private void Start()
     {
-        // Unit model 데이터 초기화
+        // 임시 초기화 위치
+        Init();
+    }
+
+    public void Init()
+    {
+        view.Init();
+        model.Init();
+        
+        canMove = true;
     }
 
     private void OnEnable()
@@ -35,7 +44,7 @@ public class UnitController : MonoBehaviour
 
         // Move
         Vector2 curPos = transform.position;
-        transform.position = Vector2.MoveTowards(curPos, nextPos, model.Speed * Time.deltaTime);
+        transform.position = Vector2.MoveTowards(curPos, nextPos, model.Stat.Speed * Time.deltaTime);
         float speed = (nextPos - curPos).sqrMagnitude > 0.001f ? 1 : 0;
         view.SetSpeed(speed);
 
@@ -51,6 +60,11 @@ public class UnitController : MonoBehaviour
         if (!canMove || model.IsDeath) return;
 
         Skill skill = model.GetSkill(skillIdx);
+        if (skill == null)
+        {
+            Debug.LogError("Skill is Null : " + transform.name);
+            return;
+        }
 
         // search target
         targets = scanner.Scan(skill, isForwardLeft);
@@ -70,7 +84,7 @@ public class UnitController : MonoBehaviour
         yield return new WaitForSeconds(skill.CastTime); // 선딜
         
         // 공격 데미지 주는 시점 (공격력 + 스킬 데미지)
-        int damage = (int)Math.Round(model.Atk + skill.Damage);
+        int damage = (int)Math.Round(model.Stat.Atk + skill.Damage);
         foreach (UnitController target in targets)
         {
             target.model.TakeDamage(damage);

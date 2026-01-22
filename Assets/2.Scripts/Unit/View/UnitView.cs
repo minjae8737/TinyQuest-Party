@@ -20,8 +20,8 @@ public class UnitView : MonoBehaviour
     [SerializeField] private Animator anim;
 
     private UnitHpBar hpBar;
-
-    private void OnEnable()
+    
+    public void Init()
     {
         if (hpBar == null)
         {
