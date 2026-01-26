@@ -20,8 +20,8 @@ public class Unit
         Level.Exp = saveData.Exp;
         Level.MaxExp = saveData.MaxExp;
         // Stat
-        Stat.BaseStat = saveData.BaseStat.GetSaveData(); 
-        Stat.EquipStat = saveData.EquipStat.GetSaveData(); 
+        Stat.BaseStat = saveData.BaseStat.Clone(); 
+        Stat.EquipStat = saveData.EquipStat.Clone(); 
         // Equipment
         Equipment.ApplySaveData(saveData.Equipments);
         
@@ -82,8 +82,8 @@ public class Unit
         saveData.Exp = Level.Exp;
         saveData.MaxExp = Level.MaxExp;
         
-        saveData.BaseStat = Stat.BaseStat.GetSaveData();
-        saveData.EquipStat = Stat.EquipStat.GetSaveData();
+        saveData.BaseStat = Stat.BaseStat.Clone();
+        saveData.EquipStat = Stat.EquipStat.Clone();
 
         saveData.Equipments = new Dictionary<EquipPart, long>(Equipment.Equipments);
         

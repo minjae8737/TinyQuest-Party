@@ -19,7 +19,7 @@ public class Stat
         };
     }
 
-    public Stat GetSaveData()
+    public Stat Clone()
     {
         return new Stat
         {
