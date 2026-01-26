@@ -1,4 +1,4 @@
-using UnityEngine;
+using System.Collections.Generic;
 
 public enum EquipPart
 {
@@ -11,5 +11,6 @@ public enum EquipPart
 
 public class UnitEquipment
 {
+    private Dictionary<EquipPart, long> equipments;
     
 }
