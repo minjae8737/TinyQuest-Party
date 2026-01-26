@@ -194,7 +194,7 @@ public class TargetScanner : MonoBehaviour
 
     void DrawTargetGizmos(SkillTargetData targetData)
     {
-        // FIXME 나중에 Collider 오프셋을 계산한 myPos 로 변경
+        // TODO 나중에 Collider 오프셋을 계산한 myPos 로 변경
         Vector2 myPos = transform.position;
 
         switch (targetData.TargetType)

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
-    [SerializeField] private Unit model;
+    [SerializeField] public Unit model;
     [SerializeField] private UnitView view;
 
     private bool isForwardLeft;
@@ -69,7 +69,7 @@ public class UnitController : MonoBehaviour
         // search target
         targets = scanner.Scan(skill, isForwardLeft);
 
-        if (targets.Count <= 0) return; // FIXME 타겟이 없다면 취소 targets 검증방법 수정
+        if (targets.Count <= 0) return; // TODO 타겟이 없다면 취소 targets 검증방법 수정
         if (skill == null || !skill.CanUse(curTime)) return; // 쿨타임중이라면 취소
 
         skill.Use(curTime);

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 [Serializable]
 public class Unit
@@ -13,8 +12,19 @@ public class Unit
     
     public List<Skill> Skills;
 
-    public void Init()
+    public void Init(UnitSaveData saveData)
     {
+        // Load SaveData
+        // UnitLevel
+        Level.Level = saveData.Level;
+        Level.Exp = saveData.Exp;
+        Level.MaxExp = saveData.MaxExp;
+        // Stat
+        Stat.BaseStat = saveData.BaseStat.GetSaveData(); 
+        Stat.EquipStat = saveData.EquipStat.GetSaveData(); 
+        // Equipment
+        Equipment.ApplySaveData(saveData.Equipments);
+        
         Stat.RefreshStat();
         Status.Init(Stat.MaxHp, Stat.MaxHp);
     }
@@ -61,5 +71,22 @@ public class Unit
         add => Stat.OnSpeedChanged += value;
         remove => Stat.OnSpeedChanged -= value;
     }
-    
+
+    public UnitSaveData GetSaveData()
+    {
+        UnitSaveData saveData = new UnitSaveData();
+        
+        saveData.UnitName = "";
+        
+        saveData.Level = Level.Level;
+        saveData.Exp = Level.Exp;
+        saveData.MaxExp = Level.MaxExp;
+        
+        saveData.BaseStat = Stat.BaseStat.GetSaveData();
+        saveData.EquipStat = Stat.EquipStat.GetSaveData();
+
+        saveData.Equipments = new Dictionary<EquipPart, long>(Equipment.Equipments);
+        
+        return saveData;
+    }
 }

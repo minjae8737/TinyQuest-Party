@@ -18,4 +18,15 @@ public class Stat
             Speed = a.Speed + b.Speed
         };
     }
+
+    public Stat GetSaveData()
+    {
+        return new Stat
+        {
+            MaxHp = MaxHp,
+            Atk = Atk,
+            Def = Def,
+            Speed = Speed
+        };
+    }
 }
