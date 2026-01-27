@@ -9,7 +9,7 @@ public class Unit
     public UnitEquipment Equipment;
     public UnitStatus Status;
     public bool IsDeath => Status.IsDeath;
-    
+
     public List<Skill> Skills;
 
     public void Init(UnitSaveData saveData)
@@ -20,13 +20,53 @@ public class Unit
         Level.Exp = saveData.Exp;
         Level.MaxExp = saveData.MaxExp;
         // Stat
-        Stat.BaseStat = saveData.BaseStat.Clone(); 
-        Stat.EquipStat = saveData.EquipStat.Clone(); 
+        Stat.BaseStat = saveData.BaseStat.Clone();
+        Stat.EquipStat = saveData.EquipStat.Clone();
         // Equipment
-        Equipment.ApplySaveData(saveData.Equipments);
-        
+        foreach (KeyValuePair<EquipPart, long> equipment in saveData.Equipments)
+        {
+            long itemId = equipment.Value;
+            PutOnEquipment(itemId);
+        }
+
         Stat.RefreshStat();
         Status.Init(Stat.MaxHp, Stat.MaxHp);
+    }
+
+    public void PutOnEquipment(long itemId)
+    {
+        Item item = ItemManager.Instance.Get(itemId);
+        if (item == null) return;
+
+        EquipmentData equipmentData = ItemManager.Instance.GetData(item.DataId) as EquipmentData;
+        if (equipmentData == null) return;
+
+        EquipPart equipPart = equipmentData.Part;
+
+        long preItemId = Equipment.GetEquipmentId(equipPart);
+        if (preItemId != -1)
+        {
+            RemoveEquipment(preItemId);
+        }
+
+        Equipment.SetEquipment(equipPart, item.Id);
+        Stat.EquipStat.Add(equipmentData.Stat);
+        Stat.RefreshStat();
+    }
+
+    public void RemoveEquipment(long itemId)
+    {
+        Item item = ItemManager.Instance.Get(itemId);
+        if (item == null) return;
+
+        EquipmentData equipmentData = ItemManager.Instance.GetData(item.DataId) as EquipmentData;
+        if (equipmentData == null) return;
+        
+        EquipPart equipPart = equipmentData.Part;
+        
+        Equipment.RemoveEquipment(equipPart);
+        Stat.EquipStat.Subtrack(equipmentData.Stat);
+        Stat.RefreshStat();
     }
 
     public void TakeDamage(int damage)
@@ -47,25 +87,25 @@ public class Unit
         add => Level.OnLevelChanged += value;
         remove => Level.OnLevelChanged -= value;
     }
-    
+
     public event Action<int, int> OnHpChanged
     {
         add => Status.OnHpChanged += value;
         remove => Status.OnHpChanged -= value;
     }
-    
+
     public event Action<int> OnAtkChanged
     {
         add => Stat.OnAtkChanged += value;
         remove => Stat.OnAtkChanged -= value;
     }
-    
+
     public event Action<int> OnDefChanged
     {
         add => Stat.OnDefChanged += value;
         remove => Stat.OnDefChanged -= value;
     }
-    
+
     public event Action<int> OnSpeedChanged
     {
         add => Stat.OnSpeedChanged += value;
@@ -75,18 +115,18 @@ public class Unit
     public UnitSaveData GetSaveData()
     {
         UnitSaveData saveData = new UnitSaveData();
-        
+
         saveData.UnitName = "";
-        
+
         saveData.Level = Level.Level;
         saveData.Exp = Level.Exp;
         saveData.MaxExp = Level.MaxExp;
-        
+
         saveData.BaseStat = Stat.BaseStat.Clone();
         saveData.EquipStat = Stat.EquipStat.Clone();
 
         saveData.Equipments = new Dictionary<EquipPart, long>(Equipment.Equipments);
-        
+
         return saveData;
     }
 }

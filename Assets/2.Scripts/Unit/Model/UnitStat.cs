@@ -16,6 +16,18 @@ public class UnitStat
     public event Action<int> OnDefChanged;
     public event Action<int> OnSpeedChanged;
 
+    public void SetBaseStat(Stat stat)
+    {
+        BaseStat = stat;
+        RefreshStat();
+    }
+    
+    public void SetEquipStat(Stat stat)
+    {
+        EquipStat = stat;
+        RefreshStat();
+    }
+    
     public void RefreshStat()
     {
         TotalStat = BaseStat + EquipStat;

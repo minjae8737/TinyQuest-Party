@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 public enum EquipPart
 {
@@ -12,10 +13,20 @@ public enum EquipPart
 public class UnitEquipment
 {
     private Dictionary<EquipPart, long> equipments;
-    public Dictionary<EquipPart, long> Equipments => equipments;
-    
-    public void ApplySaveData(Dictionary<EquipPart, long> saveData)
+    public IReadOnlyDictionary<EquipPart, long> Equipments => equipments;
+
+    public long GetEquipmentId(EquipPart part)
     {
-        equipments = new Dictionary<EquipPart, long>(saveData);
+        return equipments.TryGetValue(part, out var id) ? id : -1L;
+    }
+
+    public void SetEquipment(EquipPart part, long itemId)
+    {
+        equipments[part] = itemId;
+    }
+
+    public void RemoveEquipment(EquipPart part)
+    {
+        equipments.Remove(part);
     }
 }

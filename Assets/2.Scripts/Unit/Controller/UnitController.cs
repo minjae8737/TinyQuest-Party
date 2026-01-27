@@ -23,7 +23,7 @@ public class UnitController : MonoBehaviour
     public void Init()
     {
         view.Init();
-        model.Init();
+        // model.Init();
         
         canMove = true;
     }
