@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
-    [SerializeField] public Unit model;
+    [SerializeField] private Unit model;
     [SerializeField] private UnitView view;
 
     private bool isForwardLeft;
@@ -14,17 +14,18 @@ public class UnitController : MonoBehaviour
     [SerializeField] private TargetScanner scanner;
     [SerializeField] private List<UnitController> targets;
 
+    public Unit Model => model;
+
     private void Start()
     {
         // 임시 초기화 위치
         Init();
     }
 
-    public void Init()
+    public void Init(UnitSaveData saveData = null)
     {
         view.Init();
-        // model.Init();
-        
+        model.Init(saveData);
         canMove = true;
     }
 

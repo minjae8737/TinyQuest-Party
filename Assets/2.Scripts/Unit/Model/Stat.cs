@@ -1,12 +1,13 @@
 using System;
+using UnityEngine;
 
 [Serializable]
 public class Stat
 {
-    private int maxHp;
-    private int atk;
-    private int def;
-    private int speed;
+    [SerializeField] private int maxHp;
+    [SerializeField] private int atk;
+    [SerializeField] private int def;
+    [SerializeField] private int speed;
 
     public int MaxHp
     {

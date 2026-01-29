@@ -4,6 +4,7 @@ using System.Collections.Generic;
 [Serializable]
 public class Unit
 {
+    public UnitData Data;
     public UnitLevel Level;
     public UnitStat Stat;
     public UnitEquipment Equipment;
@@ -14,23 +15,29 @@ public class Unit
 
     public void Init(UnitSaveData saveData)
     {
+        if (saveData != null)
+        {
+            ApplySaveData(saveData);
+        }
+
+        Stat.BaseStat = Data.BaseStat.Clone();
+        Stat.RefreshStat();
+        Status.Init(Stat.MaxHp, Stat.MaxHp);
+    }
+
+    public void ApplySaveData(UnitSaveData saveData)
+    {
         // Load SaveData
         // UnitLevel
         Level.Level = saveData.Level;
         Level.Exp = saveData.Exp;
         Level.MaxExp = saveData.MaxExp;
-        // Stat
-        Stat.BaseStat = saveData.BaseStat.Clone();
-        Stat.EquipStat = saveData.EquipStat.Clone();
         // Equipment
         foreach (KeyValuePair<EquipPart, long> equipment in saveData.Equipments)
         {
             long itemId = equipment.Value;
             PutOnEquipment(itemId);
         }
-
-        Stat.RefreshStat();
-        Status.Init(Stat.MaxHp, Stat.MaxHp);
     }
 
     public void PutOnEquipment(long itemId)
@@ -115,15 +122,10 @@ public class Unit
     public UnitSaveData GetSaveData()
     {
         UnitSaveData saveData = new UnitSaveData();
-
-        saveData.UnitName = "";
-
+        
         saveData.Level = Level.Level;
         saveData.Exp = Level.Exp;
         saveData.MaxExp = Level.MaxExp;
-
-        saveData.BaseStat = Stat.BaseStat.Clone();
-        saveData.EquipStat = Stat.EquipStat.Clone();
 
         saveData.Equipments = new Dictionary<EquipPart, long>(Equipment.Equipments);
 

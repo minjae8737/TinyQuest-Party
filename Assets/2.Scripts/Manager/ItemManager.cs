@@ -42,7 +42,7 @@ public class ItemManager : MonoBehaviour
 
     public Item Get(long itemId)
     {
-        if (items.TryGetValue(itemId, out var item))
+        if (!items.TryGetValue(itemId, out var item))
         {
             Debug.LogError(itemId + " item is Null");
         }
@@ -52,7 +52,7 @@ public class ItemManager : MonoBehaviour
 
     public ItemData GetData(string dataId)
     {
-        if (itemDatas.TryGetValue(dataId, out var itemData))
+        if (!itemDatas.TryGetValue(dataId, out var itemData))
         {
             Debug.LogError(dataId + " ItemData is Null");
         }
