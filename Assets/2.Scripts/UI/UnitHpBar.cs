@@ -24,6 +24,7 @@ public class UnitHpBar : MonoBehaviour
         rect = GetComponent<RectTransform>();
         
         targetUnit = target;
+        gameObject.SetActive(true);
     }
     
     private void SetHpFillAmount(float fill)

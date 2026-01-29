@@ -81,7 +81,7 @@ public class TargetScanner : MonoBehaviour
         SingleTargetData skillTargetData = (SingleTargetData)skill.TargetData;
         debugSkill = skill;
         Collider2D nearestEnemy = FindNearestEnemy(count);
-        if (!skillTargetData.IsInRange(myPos, nearestEnemy.transform.position, forward)) return;
+        if (nearestEnemy == null || !skillTargetData.IsInRange(myPos, nearestEnemy.transform.position, forward)) return;
 
         if (nearestEnemy != null && nearestEnemy.TryGetComponent<UnitController>(out var controller))
         {

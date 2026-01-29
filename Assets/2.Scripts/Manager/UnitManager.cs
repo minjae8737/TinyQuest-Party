@@ -52,9 +52,13 @@ public class UnitManager : MonoBehaviour
         newUnit.SetActive(false);
         newUnit.TryGetComponent<UnitController>(out var unitController);
 
-        if (unitPoolsDic.TryGetValue(unitName, out List<UnitController> pool))
+        if (!unitPoolsDic.TryGetValue(unitName, out List<UnitController> pool))
         {
-            if (pool == null) pool = new List<UnitController>();
+            if (pool == null)
+            {
+                pool = new List<UnitController>();
+                unitPoolsDic.Add(unitName, pool);
+            }
         }
         
         pool.Add(unitController);
@@ -68,6 +72,7 @@ public class UnitManager : MonoBehaviour
         if (!unitPoolsDic.TryGetValue(unitName, out List<UnitController> pool))
         {
             CreateUnit(unitName);
+            pool = unitPoolsDic[unitName];
         }
 
         for (int i = 0; i < pool.Count; i++)
