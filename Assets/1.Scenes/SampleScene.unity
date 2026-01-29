@@ -1180,7 +1180,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1467bbfadedf6418c884301e9cf6f516, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  units: []
   unitPrefabs:
   - {fileID: 4940244618192904066, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
 --- !u!1 &863974609
@@ -1488,7 +1487,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8791c9df902734d5d9ab689551f084f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitCon: {fileID: 1707217962}
 --- !u!1 &1048597739
 GameObject:
   m_ObjectHideFlags: 0
@@ -2180,17 +2178,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1707217962 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
-  m_PrefabInstance: {fileID: 4434145972631300673}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 53fa7497c9f22473cb630aa1ee3d4cd8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1735694940
 GameObject:
   m_ObjectHideFlags: 0
@@ -2724,6 +2711,10 @@ PrefabInstance:
       propertyPath: model.def
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
+      propertyPath: model.Data
+      value: 
+      objectReference: {fileID: 11400000, guid: 8d158d519e8cf41f7afa3c61db40ebbc, type: 2}
     - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
       propertyPath: model.level
       value: 1

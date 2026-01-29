@@ -4,7 +4,8 @@ using UnityEngine;
 
 public enum UnitName
 {
-    Archer
+    Archer,
+    Armored_Orc
 }
 
 [Serializable]
@@ -85,5 +86,10 @@ public class UnitManager : MonoBehaviour
         // Unit 세팅
         unitController.Init();
         unitController.gameObject.SetActive(true);
+    }
+
+    public void Despawn(UnitController unitController)
+    {
+        unitController.gameObject.SetActive(false);
     }
 }

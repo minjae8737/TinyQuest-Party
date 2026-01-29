@@ -20,6 +20,8 @@ public class UnitView : MonoBehaviour
     [SerializeField] private Animator anim;
 
     private UnitHpBar hpBar;
+
+    public event Action OnDeathFinished;
     
     public void Init()
     {
@@ -71,5 +73,12 @@ public class UnitView : MonoBehaviour
     public void RefreshHp(int maxHp, int hp)
     {
         hpBar.SetHp(maxHp, hp);
+    }
+
+    public void OnDeathAnimationEnd()
+    {
+        hpBar?.Release();
+        hpBar = null;
+        OnDeathFinished?.Invoke();
     }
 }

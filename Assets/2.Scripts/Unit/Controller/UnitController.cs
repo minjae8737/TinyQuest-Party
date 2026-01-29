@@ -32,11 +32,13 @@ public class UnitController : MonoBehaviour
     private void OnEnable()
     {
         model.OnHpChanged += OnHpChanged;
+        view.OnDeathFinished += HandleDeathFinished;
     }
 
     private void OnDisable()
     {
         model.OnHpChanged -= OnHpChanged;
+        view.OnDeathFinished -= HandleDeathFinished;
     }
 
     public void DoMove(Vector2 nextPos)
@@ -111,5 +113,10 @@ public class UnitController : MonoBehaviour
         
         view.RefreshHp(maxHp, hp);
         if (hp <= 0) view.PlayDeath();
+    }
+
+    public void HandleDeathFinished()
+    {
+        UnitManager.Instance.Despawn(this);
     }
 }

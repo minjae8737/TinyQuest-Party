@@ -31,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 2678067271735477746}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.48, y: 0.06, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -179,27 +179,49 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model:
+    Data: {fileID: 11400000, guid: 8d158d519e8cf41f7afa3c61db40ebbc, type: 2}
+    Level:
+      level: 0
+      exp: 0
+      maxExp: 0
+    Stat:
+      BaseStat:
+        maxHp: 0
+        atk: 0
+        def: 0
+        speed: 0
+      EquipStat:
+        maxHp: 0
+        atk: 0
+        def: 0
+        speed: 0
+      TotalStat:
+        maxHp: 0
+        atk: 0
+        def: 0
+        speed: 0
+    Status:
+      maxHp: 0
+      hp: 0
+      isDeath: 0
     Skills:
     - SkillTargetType: 0
       Damage: 0
-      Range: 5
-      Angle: 360
+      TargetData: {fileID: 0}
       CastTime: 0.59
       RecoveryTime: 0.31
       Cooldown: 0.91
       lastUseTime: 0
     - SkillTargetType: 0
       Damage: 0
-      Range: 6
-      Angle: 180
+      TargetData: {fileID: 0}
       CastTime: 0.89
       RecoveryTime: 0.31
       Cooldown: 2
       lastUseTime: 0
     - SkillTargetType: 0
       Damage: 10
-      Range: 6
-      Angle: 180
+      TargetData: {fileID: 0}
       CastTime: 0.89
       RecoveryTime: 0.31
       Cooldown: 2

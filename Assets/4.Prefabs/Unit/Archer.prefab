@@ -181,14 +181,6 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
-  debugSkill:
-    SkillTargetType: 0
-    Damage: 0
-    TargetData: {fileID: 0}
-    CastTime: 0
-    RecoveryTime: 0
-    Cooldown: 0
-    lastUseTime: 0
 --- !u!114 &4206549746841870089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -202,6 +194,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model:
+    Data: {fileID: 11400000, guid: aa08e0878ed8440e980e278f38a87113, type: 2}
+    Level:
+      level: 0
+      exp: 0
+      maxExp: 0
+    Stat:
+      BaseStat:
+        maxHp: 0
+        atk: 0
+        def: 0
+        speed: 0
+      EquipStat:
+        maxHp: 0
+        atk: 0
+        def: 0
+        speed: 0
+      TotalStat:
+        maxHp: 0
+        atk: 0
+        def: 0
+        speed: 0
+    Status:
+      maxHp: 0
+      hp: 0
+      isDeath: 0
     Skills:
     - SkillTargetType: 0
       Damage: 5

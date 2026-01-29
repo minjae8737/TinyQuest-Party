@@ -47,6 +47,14 @@ public class UnitHpBar : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (targetUnit == null) return;
+        
         SetPosition(targetUnit.position);
+    }
+
+    public void Release()
+    {
+        targetUnit = null;
+        gameObject.SetActive(false);
     }
 }
