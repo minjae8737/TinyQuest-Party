@@ -6,8 +6,7 @@ public class UnitSaveData
 {
     // UnitLevel
     public int Level;
-    public int Exp;
-    public int MaxExp;
+    public long Exp;
     
     // UnitEquipment
     public Dictionary<EquipPart, long> Equipments;

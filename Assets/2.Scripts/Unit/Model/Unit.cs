@@ -15,12 +15,14 @@ public class Unit
 
     public void Init(UnitSaveData saveData)
     {
+        Level.Init();
+        Stat.BaseStat = Data.BaseStat.Clone();
+        
         if (saveData != null)
         {
             ApplySaveData(saveData);
         }
 
-        Stat.BaseStat = Data.BaseStat.Clone();
         Stat.RefreshStat();
         Status.Init(Stat.MaxHp, Stat.MaxHp);
     }
@@ -31,7 +33,6 @@ public class Unit
         // UnitLevel
         Level.Level = saveData.Level;
         Level.Exp = saveData.Exp;
-        Level.MaxExp = saveData.MaxExp;
         // Equipment
         foreach (KeyValuePair<EquipPart, long> equipment in saveData.Equipments)
         {
@@ -125,7 +126,6 @@ public class Unit
         
         saveData.Level = Level.Level;
         saveData.Exp = Level.Exp;
-        saveData.MaxExp = Level.MaxExp;
 
         saveData.Equipments = new Dictionary<EquipPart, long>(Equipment.Equipments);
 

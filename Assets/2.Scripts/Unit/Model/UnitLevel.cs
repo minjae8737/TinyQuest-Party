@@ -5,8 +5,8 @@ using UnityEngine;
 public class UnitLevel
 {
     [SerializeField] private int level;
-    [SerializeField] private int exp;
-    [SerializeField] private int maxExp;
+    [SerializeField] private long exp;
+    [SerializeField] private long maxExp => ExpCalculator.Instance.GetMaxExp(level);
 
     public int Level
     {
@@ -14,20 +14,37 @@ public class UnitLevel
         set
         {
             level = value;
-            OnLevelChanged?.Invoke(level);
+            // OnLevelChanged?.Invoke(level);
         }
     }
 
-    public int Exp
+    public long Exp
     {
         get => exp;
         set { exp = value; }
     }
 
-    public int MaxExp
+    public long MaxExp => maxExp;
+
+    public void Init()
     {
-        get => maxExp;
-        set => maxExp = value;
+        level = 1;
+        exp = 0;
+    }
+
+    public void AddExp(long gainedExp)
+    {
+        long remainedExp = 0L;
+        long calMaxExp = maxExp;
+        exp += gainedExp;
+
+        if (exp >= calMaxExp)
+        {
+            remainedExp = exp - calMaxExp;
+            exp = remainedExp;
+            level++;
+            OnLevelChanged?.Invoke(level);
+        }
     }
 
     public event Action<int> OnLevelChanged;

@@ -2593,7 +2593,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Level.level
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Level.maxExp
