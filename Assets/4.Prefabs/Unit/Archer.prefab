@@ -226,9 +226,9 @@ MonoBehaviour:
       RecoveryTime: 0.31
       Cooldown: 0.91
       lastUseTime: 0
-    - SkillTargetType: 2
-      Damage: 10
-      TargetData: {fileID: 11400000, guid: edcbc2cc9f31a4f7f87f57446215c527, type: 2}
+    - SkillTargetType: 3
+      Damage: 5
+      TargetData: {fileID: 11400000, guid: eabc657382764407d993d7021673c0a8, type: 2}
       CastTime: 0.89
       RecoveryTime: 0.31
       Cooldown: 2

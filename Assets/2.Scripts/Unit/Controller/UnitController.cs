@@ -72,31 +72,30 @@ public class UnitController : MonoBehaviour
         view.SetOrderInLayer((int)(-transform.position.y * 100));
     }
 
-    public bool TryGetMoveTarget(out Vector2 nextPos)
+    public bool TryGetNextPos(int skillIdx, out Vector2 nextPos)
     {
         nextPos = Vector2.zero;
+        Skill skill = model.GetSkill(skillIdx);
 
         UnitController nearestEnemy = scanner.FindNearestEnemy();
         if (nearestEnemy == null) return false;
-        
-        nextPos = nearestEnemy.transform.position;
+
+        float skillRange = skill.TargetData.GetSkillDistance() * 0.9f; // 0.9f -> 여유롭게 스킬범위 안으로 진입
+        Vector2 dir = (transform.position - nearestEnemy.transform.position).normalized;
+
+        nextPos = nearestEnemy.transform.position + (Vector3)(dir * skillRange);
         return true;
     }
 
-    public bool CanAttack(int skillIdx, float curTime)
+    public bool CanAttack(int skillIdx)
     {
         if (!canMove || model.IsDeath) return false;
 
         Skill skill = model.GetSkill(skillIdx);
-        // if (skill == null)
-        // {
-        //     Debug.LogError("Skill is Null : " + transform.name);
-        //     return false;
-        // }
-        // if (!skill.CanUse(curTime)) return false;
 
         // search target
         targets = scanner.Scan(skill, isForwardLeft);
+        
         return targets.Count > 0;
     }
 

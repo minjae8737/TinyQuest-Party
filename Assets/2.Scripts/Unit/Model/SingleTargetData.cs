@@ -11,4 +11,9 @@ public class SingleTargetData : DirectTargetData
     {
         return IsInDist(myPos, targetPos, MaxDistance);
     }
+
+    public override float GetSkillDistance()
+    {
+        return MaxDistance;
+    }
 }

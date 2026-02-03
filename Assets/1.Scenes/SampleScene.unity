@@ -1373,7 +1373,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1012797688
 Transform:
   m_ObjectHideFlags: 0
@@ -1401,6 +1401,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 075f29b8106664c61b40b05f9256b11b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTr: {fileID: 4434145972631300683}
 --- !u!1 &1017051843
 GameObject:
   m_ObjectHideFlags: 0
@@ -2529,11 +2530,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3859792667930259690, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.09
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3859792667930259690, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -6.66
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3859792667930259690, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2580,10 +2581,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
-      propertyPath: model.Data
-      value: 
-      objectReference: {fileID: 11400000, guid: aa08e0878ed8440e980e278f38a87113, type: 2}
-    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.level
       value: 1
       objectReference: {fileID: 0}
@@ -2596,16 +2593,8 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
-      propertyPath: model.Level.level
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Level.maxExp
       value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
-      propertyPath: model.Skills.Array.size
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Stat.BaseStat.Atk
@@ -2621,10 +2610,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Stat.BaseStat.Speed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
-      propertyPath: model.Skills.Array.data[1].Damage
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
@@ -2652,10 +2637,6 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
-      propertyPath: model.Skills.Array.data[1].TargetData
-      value: 
-      objectReference: {fileID: 11400000, guid: edcbc2cc9f31a4f7f87f57446215c527, type: 2}
-    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Skills.Array.data[2].TargetData
       value: 
       objectReference: {fileID: 11400000, guid: eabc657382764407d993d7021673c0a8, type: 2}
@@ -2670,10 +2651,6 @@ PrefabInstance:
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Skills.Array.data[3].RecoveryTime
       value: 0.31
-      objectReference: {fileID: 0}
-    - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
-      propertyPath: model.Skills.Array.data[1].SkillTargetType
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4206549746841870089, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
       propertyPath: model.Skills.Array.data[2].SkillTargetType
@@ -2692,6 +2669,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+--- !u!4 &4434145972631300683 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3859792667930259690, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
+  m_PrefabInstance: {fileID: 4434145972631300673}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &5619468782143111680
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2761,10 +2743,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: model.Data
-      value: 
-      objectReference: {fileID: 11400000, guid: 8d158d519e8cf41f7afa3c61db40ebbc, type: 2}
-    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
       propertyPath: model.level
       value: 1
       objectReference: {fileID: 0}
@@ -2775,10 +2753,6 @@ PrefabInstance:
     - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
       propertyPath: model.speed
       value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: model.Level.level
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
       propertyPath: model.Level.maxExp

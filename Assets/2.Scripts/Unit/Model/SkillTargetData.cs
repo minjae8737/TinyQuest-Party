@@ -17,4 +17,6 @@ public abstract class SkillTargetData : ScriptableObject
         Vector2 diff = targetPos - myPos;
         return diff.sqrMagnitude <= targetDist * targetDist; // magnitude 보다 가벼움
     }
+
+    public abstract float GetSkillDistance();
 }

@@ -65,7 +65,7 @@ public class UnitManager : MonoBehaviour
         return unitController;
     }
 
-    public void Spawn(UnitName unitName)
+    public void Spawn(UnitName unitName , Vector2 spawnPos)
     {
         UnitController unitController = null;
         
@@ -90,6 +90,7 @@ public class UnitManager : MonoBehaviour
         
         // Unit 세팅
         unitController.Init();
+        unitController.transform.position = spawnPos;
         unitController.gameObject.SetActive(true);
     }
 

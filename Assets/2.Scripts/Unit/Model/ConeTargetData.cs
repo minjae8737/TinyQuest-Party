@@ -12,4 +12,9 @@ public class ConeTargetData : DirectTargetData
     {
         return IsInAngle(myPos, targetPos, forward, Angle) && IsInDist(myPos, targetPos, Length); 
     }
+
+    public override float GetSkillDistance()
+    {
+        return Length;
+    }
 }

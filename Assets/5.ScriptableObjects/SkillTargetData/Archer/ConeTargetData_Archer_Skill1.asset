@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b1efc9ee50fa466ba1407c82bfaf5a2, type: 3}
   m_Name: ConeTargetData_Archer_Skill1
   m_EditorClassIdentifier: 
-  Angle: 80
+  Angle: 120
   Length: 6

@@ -15,14 +15,14 @@ public class AutoCombat : MonoBehaviour
             int nextSkill = DecideNextSkill();
 
             //공격시도
-            if (controller.CanAttack(nextSkill, Time.time))
+            if (controller.CanAttack(nextSkill))
             {
                 controller.DoAttack(nextSkill, transform.position, Time.time);
             }
             //이동
             else
             {
-                if (controller.TryGetMoveTarget(out Vector2 nextPos))
+                if (controller.TryGetNextPos(nextSkill, out Vector2 nextPos))
                 {
                     controller.SetNextPos(nextPos);
                 }

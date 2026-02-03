@@ -24,4 +24,9 @@ public class LineTargetData : SkillTargetData
         Vector2 toTarget = targetPos - myPos;
         return Vector2.SignedAngle(forward, toTarget);
     }
+
+    public override float GetSkillDistance()
+    {
+        return Width;
+    }
 }
