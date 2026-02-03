@@ -13,6 +13,7 @@ public class UnitController : MonoBehaviour
 
     [SerializeField] private TargetScanner scanner;
     [SerializeField] private List<UnitController> targets;
+    private Vector2? nextPos;
 
     public Unit Model => model;
 
@@ -41,6 +42,19 @@ public class UnitController : MonoBehaviour
         view.OnDeathFinished -= HandleDeathFinished;
     }
 
+    private void Update()
+    {
+        if (nextPos.HasValue)
+        {
+            DoMove(nextPos.Value);
+        }
+    }
+    
+    public void SetNextPos(Vector2 pos)
+    {
+        nextPos = pos;
+    }
+
     public void DoMove(Vector2 nextPos)
     {
         if (!canMove || model.IsDeath) return;
@@ -58,23 +72,46 @@ public class UnitController : MonoBehaviour
         view.SetOrderInLayer((int)(-transform.position.y * 100));
     }
 
-    public void DoAttack(int skillIdx, Vector2 curPos, float curTime)
+    public bool TryGetMoveTarget(out Vector2 nextPos)
     {
-        if (!canMove || model.IsDeath) return;
+        nextPos = Vector2.zero;
+
+        UnitController nearestEnemy = scanner.FindNearestEnemy();
+        if (nearestEnemy == null) return false;
+        
+        nextPos = nearestEnemy.transform.position;
+        return true;
+    }
+
+    public bool CanAttack(int skillIdx, float curTime)
+    {
+        if (!canMove || model.IsDeath) return false;
 
         Skill skill = model.GetSkill(skillIdx);
-        if (skill == null)
-        {
-            Debug.LogError("Skill is Null : " + transform.name);
-            return;
-        }
+        // if (skill == null)
+        // {
+        //     Debug.LogError("Skill is Null : " + transform.name);
+        //     return false;
+        // }
+        // if (!skill.CanUse(curTime)) return false;
 
         // search target
         targets = scanner.Scan(skill, isForwardLeft);
+        return targets.Count > 0;
+    }
 
-        if (targets.Count <= 0) return; // TODO 타겟이 없다면 취소 targets 검증방법 수정
-        if (skill == null || !skill.CanUse(curTime)) return; // 쿨타임중이라면 취소
+    public bool CanUseSkill(int skillIdx, float curTime)
+    {
+        Skill skill = model.GetSkill(skillIdx);
+        if (skill == null) return false;
+        
+        return skill.CanUse(curTime);
+    }
 
+    public void DoAttack(int skillIdx, Vector2 curPos, float curTime)
+    {
+        Skill skill = model.GetSkill(skillIdx);
+        
         skill.Use(curTime);
         view.PlayAttack(skillIdx);
         LookAt(curPos, targets[0].transform.position);
@@ -93,6 +130,8 @@ public class UnitController : MonoBehaviour
             target.model.TakeDamage(damage);
         }
 
+        targets = null;
+        
         yield return new WaitForSeconds(skill.RecoveryTime); // 후딜
         canMove = true;
     }

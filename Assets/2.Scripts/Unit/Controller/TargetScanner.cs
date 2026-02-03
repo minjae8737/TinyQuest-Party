@@ -51,6 +51,18 @@ public class TargetScanner : MonoBehaviour
         return targets;
     }
 
+    public UnitController FindNearestEnemy()
+    {
+        int count = Physics2D.OverlapCircle(transform.position, MAX_SCAN_RADIUS, filter, enemies);
+
+        Collider2D nearestEnemy = FindNearestEnemy(count);
+        if (nearestEnemy == null) return null;
+
+        if (nearestEnemy.TryGetComponent<UnitController>(out var controller)) return controller;
+
+        return null;
+    }
+
     private Collider2D FindNearestEnemy(int count)
     {
         // sqrMagnitude 로 비교하기위한 제곱
