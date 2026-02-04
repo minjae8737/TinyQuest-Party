@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe988da49a5334320aff7fd75a78da07, type: 3}
-  m_Name: Unit_Archer
+  m_Name: Unit_Knight
   m_EditorClassIdentifier: 
-  UnitName: 0
+  UnitName: 2
   BaseStat:
     maxHp: 20
-    atk: 3
-    def: 1
-    speed: 5
+    atk: 6
+    def: 3
+    speed: 4

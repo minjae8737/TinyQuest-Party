@@ -9,12 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe988da49a5334320aff7fd75a78da07, type: 3}
-  m_Name: Unit_Archer
+  m_Script: {fileID: 11500000, guid: 4b1efc9ee50fa466ba1407c82bfaf5a2, type: 3}
+  m_Name: ConeTargetData_Kinght_Skill1
   m_EditorClassIdentifier: 
-  UnitName: 0
-  BaseStat:
-    maxHp: 20
-    atk: 3
-    def: 1
-    speed: 5
+  Angle: 100
+  Length: 1.5

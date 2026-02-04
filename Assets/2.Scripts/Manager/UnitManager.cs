@@ -5,7 +5,10 @@ using UnityEngine;
 public enum UnitName
 {
     Archer,
-    Armored_Orc
+    Armored_Orc,
+    Knight,
+    Swordsman,
+    Knight_Templar,
 }
 
 [Serializable]
