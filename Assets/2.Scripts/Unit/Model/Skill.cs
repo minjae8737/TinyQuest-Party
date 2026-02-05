@@ -23,6 +23,7 @@ public class Skill
     public SkillTargetType SkillTargetType;
     public float Damage;
     [SerializeReference] public SkillTargetData TargetData;
+    public AnimationClip effectClip;
 
     public float CastTime; // 선딜
     public float RecoveryTime; // 후딜

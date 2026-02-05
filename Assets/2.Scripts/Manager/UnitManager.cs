@@ -9,6 +9,9 @@ public enum UnitName
     Knight,
     Swordsman,
     Knight_Templar,
+    Armored_Axeman,
+    Soldier,
+    Wizard
 }
 
 [Serializable]
@@ -18,8 +21,10 @@ public class UnitManager : MonoBehaviour
     
     private Dictionary<UnitName, GameObject> unitPrefabDic;
     private Dictionary<UnitName, List<UnitController>> unitPoolsDic;
+    private Stack<SkillEffect> skillEffects;
 
     [SerializeField] private List<GameObject> unitPrefabs;
+    [SerializeField] private GameObject skillEffectPrefab;
 
     private void Awake()
     {
@@ -30,6 +35,7 @@ public class UnitManager : MonoBehaviour
 
         unitPrefabDic = new Dictionary<UnitName, GameObject>();
         unitPoolsDic = new Dictionary<UnitName, List<UnitController>>();
+        skillEffects = new Stack<SkillEffect>();
 
         foreach (GameObject prefab in unitPrefabs)
         {
@@ -100,5 +106,25 @@ public class UnitManager : MonoBehaviour
     public void Despawn(UnitController unitController)
     {
         unitController.gameObject.SetActive(false);
+    }
+
+    public SkillEffect SpawnSkillEffect(Vector2 targetPos)
+    {
+        if (!skillEffects.TryPop(out SkillEffect skillEffect))
+        {
+            GameObject skillEffectObj = Instantiate(skillEffectPrefab);
+            skillEffect = skillEffectObj.GetComponent<SkillEffect>();
+        }
+
+        skillEffect.Init();
+        skillEffect.transform.position = targetPos;
+        skillEffect.gameObject.SetActive(true);
+        return skillEffect;
+    }
+    
+    public void DespawnSkillEffect(SkillEffect skillEffect)
+    {
+        skillEffect.gameObject.SetActive(false);
+        skillEffects.Push(skillEffect);
     }
 }

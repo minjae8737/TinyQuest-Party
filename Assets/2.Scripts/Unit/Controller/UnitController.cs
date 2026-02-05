@@ -121,6 +121,13 @@ public class UnitController : MonoBehaviour
     {
         canMove = false;
         yield return new WaitForSeconds(skill.CastTime); // 선딜
+
+        if (skill.effectClip != null)
+        {
+            Vector2 targetPos = scanner.skillTargetPos;
+            SkillEffect skillEffect = UnitManager.Instance.SpawnSkillEffect(targetPos);
+            skillEffect.Play(skill.effectClip);
+        }
         
         // 공격 데미지 주는 시점 (공격력 + 스킬 데미지)
         int damage = (int)Math.Round(model.Stat.Atk + skill.Damage);

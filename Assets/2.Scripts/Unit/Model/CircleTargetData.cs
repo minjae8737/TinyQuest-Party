@@ -8,7 +8,8 @@ public class CircleTargetData : SkillTargetData
 
     public float MaxDistance; // 최대 사거리
     public float Radius;      // 스킬 범위
-
+    public bool IsTargetSelf => MaxDistance == 0; // MaxDistance가 0일시 시전 캐릭터 중심범위로 스킬 시전
+    
     public bool IsInMaxDistance(Vector2 myPos, Vector2 centerPos)
     {
         float distance = Mathf.Max(MaxDistance, Radius);

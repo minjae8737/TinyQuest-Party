@@ -10,6 +10,7 @@ public class TargetScanner : MonoBehaviour
     private Collider2D[] enemies = new Collider2D[30];
     private ContactFilter2D filter;
     private Vector2 forward;
+    public Vector2 skillTargetPos;
 
     private List<UnitController> targets;
 
@@ -127,13 +128,19 @@ public class TargetScanner : MonoBehaviour
         Vector2 myPos = transform.position;
         CircleTargetData skillTargetData = (CircleTargetData)skill.TargetData;
         debugSkill = skill;
+        
         // 가장 가까운 대상 탐색
         Collider2D nearestEnemy = FindNearestEnemy(count);
         if (nearestEnemy == null) return;
 
         Vector2 targetPos = nearestEnemy.transform.position;
-        if (!skillTargetData.IsInMaxDistance(myPos, nearestEnemy.transform.position)) return;
-        debugTargetPos = targetPos; // Gizmo용 
+        if (!skillTargetData.IsInMaxDistance(myPos, targetPos)) return;
+        if(skillTargetData.IsTargetSelf)
+        {
+            targetPos = myPos;
+        }
+        
+        skillTargetPos = targetPos; // Gizmo용 
 
         // target 중심으로 재탐색
         int enemyCounts = Physics2D.OverlapCircle(targetPos, MAX_SCAN_RADIUS, filter, enemies);
@@ -163,7 +170,7 @@ public class TargetScanner : MonoBehaviour
 
         Vector2 targetPos = nearestEnemy.transform.position;
         if (!skillTargetData.IsInMaxDistance(myPos, targetPos)) return;
-        debugTargetPos = targetPos; // Gizmo용 
+        skillTargetPos = targetPos; // Gizmo용 
 
         Vector2 boxArea = skillTargetData.GetBoxArea();
         float angle = skillTargetData.GetAngle(myPos, targetPos, forward);
@@ -193,7 +200,7 @@ public class TargetScanner : MonoBehaviour
     /// </summary>
     private Skill debugSkill;
 
-    private Vector2 debugTargetPos;
+    private Vector2 debugTargetPos => skillTargetPos;
     private Vector2 debugForward => forward;
 
     void OnDrawGizmosSelected()
