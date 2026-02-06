@@ -115,8 +115,7 @@ public class UnitManager : MonoBehaviour
             GameObject skillEffectObj = Instantiate(skillEffectPrefab);
             skillEffect = skillEffectObj.GetComponent<SkillEffect>();
         }
-
-        skillEffect.Init();
+        
         skillEffect.transform.position = targetPos;
         skillEffect.gameObject.SetActive(true);
         return skillEffect;

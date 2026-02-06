@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7945769264497344283}
   - component: {fileID: 1777428347570227541}
   - component: {fileID: 8140671834361003141}
+  - component: {fileID: 9172261615034863599}
   m_Layer: 0
   m_Name: SkillEffect
   m_TagString: Untagged
@@ -125,3 +126,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1777428347570227541}
   baseController: {fileID: 9100000, guid: 12e960f3fde314c16ab8abb7cead60bb, type: 2}
+--- !u!114 &9172261615034863599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6753868840067501044}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7273e24a2d3ab4dbfaaa0c134f4de5e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

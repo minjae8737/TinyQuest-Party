@@ -2604,9 +2604,25 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8272968197142894835, guid: 0bdfa319dce974b4caeee7f04ce3baa0, type: 3}
+      propertyPath: model.Skills.Array.data[1].speed
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272968197142894835, guid: 0bdfa319dce974b4caeee7f04ce3baa0, type: 3}
+      propertyPath: model.Skills.Array.data[1].StartType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272968197142894835, guid: 0bdfa319dce974b4caeee7f04ce3baa0, type: 3}
       propertyPath: model.Skills.Array.data[1].TargetData
       value: 
       objectReference: {fileID: 11400000, guid: 3617706e789864a0384395bc35a03762, type: 2}
+    - target: {fileID: 8272968197142894835, guid: 0bdfa319dce974b4caeee7f04ce3baa0, type: 3}
+      propertyPath: model.Skills.Array.data[0].IsProjectile
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8272968197142894835, guid: 0bdfa319dce974b4caeee7f04ce3baa0, type: 3}
+      propertyPath: model.Skills.Array.data[1].IsProjectile
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8272968197142894835, guid: 0bdfa319dce974b4caeee7f04ce3baa0, type: 3}
       propertyPath: model.Skills.Array.data[1].SkillTargetType
       value: 1

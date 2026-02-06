@@ -17,14 +17,23 @@ public enum SkillType
     Skill3
 }
 
+public enum ProjectileStartType
+{
+    Target, Caster
+}
+
 [Serializable]
 public class Skill
 {
     public SkillTargetType SkillTargetType;
-    public float Damage;
-    [SerializeReference] public SkillTargetData TargetData;
+    [SerializeField] public SkillTargetData TargetData;
     public AnimationClip effectClip;
 
+    public ProjectileStartType StartType;
+    public bool IsProjectile; // 발사체인지
+    public float speed;
+
+    public float Damage;
     public float CastTime; // 선딜
     public float RecoveryTime; // 후딜
     public float Cooldown; // 재사용 대기
