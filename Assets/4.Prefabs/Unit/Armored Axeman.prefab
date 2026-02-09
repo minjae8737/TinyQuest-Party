@@ -181,6 +181,7 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 256
+  skillTargetPos: {x: 0, y: 0}
 --- !u!114 &2424977146419559490
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,23 +220,38 @@ MonoBehaviour:
       hp: 0
       isDeath: 0
     Skills:
-    - SkillTargetType: 0
-      Damage: 3
+    - Type: 0
+      TargetType: 0
       TargetData: {fileID: 11400000, guid: 193a34b6e89c748a2b4a6cef46c72fff, type: 2}
+      StartType: 0
+      DeliveryType: 0
+      effectClip: {fileID: 0}
+      speed: 0
+      Damage: 3
       CastTime: 0.3
       RecoveryTime: 0.59
       Cooldown: 1
       lastUseTime: 0
-    - SkillTargetType: 1
-      Damage: 6
+    - Type: 0
+      TargetType: 1
       TargetData: {fileID: 11400000, guid: b0093aefe65e448b9b49e368e07d80d1, type: 2}
+      StartType: 0
+      DeliveryType: 0
+      effectClip: {fileID: 0}
+      speed: 0
+      Damage: 6
       CastTime: 0.4
       RecoveryTime: 0.49
       Cooldown: 3
       lastUseTime: 0
-    - SkillTargetType: 3
-      Damage: 12
+    - Type: 0
+      TargetType: 0
       TargetData: {fileID: 11400000, guid: 0967485a2cd294820be5049353838816, type: 2}
+      StartType: 0
+      DeliveryType: 0
+      effectClip: {fileID: 0}
+      speed: 0
+      Damage: 12
       CastTime: 0.7
       RecoveryTime: 0.49
       Cooldown: 5
@@ -243,6 +259,7 @@ MonoBehaviour:
   view: {fileID: 3708519828738959509}
   scanner: {fileID: 6917928476572861820}
   targets: []
+  col: {fileID: 120254961417211832}
 --- !u!114 &3708519828738959509
 MonoBehaviour:
   m_ObjectHideFlags: 0

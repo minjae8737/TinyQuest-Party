@@ -15,7 +15,7 @@ public class AutoCombat : MonoBehaviour
             int nextSkill = DecideNextSkill();
 
             //공격시도
-            if (controller.CanAttack(nextSkill))
+            if (nextSkill != -1 && controller.CanAttack(nextSkill))
             {
                 controller.DoAttack(nextSkill, transform.position, Time.time);
             }
@@ -34,19 +34,23 @@ public class AutoCombat : MonoBehaviour
 
     private int DecideNextSkill()
     {
-        int nextSkill = 0;
+        int nextSkill = -1;
 
-        if (controller.CanUseSkill((int)SkillType.Skill3, Time.time))
+        if (controller.CanUseSkill((int)SkillSlot.Skill3, Time.time))
         {
-            nextSkill = (int)SkillType.Skill3;
+            nextSkill = (int)SkillSlot.Skill3;
         }
-        else if (controller.CanUseSkill((int)SkillType.Skill2, Time.time))
+        else if (controller.CanUseSkill((int)SkillSlot.Skill2, Time.time))
         {
-            nextSkill = (int)SkillType.Skill2;
+            nextSkill = (int)SkillSlot.Skill2;
         }
-        else if (controller.CanUseSkill((int)SkillType.Skill1, Time.time))
+        else if (controller.CanUseSkill((int)SkillSlot.Skill1, Time.time))
         {
-            nextSkill = (int)SkillType.Skill1;
+            nextSkill = (int)SkillSlot.Skill1;
+        }
+        else if (controller.CanUseSkill((int)SkillSlot.Normal, Time.time))
+        {
+            nextSkill = (int)SkillSlot.Normal;
         }
 
         return nextSkill;

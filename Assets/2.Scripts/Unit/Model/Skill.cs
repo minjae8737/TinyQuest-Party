@@ -1,6 +1,11 @@
 using System;
 using UnityEngine;
 
+public enum SkillType
+{
+    Damage, Buffs
+}
+
 public enum SkillTargetType
 {
     Single,
@@ -9,28 +14,36 @@ public enum SkillTargetType
     Line
 }
 
-public enum SkillType
-{
-    BasicAttack,
-    Skill1,
-    Skill2,
-    Skill3
-}
-
 public enum ProjectileStartType
 {
     Target, Caster
 }
 
+public enum SkillDeliveryType
+{
+    Instant,    // 즉발
+    Projectile, // 발차세
+}
+
+public enum SkillSlot
+{
+    Normal,
+    Skill1,
+    Skill2,
+    Skill3
+}
+
 [Serializable]
 public class Skill
 {
-    public SkillTargetType SkillTargetType;
-    [SerializeField] public SkillTargetData TargetData;
+    public SkillType Type;
+    public SkillTargetType TargetType;
+    public SkillTargetData TargetData;
+    public ProjectileStartType StartType;
+    public SkillDeliveryType DeliveryType;
+    
     public AnimationClip effectClip;
 
-    public ProjectileStartType StartType;
-    public bool IsProjectile; // 발사체인지
     public float speed;
 
     public float Damage;

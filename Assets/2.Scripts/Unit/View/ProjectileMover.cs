@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class ProjectileMover : MonoBehaviour
@@ -5,18 +6,21 @@ public class ProjectileMover : MonoBehaviour
     private Vector2? targetPos;
     private float speed;
 
-    public void Init()
+    private Action OnArrived;
+
+    private void OnDisable()
     {
         transform.rotation = Quaternion.Euler(Vector3.zero);
         targetPos = null;
         this.speed = 0;
     }
-    
-    public void Init(Vector2 target, float speed)
+
+    public void Init(Vector2 target, float speed, Action action = null)
     {
         transform.rotation = Quaternion.Euler(Vector3.zero);
         targetPos = target;
         this.speed = speed;
+        OnArrived = action;
         Rotate();
     }
 
@@ -39,7 +43,25 @@ public class ProjectileMover : MonoBehaviour
 
     private void DoMove()
     {
-        Vector3 myPos = transform.position;
-        transform.position = Vector2.MoveTowards(myPos, targetPos.Value, Time.deltaTime * speed);
+        Vector2 myPos = transform.position;
+        Vector2 nextPos = Vector2.MoveTowards(myPos, targetPos.Value, Time.deltaTime * speed);
+
+        transform.position = nextPos;
+        
+        // targetPos에 도착
+        if ((nextPos - targetPos.Value).sqrMagnitude <  0.001f)
+        {
+            OnArrived?.Invoke();
+            targetPos = null;
+            OnArrived = null;
+        }
+    }
+
+    public float GetArrivedTime()
+    {
+        if (!targetPos.HasValue) return 0f;
+        float distance = Vector2.Distance(transform.position, targetPos.Value);
+
+        return distance / speed; 
     }
 }

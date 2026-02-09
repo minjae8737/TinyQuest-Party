@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class UnitController : MonoBehaviour
@@ -15,6 +16,8 @@ public class UnitController : MonoBehaviour
     [SerializeField] private List<UnitController> targets;
     private Vector2? nextPos;
 
+    [SerializeField] private CapsuleCollider2D col;
+
     public Unit Model => model;
 
     private void Start()
@@ -28,6 +31,7 @@ public class UnitController : MonoBehaviour
         view.Init();
         model.Init(saveData);
         canMove = true;
+        col.enabled = true;
     }
 
     private void OnEnable()
@@ -75,6 +79,7 @@ public class UnitController : MonoBehaviour
     public bool TryGetNextPos(int skillIdx, out Vector2 nextPos)
     {
         nextPos = Vector2.zero;
+        skillIdx = Math.Max(skillIdx, 0);
         Skill skill = model.GetSkill(skillIdx);
 
         UnitController nearestEnemy = scanner.FindNearestEnemy();
@@ -94,7 +99,7 @@ public class UnitController : MonoBehaviour
         Skill skill = model.GetSkill(skillIdx);
 
         // search target
-        targets = scanner.Scan(skill, isForwardLeft);
+        targets = scanner.Scan(skill, transform.position, isForwardLeft);
         
         return targets.Count > 0;
     }
@@ -122,19 +127,41 @@ public class UnitController : MonoBehaviour
         canMove = false;
         yield return new WaitForSeconds(skill.CastTime); // 선딜
         
+        // 이펙트 관련 설정
         if (skill.effectClip != null)
         {
             Vector2 skillStartPos = (skill.StartType == ProjectileStartType.Caster) ? transform.position : scanner.skillTargetPos;
         
             SkillEffect skillEffect = UnitManager.Instance.SpawnSkillEffect(skillStartPos);
-            skillEffect.Play(skill.effectClip);
-
-            if (skill.IsProjectile && skillEffect.TryGetComponent<ProjectileMover>(out var mover))
+            
+            float arrivedTime = 0f;
+            
+            if (skill.DeliveryType == SkillDeliveryType.Projectile && skillEffect.TryGetComponent<ProjectileMover>(out var mover))
             {
-                mover.Init(scanner.skillTargetPos, skill.speed);
+                mover.Init(scanner.skillTargetPos, skill.speed, () =>
+                    {
+                        // 발사체 데미지 적용
+                        ApplyDamage(skill);
+                    }
+                );
+                arrivedTime = mover.GetArrivedTime();
             }
+
+            skillEffect.Play(skill.effectClip, arrivedTime);
         }
-        
+
+        if (skill.DeliveryType == SkillDeliveryType.Instant)
+        {
+            // 즉시 데미지 적용
+            ApplyDamage(skill);
+        }
+
+        yield return new WaitForSeconds(skill.RecoveryTime); // 후딜
+        canMove = true;
+    }
+
+    private void ApplyDamage(Skill skill)
+    {
         // 공격 데미지 주는 시점 (공격력 + 스킬 데미지)
         int damage = (int)Math.Round(model.Stat.Atk + skill.Damage);
         foreach (UnitController target in targets)
@@ -143,9 +170,6 @@ public class UnitController : MonoBehaviour
         }
 
         targets = null;
-        
-        yield return new WaitForSeconds(skill.RecoveryTime); // 후딜
-        canMove = true;
     }
 
     private void LookAt(Vector2 curPos, Vector2 nextPos)
@@ -163,7 +187,11 @@ public class UnitController : MonoBehaviour
         if (model.IsDeath) return;
         
         view.RefreshHp(maxHp, hp);
-        if (hp <= 0) view.PlayDeath();
+        if (hp <= 0)
+        {
+            col.enabled = false;
+            view.PlayDeath();
+        }
     }
 
     public void HandleDeathFinished()

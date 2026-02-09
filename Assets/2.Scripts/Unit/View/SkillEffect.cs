@@ -15,10 +15,14 @@ public class SkillEffect : MonoBehaviour
         aoc = new AnimatorOverrideController(baseController);
     }
 
-    public void Play(AnimationClip clip)
+    public void Play(AnimationClip clip, float duration)
     {
         aoc[dummyClipName] = clip;
         animator.runtimeAnimatorController = aoc;
+
+        // 도착시간 duration 에 맞춰서 animator speed 조절
+        animator.speed = duration > 0f ? clip.length / duration : 1f;
+        
         animator.Play(stateName, 0, 0f);
     }
 

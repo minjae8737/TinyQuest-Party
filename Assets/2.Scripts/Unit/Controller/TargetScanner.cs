@@ -25,27 +25,27 @@ public class TargetScanner : MonoBehaviour
         targets = new List<UnitController>();
     }
 
-    public List<UnitController> Scan(Skill skill, bool isForwardLeft)
+    public List<UnitController> Scan(Skill skill, Vector2 casterPos, bool isForwardLeft)
     {
         targets.Clear();
         forward = isForwardLeft ? Vector2.left : Vector2.right;
 
         // 캐릭터 주변 MAX_SCAN_RADIUS 안 대상 타깃
-        int count = Physics2D.OverlapCircle(transform.position, MAX_SCAN_RADIUS, filter, enemies);
-        
-        switch (skill.SkillTargetType)
+        int count = Physics2D.OverlapCircle(casterPos, MAX_SCAN_RADIUS, filter, enemies);
+
+        switch (skill.TargetType)
         {
             case SkillTargetType.Single:
-                SelectNearestTarget(count, forward, skill);
+                SelectNearestTarget(count, skill, casterPos, forward);
                 break;
             case SkillTargetType.Circle:
-                SelectCircleTarget(count, forward, skill);
+                SelectCircleTarget(count, skill, casterPos, forward);
                 break;
             case SkillTargetType.Cone:
-                SelectConeTarget(count, forward, skill);
+                SelectConeTarget(count, skill, casterPos, forward);
                 break;
             case SkillTargetType.Line:
-                SelectLineTarget(count, forward, skill);
+                SelectLineTarget(count, skill, casterPos, forward);
                 break;
         }
 
@@ -88,13 +88,13 @@ public class TargetScanner : MonoBehaviour
         return nearestEnemy;
     }
 
-    public void SelectNearestTarget(int count, Vector2 forward, Skill skill)
+    public void SelectNearestTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
     {
-        Vector2 myPos = transform.position;
         SingleTargetData skillTargetData = (SingleTargetData)skill.TargetData;
         debugSkill = skill;
+        
         Collider2D nearestEnemy = FindNearestEnemy(count);
-        if (nearestEnemy == null || !skillTargetData.IsInRange(myPos, nearestEnemy.transform.position, forward)) return;
+        if (nearestEnemy == null || !skillTargetData.IsInRange(casterPos, nearestEnemy.transform.position, forward)) return;
 
         if (nearestEnemy != null && nearestEnemy.TryGetComponent<UnitController>(out var controller))
         {
@@ -102,9 +102,8 @@ public class TargetScanner : MonoBehaviour
         }
     }
 
-    public void SelectConeTarget(int count, Vector2 forward, Skill skill)
+    public void SelectConeTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
     {
-        Vector2 myPos = transform.position;
         ConeTargetData skillTargetData = (ConeTargetData)skill.TargetData;
         debugSkill = skill;
 
@@ -113,7 +112,7 @@ public class TargetScanner : MonoBehaviour
             Collider2D enemy = enemies[i];
             if (enemy == null) continue;
 
-            if (skillTargetData.IsInRange(myPos, enemy.transform.position, forward))
+            if (skillTargetData.IsInRange(casterPos, enemy.transform.position, forward))
             {
                 if (enemy.TryGetComponent<UnitController>(out var controller))
                 {
@@ -123,22 +122,17 @@ public class TargetScanner : MonoBehaviour
         }
     }
 
-    public void SelectCircleTarget(int count, Vector2 forward, Skill skill)
+    public void SelectCircleTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
     {
-        Vector2 myPos = transform.position;
         CircleTargetData skillTargetData = (CircleTargetData)skill.TargetData;
         debugSkill = skill;
-        
+
         // 가장 가까운 대상 탐색
         Collider2D nearestEnemy = FindNearestEnemy(count);
         if (nearestEnemy == null) return;
 
         Vector2 targetPos = nearestEnemy.transform.position;
-        if (!skillTargetData.IsInMaxDistance(myPos, targetPos)) return;
-        if(skillTargetData.IsTargetSelf)
-        {
-            targetPos = myPos;
-        }
+        if (!skillTargetData.IsInMaxDistance(casterPos, targetPos)) return;
         
         skillTargetPos = targetPos; // Gizmo용 
 
@@ -158,9 +152,8 @@ public class TargetScanner : MonoBehaviour
         }
     }
 
-    public void SelectLineTarget(int count, Vector2 forward, Skill skill)
+    public void SelectLineTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
     {
-        Vector2 myPos = transform.position;
         LineTargetData skillTargetData = (LineTargetData)skill.TargetData;
         debugSkill = skill;
 
@@ -169,15 +162,15 @@ public class TargetScanner : MonoBehaviour
         if (nearestEnemy == null) return;
 
         Vector2 targetPos = nearestEnemy.transform.position;
-        if (!skillTargetData.IsInMaxDistance(myPos, targetPos)) return;
+        if (!skillTargetData.IsInMaxDistance(casterPos, targetPos)) return;
         skillTargetPos = targetPos; // Gizmo용 
 
         Vector2 boxArea = skillTargetData.GetBoxArea();
-        float angle = skillTargetData.GetAngle(myPos, targetPos, forward);
+        float angle = skillTargetData.GetAngle(casterPos, targetPos, forward);
 
         // 스킬 범위 중심으로 재탐색
-        Vector2 toTargetDir = (targetPos - myPos).normalized;
-        Vector2 point = myPos + toTargetDir * (boxArea.x * 0.5f);
+        Vector2 toTargetDir = (targetPos - casterPos).normalized;
+        Vector2 point = casterPos + toTargetDir * (boxArea.x * 0.5f);
 
         int enemyCounts = Physics2D.OverlapBox(point, boxArea, angle, filter, enemies);
 
@@ -270,10 +263,10 @@ public class TargetScanner : MonoBehaviour
     {
         Vector2 boxArea = data.GetBoxArea();
         Vector2 halfSize = boxArea * 0.5f;
-        
+
         Vector2 toTargetDir = (debugTargetPos - myPos).normalized;
         Vector2 point = myPos + toTargetDir * (boxArea.x * 0.5f);
-        
+
         // 박스 꼭짓점
         Vector2[] vertexs = new Vector2[4]
         {

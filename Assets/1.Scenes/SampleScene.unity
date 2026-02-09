@@ -2604,28 +2604,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8272968197142894835, guid: 0bdfa319dce974b4caeee7f04ce3baa0, type: 3}
-      propertyPath: model.Skills.Array.data[1].speed
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8272968197142894835, guid: 0bdfa319dce974b4caeee7f04ce3baa0, type: 3}
-      propertyPath: model.Skills.Array.data[1].StartType
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8272968197142894835, guid: 0bdfa319dce974b4caeee7f04ce3baa0, type: 3}
-      propertyPath: model.Skills.Array.data[1].TargetData
-      value: 
-      objectReference: {fileID: 11400000, guid: 3617706e789864a0384395bc35a03762, type: 2}
-    - target: {fileID: 8272968197142894835, guid: 0bdfa319dce974b4caeee7f04ce3baa0, type: 3}
-      propertyPath: model.Skills.Array.data[0].IsProjectile
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8272968197142894835, guid: 0bdfa319dce974b4caeee7f04ce3baa0, type: 3}
-      propertyPath: model.Skills.Array.data[1].IsProjectile
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8272968197142894835, guid: 0bdfa319dce974b4caeee7f04ce3baa0, type: 3}
-      propertyPath: model.Skills.Array.data[1].SkillTargetType
-      value: 1
+      propertyPath: model.Skills.Array.data[1].Cooldown
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8915359862679647117, guid: 0bdfa319dce974b4caeee7f04ce3baa0, type: 3}
       propertyPath: m_Name
@@ -2692,54 +2672,6 @@ PrefabInstance:
     - target: {fileID: 2678067271735477746, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
       propertyPath: m_Name
       value: Armored Orc
-      objectReference: {fileID: 0}
-    - target: {fileID: 2678067271735477746, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: model.hp
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: model.atk
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: model.def
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: model.level
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: model.maxHp
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: model.speed
-      value: 4
-      objectReference: {fileID: 0}
-    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: model.Level.maxExp
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: model.Stat.BaseStat.Atk
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: model.Stat.BaseStat.Def
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: model.Stat.BaseStat.MaxHp
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6689943229938590148, guid: 3a6c8a428afc14d21a01512153a42d61, type: 3}
-      propertyPath: model.Stat.BaseStat.Speed
-      value: 4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
