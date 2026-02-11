@@ -36,12 +36,4 @@ public abstract class SkillTargetScanner : ScriptableObject
         
         return nearestEnemy;
     }
-
-    // protected void InitContactFilter()
-    // {
-    //     contactFilter = new ContactFilter2D();
-    //     contactFilter.SetLayerMask(enemyLayer);
-    //     contactFilter.useLayerMask = true;
-    //     contactFilter.useTriggers = false;
-    // }
 }

@@ -18,12 +18,6 @@ public enum SkillTargetType
     Line
 }
 
-public enum ProjectileStartType
-{
-    Target,
-    Caster
-}
-
 public enum SkillDeliveryType
 {
     Instant, // 즉발
@@ -68,9 +62,6 @@ public class Skill
 
     public void Use(UnitController caster)
     {
-        // 타겟 스캔
-        // List<UnitController> targets = scanner.Scan(caster, Data);
-
         // 이펙트, 발사체 세팅
         if (Data.effectClip != null)
         {

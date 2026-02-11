@@ -26,9 +26,7 @@ public class CircleTargetScanner : SkillTargetScanner
         for (int i = 0; i < enemyCounts; i++)
         {
             Collider2D enemy = enemies[i];
-
-            // if (!targetData.IsInMaxRange(targetPos, enemy.transform.position)) continue;
-
+            
             if (enemy.TryGetComponent<UnitController>(out var controller))
             {
                 targets.Add(controller);

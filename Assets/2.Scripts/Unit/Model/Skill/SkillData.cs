@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using Unity.Collections;
 using UnityEngine;
 
 public class SkillData : ScriptableObject
@@ -7,7 +6,6 @@ public class SkillData : ScriptableObject
     public SkillType Type;
     public SkillTargetType TargetType;
     public SkillTargetData TargetData;
-    public ProjectileStartType StartType;
     public SkillDeliveryType DeliveryType;
     
     public AnimationClip effectClip;

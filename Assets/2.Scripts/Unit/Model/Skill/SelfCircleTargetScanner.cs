@@ -12,8 +12,6 @@ public class SelfCircleTargetScanner : SkillTargetScanner
 
         // target 중심으로 재탐색
         int enemyCounts = Physics2D.OverlapCircle(casterPos, targetData.Radius, contactFilter, enemies);
-
-        Debug.Log("SelfCircleTarget enemyCounts : " + enemyCounts);
         
         for (int i = 0; i < enemyCounts; i++)
         {
