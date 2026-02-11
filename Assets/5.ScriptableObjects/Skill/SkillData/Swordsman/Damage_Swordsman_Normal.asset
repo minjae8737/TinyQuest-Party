@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2ab7197640044974ba5d0670e72f596, type: 3}
+  m_Name: Damage_Swordsman_Normal
+  m_EditorClassIdentifier: 
+  Type: 0
+  TargetType: 0
+  TargetData: {fileID: 11400000, guid: 7b19b13c752a4495f85c382c928e9fa7, type: 2}
+  StartType: 0
+  DeliveryType: 0
+  effectClip: {fileID: 0}
+  CastTime: 0.3
+  RecoveryTime: 0.39
+  Cooldown: 0.8
+  lastUseTime: 0
+  Damage: 3

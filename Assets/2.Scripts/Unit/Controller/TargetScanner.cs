@@ -33,7 +33,7 @@ public class TargetScanner : MonoBehaviour
         // 캐릭터 주변 MAX_SCAN_RADIUS 안 대상 타깃
         int count = Physics2D.OverlapCircle(casterPos, MAX_SCAN_RADIUS, filter, enemies);
 
-        switch (skill.TargetType)
+        switch (skill.Data.TargetType)
         {
             case SkillTargetType.Single:
                 SelectNearestTarget(count, skill, casterPos, forward);
@@ -57,7 +57,8 @@ public class TargetScanner : MonoBehaviour
         int count = Physics2D.OverlapCircle(transform.position, MAX_SCAN_RADIUS, filter, enemies);
 
         Collider2D nearestEnemy = FindNearestEnemy(count);
-        if (nearestEnemy == null) return null;
+        if (nearestEnemy == null) 
+            return null;
 
         if (nearestEnemy.TryGetComponent<UnitController>(out var controller)) return controller;
 
@@ -90,8 +91,8 @@ public class TargetScanner : MonoBehaviour
 
     public void SelectNearestTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
     {
-        SingleTargetData skillTargetData = (SingleTargetData)skill.TargetData;
-        debugSkill = skill;
+        SingleTargetData skillTargetData = (SingleTargetData)skill.Data.TargetData;
+        // debugSkill = skill;
         
         Collider2D nearestEnemy = FindNearestEnemy(count);
         if (nearestEnemy == null || !skillTargetData.IsInRange(casterPos, nearestEnemy.transform.position, forward)) return;
@@ -104,8 +105,8 @@ public class TargetScanner : MonoBehaviour
 
     public void SelectConeTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
     {
-        ConeTargetData skillTargetData = (ConeTargetData)skill.TargetData;
-        debugSkill = skill;
+        ConeTargetData skillTargetData = (ConeTargetData)skill.Data.TargetData;
+        // debugSkill = skill;
 
         for (int i = 0; i < count; i++)
         {
@@ -124,8 +125,8 @@ public class TargetScanner : MonoBehaviour
 
     public void SelectCircleTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
     {
-        CircleTargetData skillTargetData = (CircleTargetData)skill.TargetData;
-        debugSkill = skill;
+        CircleTargetData skillTargetData = (CircleTargetData)skill.Data.TargetData;
+        // debugSkill = skill;
 
         // 가장 가까운 대상 탐색
         Collider2D nearestEnemy = FindNearestEnemy(count);
@@ -154,8 +155,8 @@ public class TargetScanner : MonoBehaviour
 
     public void SelectLineTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
     {
-        LineTargetData skillTargetData = (LineTargetData)skill.TargetData;
-        debugSkill = skill;
+        LineTargetData skillTargetData = (LineTargetData)skill.Data.TargetData;
+        // debugSkill = skill;
 
         // 가장 가까운 대상 탐색
         Collider2D nearestEnemy = FindNearestEnemy(count);
@@ -184,7 +185,7 @@ public class TargetScanner : MonoBehaviour
             }
         }
     }
-
+ /**
     # region Gizmo
 
     /// <summary>
@@ -199,9 +200,9 @@ public class TargetScanner : MonoBehaviour
     void OnDrawGizmosSelected()
     {
         if (debugSkill == null) return;
-        if (debugSkill.TargetData == null) return;
+        if (debugSkill.Data.TargetData == null) return;
 
-        DrawTargetGizmos(debugSkill.TargetData);
+        DrawTargetGizmos(debugSkill.Data.TargetData);
     }
 
     void DrawTargetGizmos(SkillTargetData targetData)
@@ -303,4 +304,5 @@ public class TargetScanner : MonoBehaviour
     }
 
     #endregion
+    */
 }

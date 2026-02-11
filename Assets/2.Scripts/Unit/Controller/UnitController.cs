@@ -11,9 +11,10 @@ public class UnitController : MonoBehaviour
 
     private bool isForwardLeft;
     private bool canMove = true;
+    public Vector2 Forward => isForwardLeft ? Vector2.left : Vector2.right;
 
     [SerializeField] private TargetScanner scanner;
-    [SerializeField] private List<UnitController> targets;
+    private Vector2 targetPos;
     private Vector2? nextPos;
 
     [SerializeField] private CapsuleCollider2D col;
@@ -85,7 +86,7 @@ public class UnitController : MonoBehaviour
         UnitController nearestEnemy = scanner.FindNearestEnemy();
         if (nearestEnemy == null) return false;
 
-        float skillRange = skill.TargetData.GetSkillDistance() * 0.9f; // 0.9f -> 여유롭게 스킬범위 안으로 진입
+        float skillRange = skill.Data.TargetData.GetSkillDistance() * 0.9f; // 0.9f -> 여유롭게 스킬범위 안으로 진입
         Vector2 dir = (transform.position - nearestEnemy.transform.position).normalized;
 
         nextPos = nearestEnemy.transform.position + (Vector3)(dir * skillRange);
@@ -98,10 +99,7 @@ public class UnitController : MonoBehaviour
 
         Skill skill = model.GetSkill(skillIdx);
 
-        // search target
-        targets = scanner.Scan(skill, transform.position, isForwardLeft);
-        
-        return targets.Count > 0;
+        return skill.CanCast(this); 
     }
 
     public bool CanUseSkill(int skillIdx, float curTime)
@@ -116,60 +114,20 @@ public class UnitController : MonoBehaviour
     {
         Skill skill = model.GetSkill(skillIdx);
         
-        skill.Use(curTime);
         view.PlayAttack(skillIdx);
-        LookAt(curPos, targets[0].transform.position);
+        LookAt(curPos, skill.TargetPos);
         StartCoroutine(UseSkill(skill));
     }
 
     private IEnumerator UseSkill(Skill skill)
     {
         canMove = false;
-        yield return new WaitForSeconds(skill.CastTime); // 선딜
+        yield return new WaitForSeconds(skill.Data.CastTime); // 선딜
         
-        // 이펙트 관련 설정
-        if (skill.effectClip != null)
-        {
-            Vector2 skillStartPos = (skill.StartType == ProjectileStartType.Caster) ? transform.position : scanner.skillTargetPos;
-        
-            SkillEffect skillEffect = UnitManager.Instance.SpawnSkillEffect(skillStartPos);
-            
-            float arrivedTime = 0f;
-            
-            if (skill.DeliveryType == SkillDeliveryType.Projectile && skillEffect.TryGetComponent<ProjectileMover>(out var mover))
-            {
-                mover.Init(scanner.skillTargetPos, skill.speed, () =>
-                    {
-                        // 발사체 데미지 적용
-                        ApplyDamage(skill);
-                    }
-                );
-                arrivedTime = mover.GetArrivedTime();
-            }
+        skill.Use(this);  
 
-            skillEffect.Play(skill.effectClip, arrivedTime);
-        }
-
-        if (skill.DeliveryType == SkillDeliveryType.Instant)
-        {
-            // 즉시 데미지 적용
-            ApplyDamage(skill);
-        }
-
-        yield return new WaitForSeconds(skill.RecoveryTime); // 후딜
+        yield return new WaitForSeconds(skill.Data.RecoveryTime); // 후딜
         canMove = true;
-    }
-
-    private void ApplyDamage(Skill skill)
-    {
-        // 공격 데미지 주는 시점 (공격력 + 스킬 데미지)
-        int damage = (int)Math.Round(model.Stat.Atk + skill.Damage);
-        foreach (UnitController target in targets)
-        {
-            target.model.TakeDamage(damage);
-        }
-
-        targets = null;
     }
 
     private void LookAt(Vector2 curPos, Vector2 nextPos)

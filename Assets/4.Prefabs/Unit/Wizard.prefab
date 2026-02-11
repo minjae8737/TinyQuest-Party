@@ -220,30 +220,10 @@ MonoBehaviour:
       hp: 0
       isDeath: 0
     Skills:
-    - Type: 0
-      TargetType: 1
-      TargetData: {fileID: 11400000, guid: df7638be5b72d48afbd2aad57957b93b, type: 2}
-      StartType: 0
-      DeliveryType: 0
-      effectClip: {fileID: 7400000, guid: 64e2964e056e14dcc853a32116dee2e0, type: 2}
-      speed: 0
-      Damage: 7
-      CastTime: 0.3
-      RecoveryTime: 0.29
-      Cooldown: 2
-      lastUseTime: 0
-    - Type: 0
-      TargetType: 1
-      TargetData: {fileID: 11400000, guid: 3617706e789864a0384395bc35a03762, type: 2}
-      StartType: 1
-      DeliveryType: 1
-      effectClip: {fileID: 7400000, guid: 8868bc5b1219f4962b24c784a82f6bcd, type: 2}
-      speed: 5
-      Damage: 15
-      CastTime: 0.5
-      RecoveryTime: 0.09
-      Cooldown: 10
-      lastUseTime: 0
+    - Data: {fileID: 11400000, guid: 04f39e315b76c414794ed2fd3fe75cdb, type: 2}
+      scanner: {fileID: 11400000, guid: b486255920861450d8d0547ead3bc466, type: 2}
+    - Data: {fileID: 11400000, guid: 784733433183b45879c466fc816c471b, type: 2}
+      scanner: {fileID: 11400000, guid: b486255920861450d8d0547ead3bc466, type: 2}
   view: {fileID: 8704672276572809892}
   scanner: {fileID: 6839941304611331819}
   targets: []

@@ -52,7 +52,7 @@ public class AutoCombat : MonoBehaviour
         {
             nextSkill = (int)SkillSlot.Normal;
         }
-
+        
         return nextSkill;
     }
 }
