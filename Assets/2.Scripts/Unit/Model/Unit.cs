@@ -99,6 +99,11 @@ public class Unit
         Status.TakeDamage(damage);
     }
 
+    public void TakeHeal(int healAmount)
+    {
+        Status.TakeHeal(healAmount);
+    }
+
     #endregion
 
     #region Skill

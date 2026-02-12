@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   UnitName: 6
   BaseStat:
-    maxHp: 200000
+    maxHp: 50
     atk: 3
     def: 1
     speed: 5

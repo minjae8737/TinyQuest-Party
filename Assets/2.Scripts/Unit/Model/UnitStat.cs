@@ -3,9 +3,9 @@ using System;
 [Serializable]
 public class UnitStat
 {
-    public Stat BaseStat;
-    public Stat EquipStat;
-    public Stat TotalStat;
+    [ReadOnly] public Stat BaseStat;
+    [ReadOnly] public Stat EquipStat;
+    [ReadOnly] public Stat TotalStat;
 
     #region Property
     

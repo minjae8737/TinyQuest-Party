@@ -53,4 +53,9 @@ public class UnitStatus
         if (damage < 0) return;
         Hp -= damage;
     }
+
+    public void TakeHeal(int healAmount)
+    {
+        Hp += healAmount;
+    }
 }
