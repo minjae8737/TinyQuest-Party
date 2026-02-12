@@ -3,9 +3,17 @@ using UnityEngine;
 
 public class AutoCombat : MonoBehaviour
 {
+    [Header("Reference")]
     [SerializeField] private UnitController controller;
+    
+    [Header("Settings")]
     [SerializeField] [Range(0.1f, 0.3f)] private float delay;
+
+    #region Runtime
+    
     private float lastTime;
+    
+    #endregion
 
     private void Update()
     {

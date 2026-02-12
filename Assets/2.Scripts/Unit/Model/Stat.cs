@@ -4,11 +4,13 @@ using UnityEngine;
 [Serializable]
 public class Stat
 {
-    [SerializeField] private int maxHp;
-    [SerializeField] private int atk;
-    [SerializeField] private int def;
-    [SerializeField] private int speed;
+    [SerializeField, ReadOnly] private int maxHp;
+    [SerializeField, ReadOnly] private int atk;
+    [SerializeField, ReadOnly] private int def;
+    [SerializeField, ReadOnly] private int speed;
 
+    #region Property
+    
     public int MaxHp
     {
         get => maxHp;
@@ -33,6 +35,8 @@ public class Stat
         set => speed = Math.Max(0, value);
     }
 
+    #endregion
+    
     public static Stat operator +(Stat a, Stat b)
     {
         return new Stat

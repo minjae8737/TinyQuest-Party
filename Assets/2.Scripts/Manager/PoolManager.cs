@@ -9,11 +9,13 @@ public enum ObjType
 
 public class PoolManager : MonoBehaviour
 {
-    public static PoolManager Instance;
+    public static PoolManager Instance { get; private set; }
+    
     private Dictionary<ObjType, List<GameObject>> poolDic;
     private Dictionary<ObjType, GameObject> prefabDic;
 
-    [Header("UI")] [SerializeField] private List<ObjPrefab> prefabs;
+    [Header("=== UI Prefabs ===")] 
+    [SerializeField] private List<ObjPrefab> prefabs;
 
     private void Awake()
     {
@@ -43,15 +45,12 @@ public class PoolManager : MonoBehaviour
         {
             Debug.LogError("pool is Null. Type : " + type);
         }
-
-        GameObject obj;
-
-        for (int i = 0; i < pool.Count; i++)
+        
+        foreach (GameObject poolObj in pool)
         {
-            if (pool[i] != null && !pool[i].activeSelf)
+            if (poolObj != null && !poolObj.activeSelf)
             {
-                obj = pool[i];
-                return obj;
+                return poolObj;
             }
         }
 
@@ -60,9 +59,9 @@ public class PoolManager : MonoBehaviour
             Debug.LogError("prefab is Null. Type : " + type);
         }
 
-        obj = Instantiate(prefab);
-        pool.Add(obj);
+        GameObject newObj = Instantiate(prefab);
+        pool.Add(newObj);
 
-        return obj;
+        return newObj;
     }
 }

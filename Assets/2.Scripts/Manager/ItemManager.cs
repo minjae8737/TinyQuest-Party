@@ -3,13 +3,14 @@ using UnityEngine;
 
 public class ItemManager : MonoBehaviour
 {
-    public static ItemManager Instance;
-
-    private Dictionary<long, Item> items;
-    private Dictionary<string, ItemData> itemDatas;
+    public static ItemManager Instance { get; private set; }
 
     private static long itemId = 1L;
+    
+    private Dictionary<long, Item> itemDic;
+    private Dictionary<string, ItemData> itemDataDic;
 
+    [Header("=== Item Data Tables ===")]
     [SerializeField] private List<ArmorData> armorDatas;
     [SerializeField] private List<WeaponData> weaponDatas;
 
@@ -20,12 +21,12 @@ public class ItemManager : MonoBehaviour
             Instance = this;
         }
 
-        items = new Dictionary<long, Item>();
-        itemDatas = new Dictionary<string, ItemData>();
+        itemDic = new Dictionary<long, Item>();
+        itemDataDic = new Dictionary<string, ItemData>();
 
         foreach (ItemData itemData in armorDatas)
         {
-            if (!itemDatas.TryAdd(itemData.DataId, itemData))
+            if (!itemDataDic.TryAdd(itemData.DataId, itemData))
             {
                 Debug.Log(itemData.DataId + " Item Data Id is duplicated");
             }
@@ -33,7 +34,7 @@ public class ItemManager : MonoBehaviour
 
         foreach (ItemData itemData in weaponDatas)
         {
-            if (!itemDatas.TryAdd(itemData.DataId, itemData))
+            if (!itemDataDic.TryAdd(itemData.DataId, itemData))
             {
                 Debug.Log(itemData.DataId + " Item Data Id is duplicated");
             }
@@ -42,7 +43,7 @@ public class ItemManager : MonoBehaviour
 
     public Item Get(long itemId)
     {
-        if (!items.TryGetValue(itemId, out var item))
+        if (!itemDic.TryGetValue(itemId, out var item))
         {
             Debug.LogError(itemId + " item is Null");
         }
@@ -52,7 +53,7 @@ public class ItemManager : MonoBehaviour
 
     public ItemData GetData(string dataId)
     {
-        if (!itemDatas.TryGetValue(dataId, out var itemData))
+        if (!itemDataDic.TryGetValue(dataId, out var itemData))
         {
             Debug.LogError(dataId + " ItemData is Null");
         }
@@ -64,7 +65,7 @@ public class ItemManager : MonoBehaviour
     {
         Item newItem = new Item(itemId, itemData.DataId);
         
-        if (!items.TryAdd(itemId, newItem))
+        if (!itemDic.TryAdd(itemId, newItem))
         {
             Debug.LogError(itemId + " ItemData is duplicated");
         }

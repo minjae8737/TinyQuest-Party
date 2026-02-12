@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance;
-    
+    public static GameManager Instance { get; private set; }
+
     private void Awake()
     {
         if (Instance == null)
@@ -19,17 +19,17 @@ public class GameManager : MonoBehaviour
     public void SaveData()
     {
         UnitSaveData unitSaveData = new UnitSaveData();
-        
+
         string path = Path.Combine(Application.persistentDataPath, "player.json");
         string json = JsonConvert.SerializeObject(unitSaveData, Formatting.Indented);
         Debug.Log(json);
         File.WriteAllText(path, json);
     }
-    
+
     public void LoadSaveData()
     {
         string path = Path.Combine(Application.persistentDataPath, "player.json");
-        
+
         if (File.Exists(path))
         {
             string json = File.ReadAllText(path);

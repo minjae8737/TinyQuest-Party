@@ -4,13 +4,17 @@ using UnityEngine.UI;
 
 public class UnitHpBar : MonoBehaviour
 {
+    [Header("=== UI Reference ===")]
+    [SerializeField] private Image hpImg;
+    
+    [Header("=== Follow Settings ===")]
+    [SerializeField] private Vector3 offset;
+    
     private Canvas canvas;
     private RectTransform canvasRect;
     private RectTransform rect;
-    [SerializeField] private Image hpImg;
 
-    public Transform targetUnit;
-    public Vector3 offset;
+    public Transform TargetUnit { get; private set; }
 
     private void OnEnable()
     {
@@ -23,7 +27,7 @@ public class UnitHpBar : MonoBehaviour
         canvasRect = canvas.GetComponent<RectTransform>();
         rect = GetComponent<RectTransform>();
         
-        targetUnit = target;
+        TargetUnit = target;
         gameObject.SetActive(true);
     }
     
@@ -48,14 +52,14 @@ public class UnitHpBar : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (targetUnit == null) return;
+        if (TargetUnit == null) return;
         
-        SetPosition(targetUnit.position);
+        SetPosition(TargetUnit.position);
     }
 
     public void Release()
     {
-        targetUnit = null;
+        TargetUnit = null;
         gameObject.SetActive(false);
     }
 }

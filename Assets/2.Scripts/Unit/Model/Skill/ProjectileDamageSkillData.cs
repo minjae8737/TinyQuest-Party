@@ -5,7 +5,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Damage_(UnitName)_(SkillSlot)", menuName = "Skill/SkillData/DamageSkill/Projectile")]
 public class ProjectileDamageSkillData : DamageSkillData
 {
-    public float Speed;
+    [Header("=== Projectile Info ===")]
+    [Min(0)] public float Speed;
     
     public override void Use(UnitController caster, List<UnitController> targets)
     {

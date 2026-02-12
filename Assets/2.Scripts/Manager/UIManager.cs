@@ -4,11 +4,13 @@ using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
-    public static UIManager Instance;
+    public static UIManager Instance { get; private set; }
     
+    [Header("=== Canvas References ===")]
     [SerializeField] private RectTransform worldCanvasRect;
 
-    [SerializeField] private RectTransform unitHpBarsRect;
+    [Header("=== Unit HP Bar ===")]
+    [SerializeField] private RectTransform unitHpBarParent;
     [SerializeField] private List<UnitHpBar> unitHpBars;
 
 
@@ -30,7 +32,7 @@ public class UIManager : MonoBehaviour
         if (hpBar != null)
         {
             unitHpBars.Add(hpBar);
-            hpBar.transform.SetParent(unitHpBarsRect, false);
+            hpBar.transform.SetParent(unitHpBarParent, false);
         }
         
         return hpBar;

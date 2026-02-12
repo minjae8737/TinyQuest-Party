@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public enum AnimName
@@ -16,13 +15,16 @@ public enum AnimName
 
 public class UnitView : MonoBehaviour
 {
+    [Header("Reference")]
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private Animator anim;
 
     private UnitHpBar hpBar;
-
+    
     public event Action OnDeathFinished;
     
+    #region Init
+
     public void Init()
     {
         if (hpBar == null)
@@ -31,6 +33,8 @@ public class UnitView : MonoBehaviour
         }
         hpBar?.Init(transform);
     }
+    
+    #endregion
 
     public void SetSpeed(float speed)
     {

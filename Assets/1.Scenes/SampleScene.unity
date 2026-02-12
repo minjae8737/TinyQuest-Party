@@ -164,7 +164,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldCanvasRect: {fileID: 80696930}
-  unitHpBarsRect: {fileID: 1673844737}
+  unitHpBarParent: {fileID: 1673844737}
   unitHpBars: []
 --- !u!1 &80696926
 GameObject:

@@ -15,9 +15,8 @@ MonoBehaviour:
   Type: 0
   TargetType: 1
   TargetData: {fileID: 11400000, guid: 3617706e789864a0384395bc35a03762, type: 2}
-  StartType: 1
   DeliveryType: 1
-  effectClip: {fileID: 7400000, guid: 8868bc5b1219f4962b24c784a82f6bcd, type: 2}
+  EffectClip: {fileID: 7400000, guid: 8868bc5b1219f4962b24c784a82f6bcd, type: 2}
   CastTime: 0.5
   RecoveryTime: 0.09
   Cooldown: 10

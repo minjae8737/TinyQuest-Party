@@ -1,11 +1,9 @@
-using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
     public Transform playerTr;
-
 
     private void Start()
     {

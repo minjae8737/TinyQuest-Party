@@ -4,14 +4,21 @@ using System.Collections.Generic;
 [Serializable]
 public class Unit
 {
+    #region Components
+    
     public UnitData Data;
     public UnitLevel Level;
     public UnitStat Stat;
     public UnitEquipment Equipment;
     public UnitStatus Status;
+    
+    public List<Skill> Skills;
+    
+    #endregion
+    
     public bool IsDeath => Status.IsDeath;
 
-    public List<Skill> Skills;
+    #region Init
 
     public void Init(UnitSaveData saveData)
     {
@@ -40,7 +47,11 @@ public class Unit
             PutOnEquipment(itemId);
         }
     }
+    
+    #endregion
 
+    #region Equipment
+    
     public void PutOnEquipment(long itemId)
     {
         Item item = ItemManager.Instance.Get(itemId);
@@ -76,6 +87,10 @@ public class Unit
         Stat.EquipStat.Subtrack(equipmentData.Stat);
         Stat.RefreshStat();
     }
+    
+    #endregion
+
+    #region Combat
 
     public void TakeDamage(int damage)
     {
@@ -84,12 +99,20 @@ public class Unit
         Status.TakeDamage(damage);
     }
 
+    #endregion
+
+    #region Skill
+
     public Skill GetSkill(int skillIdx)
     {
         if (skillIdx >= Skills.Count) return null;
         return Skills[skillIdx];
     }
 
+    #endregion
+
+    #region Event
+    
     public event Action<int> OnLevelChanged
     {
         add => Level.OnLevelChanged += value;
@@ -120,6 +143,10 @@ public class Unit
         remove => Stat.OnSpeedChanged -= value;
     }
 
+    #endregion
+    
+    #region Save
+
     public UnitSaveData GetSaveData()
     {
         UnitSaveData saveData = new UnitSaveData();
@@ -131,4 +158,6 @@ public class Unit
 
         return saveData;
     }
+    
+    #endregion
 }

@@ -4,9 +4,13 @@ using UnityEngine;
 public abstract class SkillTargetScanner : ScriptableObject
 {
     protected const float MAX_SCAN_RADIUS = 20f;
+    
+    [Header("=== Scan Settings ===")]
     [SerializeField] protected ContactFilter2D contactFilter;
     [SerializeField] private LayerMask enemyLayer;
+    
     protected Collider2D[] enemies = new Collider2D[30];
+    
     protected Vector2 targetPos;
     public Vector2 TargetPos => targetPos;
     
@@ -14,7 +18,6 @@ public abstract class SkillTargetScanner : ScriptableObject
 
     public Collider2D FindNearestEnemy(Vector2 casterPos, int count)
     {
-        // sqrMagnitude 로 비교하기위한 제곱
         float minDistSqr = MAX_SCAN_RADIUS * MAX_SCAN_RADIUS;
         
         Collider2D nearestEnemy = null;

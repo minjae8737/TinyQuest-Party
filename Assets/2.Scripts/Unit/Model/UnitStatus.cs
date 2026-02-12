@@ -4,9 +4,11 @@ using UnityEngine;
 [Serializable]
 public class UnitStatus
 {
-    [SerializeField] private int maxHp;
-    [SerializeField] private int hp;
-    [SerializeField] private bool isDeath;
+    [SerializeField, ReadOnly] private int maxHp;
+    [SerializeField, ReadOnly] private int hp;
+    [SerializeField, ReadOnly] private bool isDeath;
+
+    #region Property
 
     public int MaxHp
     {
@@ -35,12 +37,10 @@ public class UnitStatus
     }
 
     public bool IsDeath => isDeath;
-
-    public void TakeDamage(int damage)
-    {
-        if (damage < 0) return;
-        Hp -= damage;
-    }
+    
+    #endregion
+    
+    public event Action<int, int> OnHpChanged;
 
     public void Init(int maxHp, int hp)
     {
@@ -48,5 +48,9 @@ public class UnitStatus
         Hp = hp;
     }
 
-    public event Action<int, int> OnHpChanged;
+    public void TakeDamage(int damage)
+    {
+        if (damage < 0) return;
+        Hp -= damage;
+    }
 }

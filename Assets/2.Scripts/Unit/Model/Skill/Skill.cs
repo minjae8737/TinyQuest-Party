@@ -35,11 +35,21 @@ public enum SkillSlot
 [Serializable]
 public class Skill
 {
+    #region Data
+    
     public SkillData Data;
     public SkillTargetScanner scanner;
+    
+    #endregion 
+    
+    // Runtime
     private float lastUseTime;
+    
+    // Cache
     private List<UnitController> targets = new();
+    
     public Vector2 TargetPos => scanner.TargetPos;
+    
 
     public bool CanUse(float curTime)
     {
@@ -63,7 +73,7 @@ public class Skill
     public void Use(UnitController caster)
     {
         // 이펙트, 발사체 세팅
-        if (Data.effectClip != null)
+        if (Data.EffectClip != null)
         {
             PlaySkillEffect(caster, targets);
         }
@@ -99,6 +109,6 @@ public class Skill
             Data.Use(caster, targets);
         }
 
-        skillEffect.Play(Data.effectClip, arrivedTime);
+        skillEffect.Play(Data.EffectClip, arrivedTime);
     }
 }

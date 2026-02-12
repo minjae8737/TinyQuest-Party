@@ -14,16 +14,18 @@ public enum UnitName
     Wizard
 }
 
-[Serializable]
 public class UnitManager : MonoBehaviour
 {
-    public static UnitManager Instance;
+    public static UnitManager Instance { get; private set; }
     
     private Dictionary<UnitName, GameObject> unitPrefabDic;
     private Dictionary<UnitName, List<UnitController>> unitPoolsDic;
-    private Stack<SkillEffect> skillEffects;
+    private Stack<SkillEffect> skillEffectStack;
 
+    [Header("=== Unit Prefabs ===")]
     [SerializeField] private List<GameObject> unitPrefabs;
+    
+    [Header("=== Effect Prefabs ===")]
     [SerializeField] private GameObject skillEffectPrefab;
 
     private void Awake()
@@ -35,7 +37,7 @@ public class UnitManager : MonoBehaviour
 
         unitPrefabDic = new Dictionary<UnitName, GameObject>();
         unitPoolsDic = new Dictionary<UnitName, List<UnitController>>();
-        skillEffects = new Stack<SkillEffect>();
+        skillEffectStack = new Stack<SkillEffect>();
 
         foreach (GameObject prefab in unitPrefabs)
         {
@@ -110,7 +112,7 @@ public class UnitManager : MonoBehaviour
 
     public SkillEffect SpawnSkillEffect(Vector2 targetPos)
     {
-        if (!skillEffects.TryPop(out SkillEffect skillEffect))
+        if (!skillEffectStack.TryPop(out SkillEffect skillEffect))
         {
             GameObject skillEffectObj = Instantiate(skillEffectPrefab);
             skillEffect = skillEffectObj.GetComponent<SkillEffect>();
@@ -124,6 +126,6 @@ public class UnitManager : MonoBehaviour
     public void DespawnSkillEffect(SkillEffect skillEffect)
     {
         skillEffect.gameObject.SetActive(false);
-        skillEffects.Push(skillEffect);
+        skillEffectStack.Push(skillEffect);
     }
 }

@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class HealSkillData : SkillData
 {
-    public float HealAmount;
+    [Header("=== HealAmount Info ===")]
+    [Min(0)] public float HealAmount;
     
     public override void Use(UnitController caster, List<UnitController> targets)
     {

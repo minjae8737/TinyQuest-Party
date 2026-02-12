@@ -1,26 +1,29 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class UnitController : MonoBehaviour
 {
+    [Header("Reference")]
     [SerializeField] private Unit model;
     [SerializeField] private UnitView view;
-
-    private bool isForwardLeft;
-    private bool canMove = true;
-    public Vector2 Forward => isForwardLeft ? Vector2.left : Vector2.right;
-
     [SerializeField] private TargetScanner scanner;
-    private Vector2 targetPos;
-    private Vector2? nextPos;
-
     [SerializeField] private CapsuleCollider2D col;
 
+    [Header("Movement")]
+    private bool isForwardLeft;
+    private bool canMove = true;
+    private Vector2? nextPos;
+    
+    #region Property
+    
     public Unit Model => model;
-
+    public Vector2 Forward => isForwardLeft ? Vector2.left : Vector2.right;
+    
+    #endregion
+    
+    #region Init
+    
     private void Start()
     {
         // 임시 초기화 위치
@@ -46,6 +49,10 @@ public class UnitController : MonoBehaviour
         model.OnHpChanged -= OnHpChanged;
         view.OnDeathFinished -= HandleDeathFinished;
     }
+    
+    #endregion
+
+    #region Move
 
     private void Update()
     {
@@ -93,6 +100,20 @@ public class UnitController : MonoBehaviour
         return true;
     }
 
+    private void LookAt(Vector2 curPos, Vector2 nextPos)
+    {
+        bool isLeft = curPos.x > nextPos.x;
+        
+        if (Mathf.Abs(curPos.x - nextPos.x) < 0.001f) isLeft = isForwardLeft;
+        view.SetFlipX(isLeft);
+        
+        isForwardLeft = isLeft;
+    }
+    
+    #endregion
+
+    #region Combat
+    
     public bool CanAttack(int skillIdx)
     {
         if (!canMove || model.IsDeath) return false;
@@ -129,17 +150,11 @@ public class UnitController : MonoBehaviour
         yield return new WaitForSeconds(skill.Data.RecoveryTime); // 후딜
         canMove = true;
     }
+    
+    #endregion
 
-    private void LookAt(Vector2 curPos, Vector2 nextPos)
-    {
-        bool isLeft = curPos.x > nextPos.x;
-        
-        if (Mathf.Abs(curPos.x - nextPos.x) < 0.001f) isLeft = isForwardLeft;
-        view.SetFlipX(isLeft);
-        
-        isForwardLeft = isLeft;
-    }
-
+    #region Event Handler
+    
     public void OnHpChanged(int maxHp, int hp)
     {
         if (model.IsDeath) return;
@@ -156,4 +171,6 @@ public class UnitController : MonoBehaviour
     {
         UnitManager.Instance.Despawn(this);
     }
+    
+    #endregion
 }
