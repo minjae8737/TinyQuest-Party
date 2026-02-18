@@ -3,8 +3,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "ConeTargetData_(Character)_(SkillOrder)", menuName = "Skill/TargetData/Cone")]
 public class ConeTargetData : DirectTargetData
 {
-    public override SkillTargetType TargetType => SkillTargetType.Cone;
-
+    [Header("=== Range Info ===")]
     [Range(0, 180)] public float Angle; 
     public float Length;
 

@@ -4,25 +4,34 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Skill/Scan/Single")]
 public class SingleTargetScanner : SkillTargetScanner
 {
-    public override List<UnitController> Scan(UnitController caster, SkillData skillData)
+    public override SkillScanResult Scan(UnitController caster, SkillTargetData targetData)
     {
-        SingleTargetData targetData = (SingleTargetData)skillData.TargetData;
+        SkillScanResult scanResult = new SkillScanResult();
+        SingleTargetData singleTargetData = (SingleTargetData)targetData;
         Vector2 casterPos = caster.transform.position;
         Vector2 forward = caster.Forward;
         List<UnitController> targets = new List<UnitController>();
 
+        // Overlap 스캔
         int count = Physics2D.OverlapCircle(casterPos, targetData.GetSkillDistance(), contactFilter, enemies);
-        Collider2D nearestEnemy = FindNearestEnemy(casterPos, count);
-        if (nearestEnemy == null || !targetData.IsInRange(casterPos, nearestEnemy.transform.position, forward)) return targets;
         
-        targetPos = nearestEnemy.transform.position;
+        // enemies 에서 UnitController 추출
+        GetUnitController(count, targets);
+        
+        // 필터 적용
+        targets = ApplyTeamFilter(singleTargetData, caster, targets);
+        targets = ApplyConditionFilter(singleTargetData, targets);
+        targets = ApplySelect(singleTargetData, targets);
 
-        if (nearestEnemy.TryGetComponent<UnitController>(out var controller))
-        {
-            targets.Add(controller);
-        }
+        UnitController nearestTarget = FindNearestTarget(casterPos, targets);
+        targets.Clear();
+        targets.Add(nearestTarget);
 
+        scanResult.Targets = targets;
+        scanResult.PrimaryTarget = nearestTarget;
 
-        return targets;
+        return scanResult;
     }
+
+
 }

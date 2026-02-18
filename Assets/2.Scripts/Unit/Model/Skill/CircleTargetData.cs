@@ -4,8 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "CircleTargetData_(Character)_(SkillOrder)", menuName = "Skill/TargetData/Circle")]
 public class CircleTargetData : SkillTargetData
 {
-    public override SkillTargetType TargetType => SkillTargetType.Circle;
-
+    [Header("=== Range Info ===")]
     public float MaxDistance; // 최대 사거리
     public float Radius;      // 스킬 범위
     

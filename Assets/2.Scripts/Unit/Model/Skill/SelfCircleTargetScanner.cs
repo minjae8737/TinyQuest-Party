@@ -4,25 +4,25 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Skill/Scan/SelfCircle")]
 public class SelfCircleTargetScanner : SkillTargetScanner
 {
-    public override List<UnitController> Scan(UnitController caster, SkillData skillData)
+    public override SkillScanResult Scan(UnitController caster, SkillTargetData targetData)
     {
-        CircleTargetData targetData = (CircleTargetData)skillData.TargetData;
+        SkillScanResult scanResult = new SkillScanResult();
+        CircleTargetData circleTargetData = (CircleTargetData)targetData;
         Vector2 casterPos = caster.transform.position;
         List<UnitController> targets = new List<UnitController>();
 
-        // target 중심으로 재탐색
-        int enemyCounts = Physics2D.OverlapCircle(casterPos, targetData.Radius, contactFilter, enemies);
-        
-        for (int i = 0; i < enemyCounts; i++)
-        {
-            Collider2D enemy = enemies[i];
-            
-            if (enemy.TryGetComponent<UnitController>(out var controller))
-            {
-                targets.Add(controller);
-            }
-        }
+        // Overlap 스캔
+        int count = Physics2D.OverlapCircle(casterPos, circleTargetData.Radius, contactFilter, enemies);
+        GetUnitController(count, targets);
 
-        return targets;
+        // 필터 적용
+        targets = ApplyTeamFilter(circleTargetData, caster, targets);
+        targets = ApplyConditionFilter(circleTargetData, targets);
+        targets = ApplySelect(circleTargetData, targets);
+
+        scanResult.Targets = targets;
+        scanResult.PrimaryTarget = caster;
+
+        return scanResult;
     }
 }

@@ -4,35 +4,38 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Skill/Scan/Circle")]
 public class CircleTargetScanner : SkillTargetScanner
 {
-    public override List<UnitController> Scan(UnitController caster, SkillData skillData)
+    public override SkillScanResult Scan(UnitController caster, SkillTargetData targetData)
     {
-        CircleTargetData targetData = (CircleTargetData)skillData.TargetData;
+        SkillScanResult scanResult = new SkillScanResult();
+        CircleTargetData circleTargetData  = (CircleTargetData)targetData;
         Vector2 casterPos = caster.transform.position;
         Vector2 forward = caster.Forward;
         List<UnitController> targets = new List<UnitController>();
 
-        int count = Physics2D.OverlapCircle(casterPos, targetData.GetSkillDistance(), contactFilter, enemies);
-
-        // 가장 가까운 대상 탐색
-        Collider2D nearestEnemy = FindNearestEnemy(casterPos, count);
-        if (nearestEnemy == null) return targets;
-
-        targetPos = nearestEnemy.transform.position;
-        if (!targetData.IsInMaxDistance(casterPos, targetPos)) return targets;
-
-        // target 중심으로 재탐색
-        int enemyCounts = Physics2D.OverlapCircle(targetPos, targetData.Radius, contactFilter, enemies);
+        int count = Physics2D.OverlapCircle(casterPos, circleTargetData.GetSkillDistance(), contactFilter, enemies);
+        // enemies 에서 UnitController 추출
+        GetUnitController(count, targets);
         
-        for (int i = 0; i < enemyCounts; i++)
-        {
-            Collider2D enemy = enemies[i];
-            
-            if (enemy.TryGetComponent<UnitController>(out var controller))
-            {
-                targets.Add(controller);
-            }
-        }
+        // 가장 가까운 대상 탐색
+        UnitController nearestTarget = FindNearestTarget(casterPos, targets);
+        if (nearestTarget == null) return scanResult;
 
-        return targets;
+        Vector2 nearestEnemyPos = nearestTarget.transform.position;
+        if (!circleTargetData.IsInMaxDistance(casterPos, nearestEnemyPos)) return scanResult;
+
+        // nearestTarget 중심으로 재탐색
+        int enemyCounts = Physics2D.OverlapCircle(nearestEnemyPos, circleTargetData.Radius, contactFilter, enemies);
+        targets.Clear();
+        GetUnitController(enemyCounts, targets);
+
+        // 필터 적용
+        targets = ApplyTeamFilter(circleTargetData, caster, targets);
+        targets = ApplyConditionFilter(circleTargetData, targets);
+        targets = ApplySelect(circleTargetData, targets);
+        
+        scanResult.Targets = targets;
+        scanResult.PrimaryTarget = nearestTarget;
+
+        return scanResult;
     }
 }

@@ -11,7 +11,8 @@ public enum UnitName
     Knight_Templar,
     Armored_Axeman,
     Soldier,
-    Wizard
+    Wizard,
+    Priest
 }
 
 public class UnitManager : MonoBehaviour

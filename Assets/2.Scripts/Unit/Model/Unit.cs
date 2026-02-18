@@ -1,11 +1,18 @@
 using System;
 using System.Collections.Generic;
 
+public enum TeamType
+{
+    Player,
+    Enemy
+}
+
 [Serializable]
 public class Unit
 {
     #region Components
-    
+
+    public TeamType TeamType;
     public UnitData Data;
     public UnitLevel Level;
     public UnitStat Stat;
@@ -17,7 +24,7 @@ public class Unit
     #endregion
     
     public bool IsDeath => Status.IsDeath;
-
+    
     #region Init
 
     public void Init(UnitSaveData saveData)

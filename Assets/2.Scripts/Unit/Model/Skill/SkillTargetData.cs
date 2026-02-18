@@ -1,10 +1,29 @@
 using System;
 using UnityEngine;
 
+public enum TargetLayerType
+{
+    Enemy,
+    Player,
+    Self,
+    All
+}
+
+public enum TargetSortType
+{
+    None,
+    LowHp,
+    LowHpPercent,
+    HighHp,
+    HighHpPercent,
+}
+
 [Serializable]
 public abstract class SkillTargetData : ScriptableObject
 {
-    public abstract SkillTargetType TargetType { get; }
+    public TargetLayerType TargetLayer;
+    public TargetSortType SortType;
+    [Min(0)] public int MaxTargetCount;
 
     protected bool IsInAngle(Vector2 myPos, Vector2 targetPos, Vector2 forward, float angle)
     {

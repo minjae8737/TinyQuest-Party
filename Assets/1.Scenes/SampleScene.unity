@@ -451,6 +451,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Wizard
       objectReference: {fileID: 0}
+    - target: {fileID: 8915359862679647117, guid: 0bdfa319dce974b4caeee7f04ce3baa0, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2360,9 +2364,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9169056856275847145, guid: 8aa9eb6a479684bccbaca21709fbcf0c, type: 3}
+      propertyPath: model.Data
+      value: 
+      objectReference: {fileID: 11400000, guid: acf914fa8e84046e79094e04f1c54840, type: 2}
+    - target: {fileID: 9169056856275847145, guid: 8aa9eb6a479684bccbaca21709fbcf0c, type: 3}
       propertyPath: model.Skills.Array.data[1].scanner
       value: 
-      objectReference: {fileID: 11400000, guid: 412d2dbbc97fe4af4aa52ce05b596dc7, type: 2}
+      objectReference: {fileID: 11400000, guid: d2dac13f1b96442529367996e3e18595, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

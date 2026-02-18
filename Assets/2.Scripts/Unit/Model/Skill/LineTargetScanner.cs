@@ -4,41 +4,43 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Skill/Scan/Line")]
 public class LineTargetScanner : SkillTargetScanner
 {
-    public override List<UnitController> Scan(UnitController caster, SkillData skillData)
+    public override SkillScanResult Scan(UnitController caster, SkillTargetData targetData)
     {
-        LineTargetData targetData = (LineTargetData)skillData.TargetData;
+        SkillScanResult scanResult = new SkillScanResult();
+        LineTargetData lineTargetData = (LineTargetData)targetData;
         Vector2 casterPos = caster.transform.position;
         Vector2 forward = caster.Forward;
         List<UnitController> targets = new List<UnitController>();
         
         int count = Physics2D.OverlapCircle(casterPos, targetData.GetSkillDistance(), contactFilter, enemies);
-        
+        GetUnitController(count, targets);
+
         // 가장 가까운 대상 탐색
-        Collider2D nearestEnemy = FindNearestEnemy(casterPos, count);
-        if (nearestEnemy == null) return targets;
+        UnitController nearestTarget = FindNearestTarget(casterPos, targets);
+        if (nearestTarget == null) return scanResult;
 
-        targetPos = nearestEnemy.transform.position;
-        if (!targetData.IsInMaxDistance(casterPos, targetPos)) return targets;
+        Vector2 nearestEnemyPos = nearestTarget.transform.position;
+        if (!lineTargetData.IsInMaxDistance(casterPos, nearestEnemyPos)) return scanResult;
 
-        Vector2 boxArea = targetData.GetBoxArea();
-        float angle = targetData.GetAngle(casterPos, targetPos, forward);
+        Vector2 boxArea = lineTargetData.GetBoxArea();
+        float angle = lineTargetData.GetAngle(casterPos, nearestEnemyPos, forward);
 
         // 스킬 범위 중심으로 재탐색
-        Vector2 toTargetDir = (targetPos - casterPos).normalized;
+        Vector2 toTargetDir = (nearestEnemyPos - casterPos).normalized;
         Vector2 point = casterPos + toTargetDir * (boxArea.x * 0.5f);
 
         int enemyCounts = Physics2D.OverlapBox(point, boxArea, angle, contactFilter, enemies);
+        targets.Clear();
+        GetUnitController(enemyCounts, targets);
+        
+        // 필터 적용
+        targets = ApplyTeamFilter(lineTargetData, caster, targets);
+        targets = ApplyConditionFilter(lineTargetData, targets);
+        targets = ApplySelect(lineTargetData, targets);
 
-        for (int i = 0; i < enemyCounts; i++)
-        {
-            Collider2D enemy = enemies[i];
-
-            if (enemy.TryGetComponent<UnitController>(out var controller))
-            {
-                targets.Add(controller);
-            }
-        }
-
-        return targets;
+        scanResult.Targets = targets;
+        scanResult.PrimaryTarget = nearestTarget;
+        
+        return scanResult;
     }
 }

@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21fc657a172b847218349b262639afed, type: 3}
   m_Name: SingleTargetData_Priest_Skill1
   m_EditorClassIdentifier: 
-  MaxDistance: 3
+  TargetLayer: 1
+  SortType: 1
+  MaxTargetCount: 1
+  MaxDistance: 5

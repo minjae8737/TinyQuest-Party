@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum SkillType
@@ -10,7 +11,7 @@ public enum SkillType
     Debuff
 }
 
-public enum SkillTargetType
+public enum  SkillTargetType
 {
     Single,
     Circle,
@@ -22,6 +23,13 @@ public enum SkillDeliveryType
 {
     Instant, // 즉발
     Projectile, // 발차세
+}
+
+public enum EffectSpawnType
+{
+    Primary,
+    EachTarget,
+    Caster,
 }
 
 public enum SkillSlot
@@ -46,10 +54,10 @@ public class Skill
     private float lastUseTime;
     
     // Cache
-    private List<UnitController> targets = new();
-    
-    public Vector2 TargetPos => scanner.TargetPos;
-    
+    private SkillScanResult scanResult;
+
+    public SkillScanResult ScanResult => scanResult;
+
 
     public bool CanUse(float curTime)
     {
@@ -65,9 +73,9 @@ public class Skill
 
     public bool CanCast(UnitController caster)
     {
-        targets = scanner.Scan(caster, Data);
+        scanResult = scanner.Scan(caster, Data.TargetData);
 
-        return targets.Count > 0;
+        return scanResult.Targets.Count > 0;
     }
 
     public void Use(UnitController caster)
@@ -75,40 +83,76 @@ public class Skill
         // 이펙트, 발사체 세팅
         if (Data.EffectClip != null)
         {
-            PlaySkillEffect(caster, targets);
+            PlaySkillEffect(caster);
         }
         else
         {
-            Data.Use(caster, targets);
+            Data.Use(caster, scanResult.Targets);
         }
 
         RefreshLastUseTime();
     }
 
-    private void PlaySkillEffect(UnitController caster, List<UnitController> targets)
+    private void PlaySkillEffect(UnitController caster)
     {
-        Vector2 effectPos = scanner.TargetPos;
-
-        SkillEffect skillEffect = UnitManager.Instance.SpawnSkillEffect(effectPos);
+        List<SkillEffect> skillEffects = new();
+        
+        // Select EffectPos
+        switch (Data.EffectSpawnType)
+        {
+            case EffectSpawnType.Primary:
+                scanResult.EffectPos.Add(scanResult.PrimaryTarget.transform.position);
+                break;
+            
+            //TODO LINQ 개선
+            case EffectSpawnType.EachTarget:
+                scanResult.EffectPos = scanResult.Targets.Select(u => (Vector2)u.transform.position).ToList();
+                break;
+            
+            case EffectSpawnType.Caster:
+                scanResult.EffectPos.Add(caster.transform.position);
+                break;
+        }
+        
+        // SkillEffect 생성
+        foreach (Vector2 pos in scanResult.EffectPos)
+        {
+            SkillEffect newSkillEffect = UnitManager.Instance.SpawnSkillEffect(pos);
+            skillEffects.Add(newSkillEffect);
+        }
+        
         float arrivedTime = 0f;
 
-        if (Data.DeliveryType == SkillDeliveryType.Projectile && skillEffect.TryGetComponent<ProjectileMover>(out var mover))
+        // 발사체일경우 세팅
+        if (Data.DeliveryType == SkillDeliveryType.Projectile)
         {
-            ProjectileDamageSkillData projectileDamageSkillData = Data as ProjectileDamageSkillData;
 
-            mover.Init(scanner.TargetPos, projectileDamageSkillData.Speed, () =>
+            for (int i = 0; i < skillEffects.Count; i++)
+            {
+                if (skillEffects[i].TryGetComponent<ProjectileMover>(out var mover))
                 {
-                    // 발사체 데미지 적용
-                    Data.Use(caster, targets);
+                    ProjectileDamageSkillData projectileDamageSkillData = Data as ProjectileDamageSkillData;
+                    
+                    mover.Init(scanResult.EffectPos[i], projectileDamageSkillData.Speed, () =>
+                        {
+                            // 발사체 데미지 적용
+                            Data.Use(caster, scanResult.Targets);
+                        }
+                    );
+                    
+                    arrivedTime = mover.GetArrivedTime();
                 }
-            );
-            arrivedTime = mover.GetArrivedTime();
+            }
         }
         else
         {
-            Data.Use(caster, targets);
+            Data.Use(caster, scanResult.Targets);
         }
-
-        skillEffect.Play(Data.EffectClip, arrivedTime);
+        
+        // SkillEffect 재생
+        foreach (SkillEffect skillEffect in skillEffects)
+        {
+            skillEffect.Play(Data.EffectClip, arrivedTime);
+        }
     }
 }

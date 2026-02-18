@@ -18,7 +18,11 @@ public class UnitController : MonoBehaviour
     #region Property
     
     public Unit Model => model;
+    public TeamType TeamType => Model.TeamType;
     public Vector2 Forward => isForwardLeft ? Vector2.left : Vector2.right;
+    public int CurrentHp => model.Status.Hp;
+    public int MaxHp => model.Status.MaxHp;
+    public float HpPercent => (float)model.Status.Hp / model.Status.MaxHp * 100;
     
     #endregion
     
@@ -119,6 +123,7 @@ public class UnitController : MonoBehaviour
         if (!canMove || model.IsDeath) return false;
 
         Skill skill = model.GetSkill(skillIdx);
+        if (skill == null) return false;
 
         return skill.CanCast(this); 
     }
@@ -131,13 +136,24 @@ public class UnitController : MonoBehaviour
         return skill.CanUse(curTime);
     }
 
-    public void DoAttack(int skillIdx, Vector2 curPos, float curTime)
+    public bool DoAttack(int skillIdx, Vector2 curPos, float curTime)
     {
+        if (!canMove) return false;
+        
         Skill skill = model.GetSkill(skillIdx);
         
+        if (!skill.CanUse(curTime)) return false;
+
+        if (!skill.CanCast(this)) return false;
+
+        var target = skill.ScanResult.PrimaryTarget;
+        if (!target) return false;
+        
         view.PlayAttack(skillIdx);
-        LookAt(curPos, skill.TargetPos);
+        LookAt(curPos, skill.ScanResult.PrimaryTarget.transform.position);
         StartCoroutine(UseSkill(skill));
+        
+        return true;
     }
 
     private IEnumerator UseSkill(Skill skill)

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe988da49a5334320aff7fd75a78da07, type: 3}
   m_Name: Unit_Priest
   m_EditorClassIdentifier: 
-  UnitName: 7
+  UnitName: 8
   BaseStat:
     maxHp: 20000
     atk: 2

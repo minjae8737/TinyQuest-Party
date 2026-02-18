@@ -22,13 +22,16 @@ public class AutoCombat : MonoBehaviour
             //스킬 선택
             int nextSkill = DecideNextSkill();
 
-            //공격시도
-            if (nextSkill != -1 && controller.CanAttack(nextSkill))
+            bool attacked = false;
+
+            // 공격 시도
+            if (nextSkill != -1)
             {
-                controller.DoAttack(nextSkill, transform.position, Time.time);
+                attacked = controller.DoAttack(nextSkill, transform.position, Time.time);
             }
-            //이동
-            else
+
+            // 이동 시도
+            if (!attacked)
             {
                 if (controller.TryGetNextPos(nextSkill, out Vector2 nextPos))
                 {

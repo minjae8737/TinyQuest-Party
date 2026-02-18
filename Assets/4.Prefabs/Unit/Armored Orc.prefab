@@ -195,6 +195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model:
+    TeamType: 1
     Data: {fileID: 11400000, guid: 8d158d519e8cf41f7afa3c61db40ebbc, type: 2}
     Level:
       level: 1

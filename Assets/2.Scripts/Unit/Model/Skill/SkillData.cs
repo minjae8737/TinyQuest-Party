@@ -7,6 +7,7 @@ public class SkillData : ScriptableObject
     public SkillType Type;
     public SkillTargetType TargetType;
     public SkillDeliveryType DeliveryType;
+    public EffectSpawnType EffectSpawnType;
     
     [Space(5)]
     [SerializeReference] public SkillTargetData TargetData;

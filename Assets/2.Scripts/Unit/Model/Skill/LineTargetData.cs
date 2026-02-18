@@ -4,8 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "LineTargetData_(Character)_(SkillOrder)", menuName = "Skill/TargetData/Line")]
 public class LineTargetData : SkillTargetData
 {
-    public override SkillTargetType TargetType => SkillTargetType.Line;
-    
+    [Header("=== Range Info ===")]
     public float Width; // 가로(사거리)
     public float Length; // 세로(너비)
 

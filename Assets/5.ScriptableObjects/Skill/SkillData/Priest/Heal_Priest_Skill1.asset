@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: Heal_Priest_Skill1
   m_EditorClassIdentifier: 
   Type: 1
-  TargetType: 1
+  TargetType: 0
   DeliveryType: 0
+  EffectSpawnType: 0
   TargetData: {fileID: 11400000, guid: 33355ee50ec5144f7a497f63e820cd57, type: 2}
   CastTime: 0.2
   RecoveryTime: 0.39
