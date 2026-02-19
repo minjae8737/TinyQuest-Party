@@ -15,4 +15,4 @@ MonoBehaviour:
   TargetLayer: 0
   SortType: 0
   MaxTargetCount: 0
-  MaxDistance: 4
+  MaxDistance: 2.5

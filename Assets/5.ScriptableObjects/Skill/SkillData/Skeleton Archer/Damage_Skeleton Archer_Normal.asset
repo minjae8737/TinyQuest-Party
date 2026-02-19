@@ -16,7 +16,7 @@ MonoBehaviour:
   TargetType: 0
   DeliveryType: 0
   EffectSpawnType: 0
-  TargetData: {fileID: 0}
+  TargetData: {fileID: 11400000, guid: 716592dcbfd65441fa356d6b4c06f038, type: 2}
   CastTime: 0.5
   RecoveryTime: 0.39
   Cooldown: 1.5
