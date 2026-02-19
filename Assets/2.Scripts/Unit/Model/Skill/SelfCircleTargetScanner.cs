@@ -14,14 +14,16 @@ public class SelfCircleTargetScanner : SkillTargetScanner
         // Overlap 스캔
         int count = Physics2D.OverlapCircle(casterPos, circleTargetData.Radius, contactFilter, enemies);
         GetUnitController(count, targets);
-
+        
         // 필터 적용
         targets = ApplyTeamFilter(circleTargetData, caster, targets);
         targets = ApplyConditionFilter(circleTargetData, targets);
         targets = ApplySelect(circleTargetData, targets);
 
+        UnitController nearestTarget = FindNearestTarget(casterPos, targets);
+        
         scanResult.Targets = targets;
-        scanResult.PrimaryTarget = caster;
+        scanResult.PrimaryTarget = nearestTarget;
 
         return scanResult;
     }

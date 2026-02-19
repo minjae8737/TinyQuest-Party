@@ -138,7 +138,7 @@ public class UnitController : MonoBehaviour
 
     public bool DoAttack(int skillIdx, Vector2 curPos, float curTime)
     {
-        if (!canMove) return false;
+        if (!canMove || model.IsDeath) return false;
         
         Skill skill = model.GetSkill(skillIdx);
         
@@ -146,7 +146,7 @@ public class UnitController : MonoBehaviour
 
         if (!skill.CanCast(this)) return false;
 
-        var target = skill.ScanResult.PrimaryTarget;
+        UnitController target = skill.ScanResult.PrimaryTarget;
         if (!target) return false;
         
         view.PlayAttack(skillIdx);

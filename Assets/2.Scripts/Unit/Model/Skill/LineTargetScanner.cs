@@ -15,6 +15,11 @@ public class LineTargetScanner : SkillTargetScanner
         int count = Physics2D.OverlapCircle(casterPos, targetData.GetSkillDistance(), contactFilter, enemies);
         GetUnitController(count, targets);
 
+        // 필터 적용
+        targets = ApplyTeamFilter(lineTargetData, caster, targets);
+        targets = ApplyConditionFilter(lineTargetData, targets);
+        targets = ApplySelect(lineTargetData, targets);
+        
         // 가장 가까운 대상 탐색
         UnitController nearestTarget = FindNearestTarget(casterPos, targets);
         if (nearestTarget == null) return scanResult;
@@ -32,11 +37,6 @@ public class LineTargetScanner : SkillTargetScanner
         int enemyCounts = Physics2D.OverlapBox(point, boxArea, angle, contactFilter, enemies);
         targets.Clear();
         GetUnitController(enemyCounts, targets);
-        
-        // 필터 적용
-        targets = ApplyTeamFilter(lineTargetData, caster, targets);
-        targets = ApplyConditionFilter(lineTargetData, targets);
-        targets = ApplySelect(lineTargetData, targets);
 
         scanResult.Targets = targets;
         scanResult.PrimaryTarget = nearestTarget;

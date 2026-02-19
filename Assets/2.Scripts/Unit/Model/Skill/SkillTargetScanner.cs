@@ -8,9 +8,7 @@ public abstract class SkillTargetScanner : ScriptableObject
 
     [Header("=== Scan Settings ===")] 
     [SerializeField] protected ContactFilter2D contactFilter;
-
-    [SerializeField] private LayerMask enemyLayer;
-
+    
     protected Collider2D[] enemies = new Collider2D[30];
 
     public abstract SkillScanResult Scan(UnitController caster, SkillTargetData targetData);

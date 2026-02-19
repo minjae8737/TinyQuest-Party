@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6cece7dbc05ac4cb481b48010f64e9b7, type: 3}
-  m_Name: CirclePlayerTargetScannerSO
+  m_Name: CircleTargetScannerSO
   m_EditorClassIdentifier: 
   contactFilter:
     useTriggers: 0
@@ -21,11 +21,8 @@ MonoBehaviour:
     useOutsideNormalAngle: 0
     layerMask:
       serializedVersion: 2
-      m_Bits: 64
+      m_Bits: 320
     minDepth: 0
     maxDepth: 0
     minNormalAngle: 0
     maxNormalAngle: 0
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 64

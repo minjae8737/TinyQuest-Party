@@ -2323,6 +2323,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Priest
       objectReference: {fileID: 0}
+    - target: {fileID: 4394111016723720542, guid: 8aa9eb6a479684bccbaca21709fbcf0c, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7428537865894163491, guid: 8aa9eb6a479684bccbaca21709fbcf0c, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1
@@ -2363,14 +2367,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9169056856275847145, guid: 8aa9eb6a479684bccbaca21709fbcf0c, type: 3}
-      propertyPath: model.Data
-      value: 
-      objectReference: {fileID: 11400000, guid: acf914fa8e84046e79094e04f1c54840, type: 2}
-    - target: {fileID: 9169056856275847145, guid: 8aa9eb6a479684bccbaca21709fbcf0c, type: 3}
-      propertyPath: model.Skills.Array.data[1].scanner
-      value: 
-      objectReference: {fileID: 11400000, guid: d2dac13f1b96442529367996e3e18595, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

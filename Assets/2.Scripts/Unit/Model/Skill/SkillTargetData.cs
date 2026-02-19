@@ -21,6 +21,7 @@ public enum TargetSortType
 [Serializable]
 public abstract class SkillTargetData : ScriptableObject
 {
+    [Header("=== Basic Info ===")]
     public TargetLayerType TargetLayer;
     public TargetSortType SortType;
     [Min(0)] public int MaxTargetCount;

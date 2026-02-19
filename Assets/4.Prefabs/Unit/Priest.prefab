@@ -32,7 +32,7 @@ Transform:
   m_GameObject: {fileID: 4394111016723720542}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -195,7 +195,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model:
-    Data: {fileID: 11400000, guid: 948ff08f7c1d34176a32639a77fe5091, type: 2}
+    TeamType: 0
+    Data: {fileID: 11400000, guid: acf914fa8e84046e79094e04f1c54840, type: 2}
     Level:
       level: 1
       exp: 0
@@ -223,7 +224,7 @@ MonoBehaviour:
     - Data: {fileID: 11400000, guid: bc225694de7054adabb409535a8f5bb6, type: 2}
       scanner: {fileID: 11400000, guid: 5edc783562d91486a8064b51756158fe, type: 2}
     - Data: {fileID: 11400000, guid: 25153ce955d74439e82150b6b8693bf9, type: 2}
-      scanner: {fileID: 11400000, guid: d2dac13f1b96442529367996e3e18595, type: 2}
+      scanner: {fileID: 11400000, guid: 5edc783562d91486a8064b51756158fe, type: 2}
   view: {fileID: 7842427030200430958}
   scanner: {fileID: 5612997128484658197}
   col: {fileID: 7917668376867782448}

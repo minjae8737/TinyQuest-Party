@@ -16,6 +16,9 @@ public class CircleTargetScanner : SkillTargetScanner
         // enemies 에서 UnitController 추출
         GetUnitController(count, targets);
         
+        // 필터 적용
+        targets = ApplyTeamFilter(circleTargetData, caster, targets);
+        
         // 가장 가까운 대상 탐색
         UnitController nearestTarget = FindNearestTarget(casterPos, targets);
         if (nearestTarget == null) return scanResult;
@@ -27,7 +30,7 @@ public class CircleTargetScanner : SkillTargetScanner
         int enemyCounts = Physics2D.OverlapCircle(nearestEnemyPos, circleTargetData.Radius, contactFilter, enemies);
         targets.Clear();
         GetUnitController(enemyCounts, targets);
-
+        
         // 필터 적용
         targets = ApplyTeamFilter(circleTargetData, caster, targets);
         targets = ApplyConditionFilter(circleTargetData, targets);

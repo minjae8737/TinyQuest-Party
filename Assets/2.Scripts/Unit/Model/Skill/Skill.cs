@@ -126,7 +126,6 @@ public class Skill
         // 발사체일경우 세팅
         if (Data.DeliveryType == SkillDeliveryType.Projectile)
         {
-
             for (int i = 0; i < skillEffects.Count; i++)
             {
                 if (skillEffects[i].TryGetComponent<ProjectileMover>(out var mover))

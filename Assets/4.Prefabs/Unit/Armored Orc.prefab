@@ -222,11 +222,11 @@ MonoBehaviour:
       isDeath: 0
     Skills:
     - Data: {fileID: 11400000, guid: b2f5a63763e124f69858b12215aa05da, type: 2}
-      scanner: {fileID: 11400000, guid: d2dac13f1b96442529367996e3e18595, type: 2}
+      scanner: {fileID: 11400000, guid: 5edc783562d91486a8064b51756158fe, type: 2}
     - Data: {fileID: 11400000, guid: 20f0f252052ba4b6f980efbb905aac2a, type: 2}
-      scanner: {fileID: 11400000, guid: 20de1806d48f3404a975a747b4d205dc, type: 2}
+      scanner: {fileID: 11400000, guid: a31072d1f1965491284d10454a2fa429, type: 2}
     - Data: {fileID: 11400000, guid: d72c0d9e965544f57aaa31d1f50d5287, type: 2}
-      scanner: {fileID: 11400000, guid: 60c892dd6d5c04a259ea4222ecc75312, type: 2}
+      scanner: {fileID: 11400000, guid: f5ec35c07a3a44644a21ebee33445e78, type: 2}
   view: {fileID: 2319201845874243503}
   scanner: {fileID: 1086058737361128307}
   col: {fileID: 2725965886788991496}
