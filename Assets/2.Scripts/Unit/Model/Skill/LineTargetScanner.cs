@@ -17,8 +17,6 @@ public class LineTargetScanner : SkillTargetScanner
 
         // 필터 적용
         targets = ApplyTeamFilter(lineTargetData, caster, targets);
-        targets = ApplyConditionFilter(lineTargetData, targets);
-        targets = ApplySelect(lineTargetData, targets);
         
         // 가장 가까운 대상 탐색
         UnitController nearestTarget = FindNearestTarget(casterPos, targets);
@@ -38,6 +36,11 @@ public class LineTargetScanner : SkillTargetScanner
         targets.Clear();
         GetUnitController(enemyCounts, targets);
 
+        // 필터 적용
+        targets = ApplyTeamFilter(lineTargetData, caster, targets);
+        targets = ApplyConditionFilter(lineTargetData, targets);
+        targets = ApplySelect(lineTargetData, targets);
+        
         scanResult.Targets = targets;
         scanResult.PrimaryTarget = nearestTarget;
         
