@@ -79,7 +79,7 @@ public abstract class SkillTargetScanner : ScriptableObject
             case TargetLayerType.Enemy:
                 return targets.FindAll(u => u.TeamType != caster.TeamType);
             
-            case TargetLayerType.Player:
+            case TargetLayerType.Ally:
                 return targets.FindAll(u => u.TeamType == caster.TeamType);
             
             case TargetLayerType.Self:

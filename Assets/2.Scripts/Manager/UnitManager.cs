@@ -12,7 +12,18 @@ public enum UnitName
     Armored_Axeman,
     Soldier,
     Wizard,
-    Priest
+    Priest,
+    Armored_Skeleton,
+    Elite_Orc,
+    Greatsword_Skeleton,
+    Orc,
+    Orc_rider,
+    Skeleton,
+    Skeleton_Archer,
+    Slime,
+    Werebear,
+    Werewolf,
+    Lancer
 }
 
 public class UnitManager : MonoBehaviour

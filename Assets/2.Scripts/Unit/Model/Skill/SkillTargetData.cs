@@ -4,7 +4,7 @@ using UnityEngine;
 public enum TargetLayerType
 {
     Enemy,
-    Player,
+    Ally,
     Self,
     All
 }

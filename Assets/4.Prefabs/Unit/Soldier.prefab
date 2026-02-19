@@ -195,7 +195,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model:
-    Data: {fileID: 11400000, guid: 8417900ed9fb94b449399a453c35ebac, type: 2}
+    TeamType: 0
+    Data: {fileID: 11400000, guid: f8c67a780af724f4cabee8e80ec90723, type: 2}
     Level:
       level: 1
       exp: 0
@@ -228,7 +229,6 @@ MonoBehaviour:
       scanner: {fileID: 11400000, guid: 5edc783562d91486a8064b51756158fe, type: 2}
   view: {fileID: 3411578830979771048}
   scanner: {fileID: 5184868232059707733}
-  targets: []
   col: {fileID: 2074630595873403663}
 --- !u!114 &3411578830979771048
 MonoBehaviour:
