@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8178059322672173327}
   - component: {fileID: 6465464541626525407}
   - component: {fileID: 4366756629629014705}
+  - component: {fileID: -4976536228780053156}
   - component: {fileID: 6322138246373344651}
   - component: {fileID: 6459673721729402265}
   - component: {fileID: 6839941304611331819}
@@ -80,14 +81,14 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 1670094849
-  m_SortingLayer: 2
+  m_SortingLayer: 3
   m_SortingOrder: 0
   m_Sprite: {fileID: 7685688494458101020, guid: 6292767a0f0aa44e3a999bfcd00ef0d1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1.5, y: 1.375}
+  m_Size: {x: 1.0625, y: 1.3125}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -115,6 +116,33 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!50 &-4976536228780053156
+Rigidbody2D:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8915359862679647117}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
 --- !u!70 &6322138246373344651
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -195,6 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   model:
+    TeamType: 0
     Data: {fileID: 11400000, guid: 948ff08f7c1d34176a32639a77fe5091, type: 2}
     Level:
       level: 1
@@ -226,7 +255,6 @@ MonoBehaviour:
       scanner: {fileID: 11400000, guid: b486255920861450d8d0547ead3bc466, type: 2}
   view: {fileID: 8704672276572809892}
   scanner: {fileID: 6839941304611331819}
-  targets: []
   col: {fileID: 6322138246373344651}
 --- !u!114 &8704672276572809892
 MonoBehaviour:
