@@ -12,13 +12,13 @@ public class SingleTargetScanner : SkillTargetScanner
         Vector2 forward = caster.Forward;
         List<UnitController> targets = new List<UnitController>();
 
-        // Overlap 스캔
-        int count = Physics2D.OverlapCircle(casterPos, targetData.GetSkillDistance(), contactFilter, enemies);
+        targets = new(UnitManager.Instance.Units);
         
-        // enemies 에서 UnitController 추출
-        GetUnitController(count, targets);
-        
+        // 범위 체크
+        targets.RemoveAll(u => !singleTargetData.IsInRange(casterPos, u.transform.position, forward));
+
         // 필터 적용
+        SelectActiveUnit(targets); // 활성화된 Unit만 선택
         targets = ApplyTeamFilter(singleTargetData, caster, targets);
         targets = ApplyConditionFilter(singleTargetData, targets);
         targets = ApplySelect(singleTargetData, targets);
@@ -32,6 +32,4 @@ public class SingleTargetScanner : SkillTargetScanner
 
         return scanResult;
     }
-
-
 }

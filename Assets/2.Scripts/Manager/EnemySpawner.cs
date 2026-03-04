@@ -21,23 +21,23 @@ public class EnemySpawner : MonoBehaviour
     private void Spawn()
     {
         // Player 주변 랜덤 범위 설정
-        float randRangeX = Random.Range(4.5f, 5.5f) * GetRandomSign();
-        float randRangeY = Random.Range(9f, 11f) * GetRandomSign();
+        float randRangeX = Random.Range(3.5f, 5.5f);
+        // float randRangeY = Random.Range(9f, 11f) * GetRandomSign();
 
-        Vector2 randPos = new Vector2(randRangeX, randRangeY) + (Vector2)playerTr.transform.position;
+        Vector2 randPos = new Vector2(randRangeX, 0f) + (Vector2)playerTr.transform.position;
 
         // 맵 너비에 맞게 조정
-        Vector3Int mapSizeVector = MapManager.Instance.mapSizeVector;
-        float posX = Mathf.Clamp(randPos.x, -mapSizeVector.x / 2f + minOffset.x, mapSizeVector.x / 2f + maxOffset.x);
-        float posY = Mathf.Clamp(randPos.y, -mapSizeVector.y / 2f + minOffset.y, mapSizeVector.y / 2f + maxOffset.y);
+        // Vector3Int mapSizeVector = MapManager.Instance.mapSizeVector;
+        // float posX = Mathf.Clamp(randPos.x, -mapSizeVector.x / 2f + minOffset.x, mapSizeVector.x / 2f + maxOffset.x);
+        // float posY = Mathf.Clamp(randPos.y, -mapSizeVector.y / 2f + minOffset.y, mapSizeVector.y / 2f + maxOffset.y);
 
-        Vector2 spawnPos = new Vector2(posX, posY);
+        Vector2 spawnPos = randPos;
 
         UnitManager.Instance.Spawn(spawnUnitName, spawnPos);
     }
 
-    private int GetRandomSign()
-    {
-        return Random.value < 0.5f ? 1 : -1;
-    }
+    // private int GetRandomSign()
+    // {
+    //     return Random.value < 0.5f ? 1 : -1;
+    // }
 }

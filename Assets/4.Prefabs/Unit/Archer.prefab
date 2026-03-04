@@ -206,10 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b038be1c90cc04013bcac5bcf12dd35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  skillTargetPos: {x: 0, y: 0}
+  enemyLayer: 0
 --- !u!114 &4206549746841870089
 MonoBehaviour:
   m_ObjectHideFlags: 0

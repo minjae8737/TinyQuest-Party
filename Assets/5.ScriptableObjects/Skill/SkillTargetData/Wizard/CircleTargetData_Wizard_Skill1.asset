@@ -12,5 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f19da6c50004f41768285a5c79050384, type: 3}
   m_Name: CircleTargetData_Wizard_Skill1
   m_EditorClassIdentifier: 
+  TargetLayer: 0
+  SortType: 0
+  MaxTargetCount: 0
   MaxDistance: 5
   Radius: 1

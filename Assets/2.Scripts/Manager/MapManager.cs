@@ -21,11 +21,6 @@ public class MapManager : MonoBehaviour
             Instance = this;
         }
     }
-    
-    private void Start()
-    {
-        ChangeMap(0);
-    }
 
     private void UpdateMapSize()
     {

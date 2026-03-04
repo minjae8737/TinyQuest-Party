@@ -85,20 +85,22 @@ public class UnitController : MonoBehaviour
         LookAt(curPos, nextPos);
 
         // Character Order
-        view.SetOrderInLayer((int)(-transform.position.y * 100));
+        // view.SetOrderInLayer((int)(-transform.position.y * 100));
     }
 
     public bool TryGetNextPos(int skillIdx, out Vector2 nextPos)
     {
+        Debug.Log(transform.gameObject + " Enter TryGetNextPos()");
         nextPos = Vector2.zero;
         skillIdx = Math.Max(skillIdx, 0);
         Skill skill = model.GetSkill(skillIdx);
 
-        UnitController nearestEnemy = scanner.FindNearestEnemy();
+        UnitController nearestEnemy = scanner.FindNearestEnemy(this);
         if (nearestEnemy == null) return false;
 
         float skillRange = skill.Data.TargetData.GetSkillDistance() * 0.9f; // 0.9f -> 여유롭게 스킬범위 안으로 진입
         Vector2 dir = (transform.position - nearestEnemy.transform.position).normalized;
+        if (Mathf.Abs(transform.position.x - nearestEnemy.transform.position.x) < skillRange) return false; // 이미 스킬범위 안에 있다면 움직이지 않음  
 
         nextPos = nearestEnemy.transform.position + (Vector3)(dir * skillRange);
         return true;
