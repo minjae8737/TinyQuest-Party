@@ -15,10 +15,11 @@ public class ProjectileMover : MonoBehaviour
         this.speed = 0;
     }
 
-    public void Init(Vector2 target, float speed, Action action = null)
+    public void Init(Vector2 startPos, Vector2 targetPos, float speed, Action action = null)
     {
         transform.rotation = Quaternion.Euler(Vector3.zero);
-        targetPos = target;
+        transform.position = startPos;
+        this.targetPos = targetPos;
         this.speed = speed;
         OnArrived = action;
         Rotate();

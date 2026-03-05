@@ -90,7 +90,6 @@ public class UnitController : MonoBehaviour
 
     public bool TryGetNextPos(int skillIdx, out Vector2 nextPos)
     {
-        Debug.Log(transform.gameObject + " Enter TryGetNextPos()");
         nextPos = Vector2.zero;
         skillIdx = Math.Max(skillIdx, 0);
         Skill skill = model.GetSkill(skillIdx);
