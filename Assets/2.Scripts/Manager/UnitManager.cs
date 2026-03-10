@@ -33,6 +33,7 @@ public class UnitManager : MonoBehaviour
     private Dictionary<UnitName, GameObject> unitPrefabDic;
     private Dictionary<UnitName, List<UnitController>> unitPoolsDic;
     public Dictionary<TeamType, List<UnitController>> TeamUnitDic { get; private set; }
+    public Dictionary<TeamType, int> TeamAliveCount { get; private set; }
     public List<UnitController> Units { get; private set; }
     private Stack<SkillEffect> skillEffectStack;
     
@@ -55,6 +56,7 @@ public class UnitManager : MonoBehaviour
         unitPrefabDic = new Dictionary<UnitName, GameObject>();
         unitPoolsDic = new Dictionary<UnitName, List<UnitController>>();
         TeamUnitDic = new Dictionary<TeamType, List<UnitController>>();
+        TeamAliveCount = new Dictionary<TeamType, int>();
         Units = new List<UnitController>();
         skillEffectStack = new Stack<SkillEffect>();
 
@@ -72,14 +74,8 @@ public class UnitManager : MonoBehaviour
 
         TeamUnitDic.Add(TeamType.Player,new());
         TeamUnitDic.Add(TeamType.Enemy,new());
-    }
-
-    private void Start()
-    {
-        // TODO 나중에 삭제 테스트 코드
-        Spawn(UnitName.Priest, Vector2.zero);
-        Spawn(UnitName.Wizard, Vector2.zero);
-        Spawn(UnitName.Swordsman, Vector2.zero);
+        TeamAliveCount.Add(TeamType.Player, 0);
+        TeamAliveCount.Add(TeamType.Enemy, 0);
     }
 
     #region Unit
@@ -138,11 +134,48 @@ public class UnitManager : MonoBehaviour
         unitController.Init();
         unitController.transform.position = spawnPos;
         unitController.gameObject.SetActive(true);
+        TeamAliveCount[unitController.TeamType]++;
     }
 
     public void Despawn(UnitController unitController)
     {
         unitController.gameObject.SetActive(false);
+        TeamAliveCount[unitController.TeamType]--;
+    }
+
+    public void DespawnPlayerParty()
+    {
+        List<UnitController> playerTeam = TeamUnitDic[TeamType.Player];
+
+        foreach (UnitController controller in playerTeam)
+        {
+            if (controller.gameObject.activeSelf)
+            {
+                Despawn(controller);
+            }
+        }
+    }
+    
+    public void CombatEnabled(bool enabled)
+    {
+        List<UnitController> playerTeam = TeamUnitDic[TeamType.Player];
+        List<UnitController> enemyTeam = TeamUnitDic[TeamType.Enemy];
+        
+        foreach (UnitController controller in playerTeam)
+        {
+            if (controller.gameObject.activeSelf && controller.TryGetComponent<AutoCombat>(out var autoCombat))
+            {
+                autoCombat.SetEnabled(enabled);
+            }
+        }
+        
+        foreach (UnitController controller in enemyTeam)
+        {
+            if (controller.gameObject.activeSelf && controller.TryGetComponent<AutoCombat>(out var autoCombat))
+            {
+                autoCombat.SetEnabled(enabled);
+            }
+        }
     }
     
     #endregion

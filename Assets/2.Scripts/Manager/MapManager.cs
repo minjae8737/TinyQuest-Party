@@ -1,19 +1,20 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 
 public class MapManager : MonoBehaviour
 {
     public static MapManager Instance { get; private set; }
 
     [SerializeField] private Transform MapParent;
-    [SerializeField] private Tilemap curTilemap;
-
-    [SerializeField] private List<Tilemap> tilemaps;
     
-    public Vector3Int mapSizeVector { get; private set; }
+    private int curstageIdx = 0;
+    private int[] islandXPos = { 0, 20, 40, 60 };
+    
+    private List<Island> islands = new();
+    
+    [SerializeField] private List<GameObject> islandPrefabs;
 
+    
     private void Awake()
     {
         if (Instance == null)
@@ -22,22 +23,29 @@ public class MapManager : MonoBehaviour
         }
     }
 
-    private void UpdateMapSize()
+    public void LoadIsland(StageData stageData)
     {
-        curTilemap.CompressBounds();
-        BoundsInt cellBounds = curTilemap.cellBounds;
-        mapSizeVector = cellBounds.size;
+        islands.Clear();
+
+        for (int i = 0; i < stageData.IslandDatas.Count; i++)
+        {
+            int randomIdx = Random.Range(0, islandPrefabs.Count);
+            
+            GameObject islandObj = Instantiate(islandPrefabs[randomIdx], MapParent);
+            if(!islandObj.TryGetComponent<Island>(out var island)) continue;
+            
+            islands.Add(island);
+            island.transform.position = new Vector2(islandXPos[i], 0f);
+        }
     }
 
-    public void ChangeMap(int mapIdx)
+    public Vector2 GetEnemySpawnPos(int curIslandIdx)
     {
-        for (int i = 0; i < tilemaps.Count; i++)
-        {
-            bool active = i == mapIdx;
-            tilemaps[i].gameObject.SetActive(active);
-        }
+        return (Vector2)islands[curIslandIdx].transform.position + islands[curIslandIdx].EnemySpawnPos;
+    }
 
-        curTilemap = tilemaps[mapIdx];
-        UpdateMapSize();
+    public Vector2 GetPlayerSpawnPos(int curIslandIdx)
+    {
+        return (Vector2)islands[curIslandIdx].transform.position + islands[curIslandIdx].PlayerSpawnPos;
     }
 }
