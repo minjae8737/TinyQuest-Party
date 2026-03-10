@@ -12,27 +12,23 @@ public class CircleTargetScanner : SkillTargetScanner
         Vector2 forward = caster.Forward;
         List<UnitController> targets = new List<UnitController>();
 
-        int count = Physics2D.OverlapCircle(casterPos, circleTargetData.GetSkillDistance(), contactFilter, enemies);
-        // enemies 에서 UnitController 추출
-        GetUnitController(count, targets);
-        
+        targets = new(UnitManager.Instance.Units);
+
         // 필터 적용
         targets = ApplyTeamFilter(circleTargetData, caster, targets);
         
         // 가장 가까운 대상 탐색
         UnitController nearestTarget = FindNearestTarget(casterPos, targets);
         if (nearestTarget == null) return scanResult;
-
+        
+        // nearestTarget 중심으로 재탐색
         Vector2 nearestEnemyPos = nearestTarget.transform.position;
         if (!circleTargetData.IsInMaxDistance(casterPos, nearestEnemyPos)) return scanResult;
-
-        // nearestTarget 중심으로 재탐색
-        int enemyCounts = Physics2D.OverlapCircle(nearestEnemyPos, circleTargetData.Radius, contactFilter, enemies);
-        targets.Clear();
-        GetUnitController(enemyCounts, targets);
+        
+        targets.RemoveAll(u => !circleTargetData.IsInMaxRange(nearestEnemyPos, u.transform.position));
         
         // 필터 적용
-        targets = ApplyTeamFilter(circleTargetData, caster, targets);
+        SelectActiveUnit(targets); // 활성화된 Unit만 선택
         targets = ApplyConditionFilter(circleTargetData, targets);
         targets = ApplySelect(circleTargetData, targets);
         

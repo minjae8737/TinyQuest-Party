@@ -1,26 +1,29 @@
+using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public Transform playerTr;
-    public UnitName spawnUnitName;
+    public static EnemySpawner Instance { get; private set; }
     
-    private void Start()
+    [SerializeField] private Vector2 maxOffset;
+    [SerializeField] private Vector2 minOffset;
+
+
+    private void Awake()
     {
-        TestSpawn();
+        if (Instance == null)
+        {
+            Instance = this;
+        }
     }
 
-    private void TestSpawn()
+    public void Spawn(UnitName spawnUnitName, Vector2 spawnPos)
     {
-        InvokeRepeating("Spawn", 2f, 3f);
-    }
+        float randRangeX = Random.Range(-0.5f, 0.5f);
 
-    private void Spawn()
-    {
-        Vector2 randPos = new Vector2(Random.Range(4.5f, 5.5f) * (Random.value < 0.5f ? 1 : -1),
-            Random.Range(9f, 11f) * (Random.value < 0.5f ? 1 : -1));
-        // Debug.Log(randPos);
-        UnitManager.Instance.Spawn(spawnUnitName, (Vector2)playerTr.position + randPos);
+        Vector2 randPos = new Vector2(randRangeX, 0f) + spawnPos;
+        
+        UnitManager.Instance.Spawn(spawnUnitName, spawnPos);
     }
 }

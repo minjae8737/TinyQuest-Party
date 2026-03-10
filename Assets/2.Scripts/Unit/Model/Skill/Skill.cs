@@ -101,21 +101,25 @@ public class Skill
         switch (Data.EffectSpawnType)
         {
             case EffectSpawnType.Primary:
-                scanResult.EffectPos.Add(scanResult.PrimaryTarget.transform.position);
+                scanResult.SpawnPos.Add(scanResult.PrimaryTarget.transform.position);
                 break;
             
             //TODO LINQ 개선
             case EffectSpawnType.EachTarget:
-                scanResult.EffectPos = scanResult.Targets.Select(u => (Vector2)u.transform.position).ToList();
+                scanResult.SpawnPos = scanResult.Targets.Select(u => (Vector2)u.transform.position).ToList();
                 break;
             
             case EffectSpawnType.Caster:
-                scanResult.EffectPos.Add(caster.transform.position);
+                scanResult.SpawnPos.Add(caster.transform.position);
                 break;
         }
         
+        // 이펙트 타겟위치 세팅
+        //TODO LINQ 개선
+        scanResult.TargetPos = scanResult.Targets.Select(u => (Vector2)u.transform.position).ToList();
+        
         // SkillEffect 생성
-        foreach (Vector2 pos in scanResult.EffectPos)
+        foreach (Vector2 pos in scanResult.SpawnPos)
         {
             SkillEffect newSkillEffect = UnitManager.Instance.SpawnSkillEffect(pos);
             skillEffects.Add(newSkillEffect);
@@ -131,14 +135,15 @@ public class Skill
                 if (skillEffects[i].TryGetComponent<ProjectileMover>(out var mover))
                 {
                     ProjectileDamageSkillData projectileDamageSkillData = Data as ProjectileDamageSkillData;
-                    
-                    mover.Init(scanResult.EffectPos[i], projectileDamageSkillData.Speed, () =>
+
+                    mover.Init(scanResult.SpawnPos[i], scanResult.TargetPos[i],
+                        projectileDamageSkillData.Speed, () =>
                         {
                             // 발사체 데미지 적용
                             Data.Use(caster, scanResult.Targets);
                         }
                     );
-                    
+
                     arrivedTime = mover.GetArrivedTime();
                 }
             }

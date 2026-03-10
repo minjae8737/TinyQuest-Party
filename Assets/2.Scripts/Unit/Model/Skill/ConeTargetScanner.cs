@@ -13,25 +13,17 @@ public class ConeTargetScanner : SkillTargetScanner
         Vector2 forward = caster.Forward;
         List<UnitController> targets = new List<UnitController>();
 
-        // Overlap 스캔
-        int count = Physics2D.OverlapCircle(casterPos, coneTargetData.GetSkillDistance(), contactFilter, enemies);
-        GetUnitController(count, targets);
+        targets = new(UnitManager.Instance.Units);
 
+        targets.RemoveAll(u => !coneTargetData.IsInRange(casterPos, u.transform.position, forward));
+        
         // 필터 적용
+        SelectActiveUnit(targets); // 활성화된 Unit만 선택
         targets = ApplyTeamFilter(coneTargetData, caster, targets);
         targets = ApplyConditionFilter(coneTargetData, targets);
         targets = ApplySelect(coneTargetData, targets);
 
-        List<UnitController> filteredTargets = new List<UnitController>();
-        foreach (UnitController target in targets)
-        {
-            if (coneTargetData.IsInRange(casterPos, target.transform.position, forward))
-            {
-                filteredTargets.Add(target);
-            }
-        }
-
-        scanResult.Targets = filteredTargets;
+        scanResult.Targets = targets;
         scanResult.PrimaryTarget = caster;
 
         return scanResult;

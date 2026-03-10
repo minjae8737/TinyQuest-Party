@@ -32,8 +32,14 @@ public class UnitManager : MonoBehaviour
     
     private Dictionary<UnitName, GameObject> unitPrefabDic;
     private Dictionary<UnitName, List<UnitController>> unitPoolsDic;
+    public Dictionary<TeamType, List<UnitController>> TeamUnitDic { get; private set; }
+    public Dictionary<TeamType, int> TeamAliveCount { get; private set; }
+    public List<UnitController> Units { get; private set; }
     private Stack<SkillEffect> skillEffectStack;
-
+    
+    [SerializeField] private Transform playerGroupTransform;
+    [SerializeField] private Transform enemyGroupTransform;
+    
     [Header("=== Unit Prefabs ===")]
     [SerializeField] private List<GameObject> unitPrefabs;
     
@@ -49,6 +55,9 @@ public class UnitManager : MonoBehaviour
 
         unitPrefabDic = new Dictionary<UnitName, GameObject>();
         unitPoolsDic = new Dictionary<UnitName, List<UnitController>>();
+        TeamUnitDic = new Dictionary<TeamType, List<UnitController>>();
+        TeamAliveCount = new Dictionary<TeamType, int>();
+        Units = new List<UnitController>();
         skillEffectStack = new Stack<SkillEffect>();
 
         foreach (GameObject prefab in unitPrefabs)
@@ -62,18 +71,26 @@ public class UnitManager : MonoBehaviour
             UnitName unitName = unitController.Model.Data.UnitName;
             unitPrefabDic.Add(unitName, prefab);
         }
+
+        TeamUnitDic.Add(TeamType.Player,new());
+        TeamUnitDic.Add(TeamType.Enemy,new());
+        TeamAliveCount.Add(TeamType.Player, 0);
+        TeamAliveCount.Add(TeamType.Enemy, 0);
     }
 
+    #region Unit
+    
     public UnitController CreateUnit(UnitName unitName)
     {
         if (!unitPrefabDic.TryGetValue(unitName, out var prefab))
         {
             Debug.LogError("UnitName : " + unitName + " is Null");
         }
-
+        
         GameObject newUnit = Instantiate(prefab);
         newUnit.SetActive(false);
         newUnit.TryGetComponent<UnitController>(out var unitController);
+        newUnit.transform.parent = unitController.TeamType == TeamType.Player ? playerGroupTransform : enemyGroupTransform;
 
         if (!unitPoolsDic.TryGetValue(unitName, out List<UnitController> pool))
         {
@@ -83,8 +100,10 @@ public class UnitManager : MonoBehaviour
                 unitPoolsDic.Add(unitName, pool);
             }
         }
-        
+
         pool.Add(unitController);
+        TeamUnitDic[unitController.TeamType].Add(unitController);
+        Units.Add(unitController);
         return unitController;
     }
 
@@ -115,12 +134,53 @@ public class UnitManager : MonoBehaviour
         unitController.Init();
         unitController.transform.position = spawnPos;
         unitController.gameObject.SetActive(true);
+        TeamAliveCount[unitController.TeamType]++;
     }
 
     public void Despawn(UnitController unitController)
     {
         unitController.gameObject.SetActive(false);
+        TeamAliveCount[unitController.TeamType]--;
     }
+
+    public void DespawnPlayerParty()
+    {
+        List<UnitController> playerTeam = TeamUnitDic[TeamType.Player];
+
+        foreach (UnitController controller in playerTeam)
+        {
+            if (controller.gameObject.activeSelf)
+            {
+                Despawn(controller);
+            }
+        }
+    }
+    
+    public void CombatEnabled(bool enabled)
+    {
+        List<UnitController> playerTeam = TeamUnitDic[TeamType.Player];
+        List<UnitController> enemyTeam = TeamUnitDic[TeamType.Enemy];
+        
+        foreach (UnitController controller in playerTeam)
+        {
+            if (controller.gameObject.activeSelf && controller.TryGetComponent<AutoCombat>(out var autoCombat))
+            {
+                autoCombat.SetEnabled(enabled);
+            }
+        }
+        
+        foreach (UnitController controller in enemyTeam)
+        {
+            if (controller.gameObject.activeSelf && controller.TryGetComponent<AutoCombat>(out var autoCombat))
+            {
+                autoCombat.SetEnabled(enabled);
+            }
+        }
+    }
+    
+    #endregion
+
+    #region SkillEffect
 
     public SkillEffect SpawnSkillEffect(Vector2 targetPos)
     {
@@ -140,4 +200,7 @@ public class UnitManager : MonoBehaviour
         skillEffect.gameObject.SetActive(false);
         skillEffectStack.Push(skillEffect);
     }
+
+    #endregion
+
 }

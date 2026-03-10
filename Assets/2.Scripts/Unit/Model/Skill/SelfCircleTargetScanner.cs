@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Skill/Scan/SelfCircle")]
@@ -9,13 +10,15 @@ public class SelfCircleTargetScanner : SkillTargetScanner
         SkillScanResult scanResult = new SkillScanResult();
         CircleTargetData circleTargetData = (CircleTargetData)targetData;
         Vector2 casterPos = caster.transform.position;
+        Vector2 forward = caster.Forward;
         List<UnitController> targets = new List<UnitController>();
 
-        // Overlap 스캔
-        int count = Physics2D.OverlapCircle(casterPos, circleTargetData.Radius, contactFilter, enemies);
-        GetUnitController(count, targets);
+        targets = new(UnitManager.Instance.Units);
+
+        targets.RemoveAll(u => !circleTargetData.IsInMaxRange(casterPos, u.transform.position));
         
         // 필터 적용
+        SelectActiveUnit(targets); // 활성화된 Unit만 선택
         targets = ApplyTeamFilter(circleTargetData, caster, targets);
         targets = ApplyConditionFilter(circleTargetData, targets);
         targets = ApplySelect(circleTargetData, targets);
@@ -23,7 +26,7 @@ public class SelfCircleTargetScanner : SkillTargetScanner
         UnitController nearestTarget = FindNearestTarget(casterPos, targets);
         
         scanResult.Targets = targets;
-        scanResult.PrimaryTarget = nearestTarget;
+        scanResult.PrimaryTarget = caster;
 
         return scanResult;
     }

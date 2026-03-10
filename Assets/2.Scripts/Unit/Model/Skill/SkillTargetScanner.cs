@@ -9,7 +9,7 @@ public abstract class SkillTargetScanner : ScriptableObject
     [Header("=== Scan Settings ===")] 
     [SerializeField] protected ContactFilter2D contactFilter;
     
-    protected Collider2D[] enemies = new Collider2D[30];
+    protected RaycastHit2D[] enemies = new RaycastHit2D[30];
 
     public abstract SkillScanResult Scan(UnitController caster, SkillTargetData targetData);
 
@@ -17,23 +17,23 @@ public abstract class SkillTargetScanner : ScriptableObject
     {
         for (int i = 0; i < count; i++)
         {
-            if (enemies[i].TryGetComponent<UnitController>(out var controller))
+            if (enemies[i].transform.TryGetComponent<UnitController>(out var controller))
             {
                 targets.Add(controller);
             }
         }
     }
     
-    protected Collider2D FindNearestEnemy(Vector2 casterPos, int count)
+    protected RaycastHit2D FindNearestEnemy(Vector2 casterPos, int count)
     {
         float minDistSqr = MAX_SCAN_RADIUS * MAX_SCAN_RADIUS;
 
-        Collider2D nearestEnemy = null;
+        RaycastHit2D nearestEnemy = new RaycastHit2D();
 
         for (int i = 0; i < count; i++)
         {
-            Collider2D enemy = enemies[i];
-            if (enemy == null) continue;
+            RaycastHit2D enemy = enemies[i];
+            if (enemy.collider == null) continue;
 
             Vector2 diff = (Vector2)enemy.transform.position - casterPos;
             float distSqr = diff.sqrMagnitude;
@@ -69,6 +69,11 @@ public abstract class SkillTargetScanner : ScriptableObject
         }
 
         return nearestTarget;
+    }
+    
+    protected void SelectActiveUnit(List<UnitController> targets)
+    {
+        targets.RemoveAll(u => u.gameObject.activeSelf == false);
     }
 
     protected List<UnitController> ApplyTeamFilter(SkillTargetData targetData, UnitController caster, List<UnitController> targets)

@@ -4,187 +4,166 @@ using UnityEngine;
 
 public class TargetScanner : MonoBehaviour
 {
+    [SerializeField] private TargetLayerType enemyLayer;
+    
     private const float MAX_SCAN_RADIUS = 20f;
 
-    [SerializeField] private LayerMask enemyLayer;
-    private Collider2D[] enemies = new Collider2D[30];
-    private ContactFilter2D filter;
-    private Vector2 forward;
-    public Vector2 skillTargetPos;
-
-    private List<UnitController> targets;
-
-    void Awake()
+    public UnitController FindNearestEnemy(UnitController caster)
     {
-        // ContactFilter2D 설정
-        filter = new ContactFilter2D();
-        filter.SetLayerMask(enemyLayer);
-        filter.useLayerMask = true;
-        filter.useTriggers = false;
+        Vector2 casterPos = caster.transform.position;
+        List<UnitController> targets = new List<UnitController>();
+        targets = new(UnitManager.Instance.Units);
+        
+        // 필터 적용
+        targets = ApplyTeamFilter(caster, targets);
 
-        targets = new List<UnitController>();
-    }
-
-    public List<UnitController> Scan(Skill skill, Vector2 casterPos, bool isForwardLeft)
-    {
+        UnitController nearestTarget = FindNearestEnemy(casterPos, targets);
         targets.Clear();
-        forward = isForwardLeft ? Vector2.left : Vector2.right;
+        targets.Add(nearestTarget);
 
-        // 캐릭터 주변 MAX_SCAN_RADIUS 안 대상 타깃
-        int count = Physics2D.OverlapCircle(casterPos, MAX_SCAN_RADIUS, filter, enemies);
-
-        switch (skill.Data.TargetType)
-        {
-            case SkillTargetType.Single:
-                SelectNearestTarget(count, skill, casterPos, forward);
-                break;
-            case SkillTargetType.Circle:
-                SelectCircleTarget(count, skill, casterPos, forward);
-                break;
-            case SkillTargetType.Cone:
-                SelectConeTarget(count, skill, casterPos, forward);
-                break;
-            case SkillTargetType.Line:
-                SelectLineTarget(count, skill, casterPos, forward);
-                break;
-        }
-
-        return targets;
+        return nearestTarget;
     }
 
-    public UnitController FindNearestEnemy()
-    {
-        int count = Physics2D.OverlapCircle(transform.position, MAX_SCAN_RADIUS, filter, enemies);
-
-        Collider2D nearestEnemy = FindNearestEnemy(count);
-        if (nearestEnemy == null) 
-            return null;
-
-        if (nearestEnemy.TryGetComponent<UnitController>(out var controller)) return controller;
-
-        return null;
-    }
-
-    private Collider2D FindNearestEnemy(int count)
+    private UnitController FindNearestEnemy(Vector2 casterPos, List<UnitController> targets)
     {
         // sqrMagnitude 로 비교하기위한 제곱
         float minDistSqr = MAX_SCAN_RADIUS * MAX_SCAN_RADIUS;
-        Collider2D nearestEnemy = null;
+        UnitController nearestEnemy = null;
 
-        for (int i = 0; i < count; i++)
+        for (int i = 0; i < targets.Count; i++)
         {
-            Collider2D enemy = enemies[i];
-            if (enemy == null) continue;
+            UnitController target = targets[i];
+            if (target == null) continue;
 
-            Vector2 diff = enemy.transform.position - transform.position;
+            Vector2 diff = (Vector2)target.transform.position - casterPos;
             float distSqr = diff.sqrMagnitude;
 
             if (distSqr < minDistSqr)
             {
                 minDistSqr = distSqr;
-                nearestEnemy = enemy;
+                nearestEnemy = target;
             }
         }
 
         return nearestEnemy;
     }
-
-    public void SelectNearestTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
+    
+    private List<UnitController> ApplyTeamFilter(UnitController caster, List<UnitController> targets)
     {
-        SingleTargetData skillTargetData = (SingleTargetData)skill.Data.TargetData;
-        // debugSkill = skill;
-        
-        Collider2D nearestEnemy = FindNearestEnemy(count);
-        if (nearestEnemy == null || !skillTargetData.IsInRange(casterPos, nearestEnemy.transform.position, forward)) return;
-
-        if (nearestEnemy != null && nearestEnemy.TryGetComponent<UnitController>(out var controller))
+        //TODO LINQ 사용을 줄여 메모리 최적화 필요
+        switch (enemyLayer)
         {
-            targets.Add(controller);
+            case TargetLayerType.Enemy:
+                return targets.FindAll(u => u.TeamType != caster.TeamType);
+            
+            case TargetLayerType.Ally:
+                return targets.FindAll(u => u.TeamType == caster.TeamType);
+            
+            case TargetLayerType.Self:
+                return targets.FindAll(u => u == caster);
+            
+            case TargetLayerType.All:
+            default:
+                return targets;
         }
     }
 
-    public void SelectConeTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
-    {
-        ConeTargetData skillTargetData = (ConeTargetData)skill.Data.TargetData;
-        // debugSkill = skill;
+    // public void SelectNearestTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
+    // {
+    //     SingleTargetData skillTargetData = (SingleTargetData)skill.Data.TargetData;
+    //     // debugSkill = skill;
+    //     
+    //     Collider2D nearestEnemy = FindNearestEnemy(count);
+    //     if (nearestEnemy == null || !skillTargetData.IsInRange(casterPos, nearestEnemy.transform.position, forward)) return;
+    //
+    //     if (nearestEnemy != null && nearestEnemy.TryGetComponent<UnitController>(out var controller))
+    //     {
+    //         targets.Add(controller);
+    //     }
+    // }
 
-        for (int i = 0; i < count; i++)
-        {
-            Collider2D enemy = enemies[i];
-            if (enemy == null) continue;
-
-            if (skillTargetData.IsInRange(casterPos, enemy.transform.position, forward))
-            {
-                if (enemy.TryGetComponent<UnitController>(out var controller))
-                {
-                    targets.Add(controller);
-                }
-            }
-        }
-    }
-
-    public void SelectCircleTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
-    {
-        CircleTargetData skillTargetData = (CircleTargetData)skill.Data.TargetData;
-        // debugSkill = skill;
-
-        // 가장 가까운 대상 탐색
-        Collider2D nearestEnemy = FindNearestEnemy(count);
-        if (nearestEnemy == null) return;
-
-        Vector2 targetPos = nearestEnemy.transform.position;
-        if (!skillTargetData.IsInMaxDistance(casterPos, targetPos)) return;
-        
-        skillTargetPos = targetPos; // Gizmo용 
-
-        // target 중심으로 재탐색
-        int enemyCounts = Physics2D.OverlapCircle(targetPos, MAX_SCAN_RADIUS, filter, enemies);
-
-        for (int i = 0; i < enemyCounts; i++)
-        {
-            Collider2D enemy = enemies[i];
-
-            if (!skillTargetData.IsInMaxRange(targetPos, enemy.transform.position)) continue;
-
-            if (enemy.TryGetComponent<UnitController>(out var controller))
-            {
-                targets.Add(controller);
-            }
-        }
-    }
-
-    public void SelectLineTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
-    {
-        LineTargetData skillTargetData = (LineTargetData)skill.Data.TargetData;
-        // debugSkill = skill;
-
-        // 가장 가까운 대상 탐색
-        Collider2D nearestEnemy = FindNearestEnemy(count);
-        if (nearestEnemy == null) return;
-
-        Vector2 targetPos = nearestEnemy.transform.position;
-        if (!skillTargetData.IsInMaxDistance(casterPos, targetPos)) return;
-        skillTargetPos = targetPos; // Gizmo용 
-
-        Vector2 boxArea = skillTargetData.GetBoxArea();
-        float angle = skillTargetData.GetAngle(casterPos, targetPos, forward);
-
-        // 스킬 범위 중심으로 재탐색
-        Vector2 toTargetDir = (targetPos - casterPos).normalized;
-        Vector2 point = casterPos + toTargetDir * (boxArea.x * 0.5f);
-
-        int enemyCounts = Physics2D.OverlapBox(point, boxArea, angle, filter, enemies);
-
-        for (int i = 0; i < enemyCounts; i++)
-        {
-            Collider2D enemy = enemies[i];
-
-            if (enemy.TryGetComponent<UnitController>(out var controller))
-            {
-                targets.Add(controller);
-            }
-        }
-    }
+    // public void SelectConeTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
+    // {
+    //     ConeTargetData skillTargetData = (ConeTargetData)skill.Data.TargetData;
+    //     // debugSkill = skill;
+    //
+    //     for (int i = 0; i < count; i++)
+    //     {
+    //         Collider2D enemy = enemies[i];
+    //         if (enemy == null) continue;
+    //
+    //         if (skillTargetData.IsInRange(casterPos, enemy.transform.position, forward))
+    //         {
+    //             if (enemy.TryGetComponent<UnitController>(out var controller))
+    //             {
+    //                 targets.Add(controller);
+    //             }
+    //         }
+    //     }
+    // }
+    //
+    // public void SelectCircleTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
+    // {
+    //     CircleTargetData skillTargetData = (CircleTargetData)skill.Data.TargetData;
+    //     // debugSkill = skill;
+    //
+    //     // 가장 가까운 대상 탐색
+    //     Collider2D nearestEnemy = FindNearestEnemy(count);
+    //     if (nearestEnemy == null) return;
+    //
+    //     Vector2 targetPos = nearestEnemy.transform.position;
+    //     if (!skillTargetData.IsInMaxDistance(casterPos, targetPos)) return;
+    //     
+    //     skillTargetPos = targetPos; // Gizmo용 
+    //
+    //     // target 중심으로 재탐색
+    //     int enemyCounts = Physics2D.OverlapCircle(targetPos, MAX_SCAN_RADIUS, filter, enemies);
+    //
+    //     for (int i = 0; i < enemyCounts; i++)
+    //     {
+    //         Collider2D enemy = enemies[i];
+    //
+    //         if (!skillTargetData.IsInMaxRange(targetPos, enemy.transform.position)) continue;
+    //
+    //         if (enemy.TryGetComponent<UnitController>(out var controller))
+    //         {
+    //             targets.Add(controller);
+    //         }
+    //     }
+    // }
+    //
+    // public void SelectLineTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)
+    // {
+    //     LineTargetData skillTargetData = (LineTargetData)skill.Data.TargetData;
+    //     // debugSkill = skill;
+    //
+    //     // 가장 가까운 대상 탐색
+    //     Collider2D nearestEnemy = FindNearestEnemy(count);
+    //     if (nearestEnemy == null) return;
+    //
+    //     Vector2 targetPos = nearestEnemy.transform.position;
+    //     if (!skillTargetData.IsInMaxDistance(casterPos, targetPos)) return;
+    //     skillTargetPos = targetPos; // Gizmo용 
+    //
+    //     Vector2 boxArea = skillTargetData.GetBoxArea();
+    //     float angle = skillTargetData.GetAngle(casterPos, targetPos, forward);
+    //
+    //     // 스킬 범위 중심으로 재탐색
+    //     Vector2 toTargetDir = (targetPos - casterPos).normalized;
+    //     Vector2 point = casterPos + toTargetDir * (boxArea.x * 0.5f);
+    //
+    //     int enemyCounts = Physics2D.OverlapBox(point, boxArea, angle, filter, enemies);
+    //
+    //     for (int i = 0; i < enemyCounts; i++)
+    //     {
+    //         Collider2D enemy = enemies[i];
+    //
+    //         if (enemy.TryGetComponent<UnitController>(out var controller))
+    //         {
+    //             targets.Add(controller);
+    //         }
+    //     }
+    // }
  /**
     # region Gizmo
 

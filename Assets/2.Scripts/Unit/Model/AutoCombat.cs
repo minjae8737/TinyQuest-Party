@@ -12,11 +12,19 @@ public class AutoCombat : MonoBehaviour
     #region Runtime
     
     private float lastTime;
+    private bool isEnabled = true;
     
     #endregion
 
+    public void SetEnabled(bool enabled)
+    {
+        isEnabled = enabled;
+    }
+    
     private void Update()
     {
+        if (!isEnabled) return;
+        
         if (Time.time - lastTime >= delay)
         {
             //스킬 선택

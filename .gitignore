@@ -101,3 +101,6 @@ InitTestScene*.unity*
 
 # Sprites
 /[Aa]ssets/3.Sprites/
+
+# Editor
+/[Aa]ssets/Editor/
