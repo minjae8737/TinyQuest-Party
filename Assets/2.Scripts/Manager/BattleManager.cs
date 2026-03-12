@@ -52,6 +52,7 @@ public class BattleManager : MonoBehaviour
     public void BattleEnd()
     {
         BattlePause();
+        
         UnitManager.Instance.DespawnPlayerParty();
         StageManager.Instance.OnIslandClear();
         // StageManager.Instance.OnIslandFail(); // 성공여부에따른 분기

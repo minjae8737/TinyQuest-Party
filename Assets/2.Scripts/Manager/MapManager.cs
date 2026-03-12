@@ -11,7 +11,6 @@ public class MapManager : MonoBehaviour
     private int[] islandXPos = { 0, 20, 40, 60 };
     
     private List<Island> islands = new();
-    
     [SerializeField] private List<GameObject> islandPrefabs;
 
     

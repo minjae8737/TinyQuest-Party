@@ -3,24 +3,6 @@ using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
 
-/// <summary>
-/// 게임 진행
-/// 1. GameManager 초기화 (데이터, 각 매니저 Init)
-/// 2. StagetManager
-///     - StartStage()
-///         - MapManager에서 스테이지 생성
-///         - 섬으로 넘어감
-///         -NextIsland()
-///             - Player Unit 생성
-///             - Enemy Unit 생성
-///             
-///             - 전투 시작 
-///             - 전투 끝
-///              
-///         
-///     
-/// </summary>
-
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -35,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // TODO Manager들 Init()후 시작하도록 수정
         GameStart();
     }
 
@@ -67,7 +50,7 @@ public class GameManager : MonoBehaviour
 
     public void GameStart()
     {
-        StageManager.Instance.StageStart();
+        StageManager.Instance.StartStage();
     }
 
     #endregion
