@@ -8,7 +8,9 @@ public class UIManager : MonoBehaviour
     
     [Header("=== Canvas References ===")]
     [SerializeField] private RectTransform worldCanvasRect;
-
+    [SerializeField] private PartySetupPanel partySetupPanel;
+    
+    
     [Header("=== Unit HP Bar ===")]
     [SerializeField] private RectTransform unitHpBarParent;
     [SerializeField] private List<UnitHpBar> unitHpBars;

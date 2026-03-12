@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum UnitName
 {
+    None = -1,
     Archer,
     Armored_Orc,
     Knight,
@@ -23,7 +24,7 @@ public enum UnitName
     Slime,
     Werebear,
     Werewolf,
-    Lancer
+    Lancer,
 }
 
 public class UnitManager : MonoBehaviour
@@ -36,6 +37,9 @@ public class UnitManager : MonoBehaviour
     public Dictionary<TeamType, int> TeamAliveCount { get; private set; }
     public List<UnitController> Units { get; private set; }
     private Stack<SkillEffect> skillEffectStack;
+
+    private Party party;
+    public const int MaxPartySize = 4;
     
     [SerializeField] private Transform playerGroupTransform;
     [SerializeField] private Transform enemyGroupTransform;
@@ -45,6 +49,12 @@ public class UnitManager : MonoBehaviour
     
     [Header("=== Effect Prefabs ===")]
     [SerializeField] private GameObject skillEffectPrefab;
+
+    #region Event
+
+    public event Action OnPartyChanged;
+
+    #endregion
 
     private void Awake()
     {
@@ -178,6 +188,38 @@ public class UnitManager : MonoBehaviour
         }
     }
     
+    #endregion
+
+    #region Party
+
+    public void ChangePartySlot(int slotIdx, UnitName unitName)
+    {
+        // PartySlot slot = GetPartySlot(slotIdx);
+        
+        // if (slot.UnitName == unitName) return;
+        
+        /// 1. 빈칸에 유닛을 올리는 경우
+        /// 2. 배치된 유닛을 변경하는 경우
+        ///     - party안에서 변경하는 경우
+        ///         - swap
+        ///         - remove
+        ///     - Unitlist에서 가져와서 변경하는 경우
+        ///         - 있는 캐릭을 변경하는 경우
+        ///         - 없던 캐릭을 변경하는 경
+        /// 3. 
+
+        if (party.IsSlotEmpty(slotIdx))
+        {
+            // slot.UnitName = unitName;
+        }
+        else
+        {
+            
+        }
+
+        OnPartyChanged?.Invoke();
+    }
+
     #endregion
 
     #region SkillEffect
