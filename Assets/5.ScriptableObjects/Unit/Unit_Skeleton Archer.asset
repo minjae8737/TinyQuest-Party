@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_Skeleton Archer
   m_EditorClassIdentifier: 
   UnitName: 15
+  TeamType: 1
+  Icon: {fileID: -4456188695679804916, guid: 06cf87ab8f33643419cb560a3206a5d4, type: 3}
   BaseStat:
     maxHp: 50
     atk: 4

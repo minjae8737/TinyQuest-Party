@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_ArmoredOrc
   m_EditorClassIdentifier: 
   UnitName: 1
+  TeamType: 1
+  Icon: {fileID: 4401974842081874036, guid: 9b35648f3b62f4344bf840a96de5f41a, type: 3}
   BaseStat:
     maxHp: 40
     atk: 7

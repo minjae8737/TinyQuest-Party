@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_EliteOrc
   m_EditorClassIdentifier: 
   UnitName: 10
+  TeamType: 1
+  Icon: {fileID: -5744362760379269403, guid: ca8bca74bd8244c57b2f9931dd1304cb, type: 3}
   BaseStat:
     maxHp: 60
     atk: 6

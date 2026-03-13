@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_Archer
   m_EditorClassIdentifier: 
   UnitName: 0
+  TeamType: 0
+  Icon: {fileID: 1691440987438862163, guid: 756d9e54db954441da8458b6ba673fc3, type: 3}
   BaseStat:
     maxHp: 30
     atk: 3

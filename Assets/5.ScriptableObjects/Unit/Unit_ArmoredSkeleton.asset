@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_ArmoredSkeleton
   m_EditorClassIdentifier: 
   UnitName: 9
+  TeamType: 1
+  Icon: {fileID: -8607426308904735001, guid: 24ce1ce8ff9ae4c5d93d647f24d9592c, type: 3}
   BaseStat:
     maxHp: 40
     atk: 5

@@ -16,12 +16,21 @@ public class UIManager : MonoBehaviour
     [SerializeField] private List<UnitHpBar> unitHpBars;
 
 
+    private bool isDragged;
+
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
         }
+    }
+
+    public void Init()
+    {
+        isDragged = false;
+        
+        partySetupPanel.Init();
     }
 
     public UnitHpBar GetUnitHpBar()

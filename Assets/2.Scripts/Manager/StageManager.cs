@@ -55,18 +55,10 @@ public class StageManager : MonoBehaviour
             return;
         }
 
-        // 플레이어 파티 생성
-        // 나중에 현재 파티 정보를 가져와서 소환
-        // TODO 임시 코드
         Vector2 playerSpawnPos = MapManager.Instance.GetPlayerSpawnPos(curIslandIdx);
         
-        // UnitManager.Instance.PlayerPartySpawn();
-        {
-            UnitManager.Instance.Spawn(UnitName.Priest, playerSpawnPos);
-            UnitManager.Instance.Spawn(UnitName.Wizard, playerSpawnPos);
-            UnitManager.Instance.Spawn(UnitName.Swordsman, playerSpawnPos);
-        }
-
+        // 유닛 생성
+        UnitManager.Instance.SpawnParty(playerSpawnPos);
         SpawnEnemy(stageDatas[curStageLevel]);
 
         // 전투 시작

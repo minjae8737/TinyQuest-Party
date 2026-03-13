@@ -23,7 +23,10 @@ public class PoolManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
 
+    public void Init()
+    {
         poolDic = new Dictionary<ObjType, List<GameObject>>();
         prefabDic = new Dictionary<ObjType, GameObject>();
 

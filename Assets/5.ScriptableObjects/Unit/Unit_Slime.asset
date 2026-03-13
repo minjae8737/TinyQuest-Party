@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_Slime
   m_EditorClassIdentifier: 
   UnitName: 16
+  TeamType: 1
+  Icon: {fileID: 1731254536350368421, guid: 9f1b1220eb9974e92870043458014665, type: 3}
   BaseStat:
     maxHp: 40
     atk: 5

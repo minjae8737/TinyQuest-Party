@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_ArmoredAxeman
   m_EditorClassIdentifier: 
   UnitName: 5
+  TeamType: 0
+  Icon: {fileID: 928386251322964372, guid: 4b8906a64a8674da78134bffba20d4b3, type: 3}
   BaseStat:
     maxHp: 500000
     atk: 6

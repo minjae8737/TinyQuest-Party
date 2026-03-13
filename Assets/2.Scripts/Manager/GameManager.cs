@@ -17,6 +17,12 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        // MapManager.Instance.Init();
+        PoolManager.Instance.Init();
+        UnitManager.Instance.Init();
+        UIManager.Instance.Init();
+        StageManager.Instance.Init();
+        
         // TODO Manager들 Init()후 시작하도록 수정
         GameStart();
     }

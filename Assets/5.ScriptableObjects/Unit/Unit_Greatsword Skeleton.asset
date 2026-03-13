@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_Greatsword Skeleton
   m_EditorClassIdentifier: 
   UnitName: 11
+  TeamType: 1
+  Icon: {fileID: 5796680278298347171, guid: acc5549dea796454f903df86bd1445af, type: 3}
   BaseStat:
     maxHp: 50
     atk: 8

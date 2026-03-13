@@ -2,11 +2,21 @@ using System.Collections.Generic;
 
 public class Party
 {
-    private List<PartySlot> Slots = new(UnitManager.MaxPartySize);
-    
+    private List<PartySlot> slots = new();
+
+    public List<PartySlot> Slots => slots;
+
+    public Party()
+    {
+        for (int i = 0; i < UnitManager.MaxPartySize; i++)
+        {
+            slots.Add(new PartySlot());
+        }
+    }
+
     public bool HasUnit(UnitName unitName)
     {
-        foreach (PartySlot partySlot in Slots)
+        foreach (PartySlot partySlot in slots)
         {
             if (partySlot.UnitName == unitName)
             {
@@ -21,19 +31,19 @@ public class Party
     {
         if (IsInvalidSlotIndex(slotIdx)) return false;
         
-        return Slots[slotIdx].UnitName == UnitName.None;
+        return slots[slotIdx].UnitName == UnitName.None;
     }
 
-    private static bool IsInvalidSlotIndex(int slotIdx)
+    private bool IsInvalidSlotIndex(int slotIdx)
     {
         return 0 > slotIdx || slotIdx >= UnitManager.MaxPartySize;
     }
 
     public int FindUnitSlotIndex(UnitName unitName)
     {
-        for (int i = 0; i < Slots.Count; i++)
+        for (int i = 0; i < slots.Count; i++)
         {
-            if (Slots[i].UnitName == unitName)
+            if (slots[i].UnitName == unitName)
             {
                 return i;
             }
@@ -46,13 +56,13 @@ public class Party
     {
         if (IsInvalidSlotIndex(slotIdx)) return;
 
-        Slots[slotIdx].UnitName = unitName;
+        slots[slotIdx].UnitName = unitName;
     }
     
     public void SwapPartySlot(int slotA, int slotB)
     {
-        UnitName temp = Slots[slotA].UnitName;
-        Slots[slotA].UnitName = Slots[slotB].UnitName;
-        Slots[slotB].UnitName = temp;
+        UnitName temp = slots[slotA].UnitName;
+        slots[slotA].UnitName = slots[slotB].UnitName;
+        slots[slotB].UnitName = temp;
     }
 }

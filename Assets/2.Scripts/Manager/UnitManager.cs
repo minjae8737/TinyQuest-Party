@@ -30,11 +30,12 @@ public enum UnitName
 public class UnitManager : MonoBehaviour
 {
     public static UnitManager Instance { get; private set; }
-    
+    public Dictionary<UnitName, UnitData> UnitDataDic { get; private set; }
     private Dictionary<UnitName, GameObject> unitPrefabDic;
     private Dictionary<UnitName, List<UnitController>> unitPoolsDic;
     public Dictionary<TeamType, List<UnitController>> TeamUnitDic { get; private set; }
     public Dictionary<TeamType, int> TeamAliveCount { get; private set; }
+    public Dictionary<TeamType, List<UnitName>> UnitNamesByTeam { get; private set; }
     public List<UnitController> Units { get; private set; }
     private Stack<SkillEffect> skillEffectStack;
 
@@ -43,6 +44,9 @@ public class UnitManager : MonoBehaviour
     
     [SerializeField] private Transform playerGroupTransform;
     [SerializeField] private Transform enemyGroupTransform;
+
+    [Header("=== Datas ===")] 
+    [SerializeField] private List<UnitData> datas;
     
     [Header("=== Unit Prefabs ===")]
     [SerializeField] private List<GameObject> unitPrefabs;
@@ -62,14 +66,33 @@ public class UnitManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
 
+    public void Init()
+    {
+        UnitDataDic = new Dictionary<UnitName, UnitData>();
         unitPrefabDic = new Dictionary<UnitName, GameObject>();
         unitPoolsDic = new Dictionary<UnitName, List<UnitController>>();
         TeamUnitDic = new Dictionary<TeamType, List<UnitController>>();
         TeamAliveCount = new Dictionary<TeamType, int>();
+        UnitNamesByTeam = new Dictionary<TeamType, List<UnitName>>();
         Units = new List<UnitController>();
         skillEffectStack = new Stack<SkillEffect>();
+        
+        TeamUnitDic.Add(TeamType.Player,new());
+        TeamUnitDic.Add(TeamType.Enemy,new());
+        TeamAliveCount.Add(TeamType.Player, 0);
+        TeamAliveCount.Add(TeamType.Enemy, 0);
+        UnitNamesByTeam.Add(TeamType.Player, new());
+        UnitNamesByTeam.Add(TeamType.Enemy, new());
 
+        // UnitDataDic 
+        foreach (UnitData unitData in datas)
+        {
+            UnitDataDic.Add(unitData.UnitName, unitData);
+        }
+        
+        // Prefab 등록
         foreach (GameObject prefab in unitPrefabs)
         {
             if (!prefab.TryGetComponent<UnitController>(out var unitController))
@@ -80,12 +103,17 @@ public class UnitManager : MonoBehaviour
 
             UnitName unitName = unitController.Model.Data.UnitName;
             unitPrefabDic.Add(unitName, prefab);
+            UnitNamesByTeam[unitController.TeamType].Add(unitName);
         }
-
-        TeamUnitDic.Add(TeamType.Player,new());
-        TeamUnitDic.Add(TeamType.Enemy,new());
-        TeamAliveCount.Add(TeamType.Player, 0);
-        TeamAliveCount.Add(TeamType.Enemy, 0);
+        
+      
+        
+        //TODO test code 파티 초기화
+        party = new();
+        party.SetSlot(0,UnitName.Wizard);
+        party.SetSlot(1,UnitName.Priest);
+        party.SetSlot(2,UnitName.Swordsman);
+        party.SetSlot(3,UnitName.Knight);
     }
 
     #region Unit
@@ -119,6 +147,8 @@ public class UnitManager : MonoBehaviour
 
     public void Spawn(UnitName unitName , Vector2 spawnPos)
     {
+        if (unitName == UnitName.None) return;
+        
         UnitController unitController = null;
         
         if (!unitPoolsDic.TryGetValue(unitName, out List<UnitController> pool))
@@ -192,31 +222,41 @@ public class UnitManager : MonoBehaviour
 
     #region Party
 
-    public void ChangePartySlot(int slotIdx, UnitName unitName)
+    public void SpawnParty(Vector2 spawnPos)
     {
-        // PartySlot slot = GetPartySlot(slotIdx);
-        
-        // if (slot.UnitName == unitName) return;
-        
-        /// 1. 빈칸에 유닛을 올리는 경우
-        /// 2. 배치된 유닛을 변경하는 경우
-        ///     - party안에서 변경하는 경우
-        ///         - swap
-        ///         - remove
-        ///     - Unitlist에서 가져와서 변경하는 경우
-        ///         - 있는 캐릭을 변경하는 경우
-        ///         - 없던 캐릭을 변경하는 경
-        /// 3. 
-
-        if (party.IsSlotEmpty(slotIdx))
+        foreach (PartySlot slot in party.Slots)
         {
-            // slot.UnitName = unitName;
+            Spawn(slot.UnitName, spawnPos);
+        }
+    }
+    
+    public void AssignUnitToSlot(int slotIdx, UnitName unitName)
+    {
+        int originIdx = party.FindUnitSlotIndex(unitName);
+        
+        if (originIdx == slotIdx) return;
+
+        if (party.HasUnit(unitName))
+        {
+            party.SwapPartySlot(originIdx, slotIdx);
         }
         else
         {
-            
+            party.SetSlot(slotIdx, unitName);
         }
 
+        OnPartyChanged?.Invoke();
+    }
+
+    public void RemoveUnit(UnitName unitName)
+    {
+        int slotIndex = party.FindUnitSlotIndex(unitName);
+
+        if (slotIndex != -1)
+        {
+            party.SetSlot(slotIndex, UnitName.None);
+        }
+        
         OnPartyChanged?.Invoke();
     }
 
