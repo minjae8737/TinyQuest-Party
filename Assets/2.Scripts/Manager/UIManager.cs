@@ -5,7 +5,6 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
-    public DragItemUI DragItemUI { get; private set; }
     
     [Header("=== Canvas References ===")]
     [SerializeField] private RectTransform worldCanvasRect;
@@ -19,6 +18,8 @@ public class UIManager : MonoBehaviour
     [Header("=== Prefab ===")] 
     [SerializeField] private GameObject DragItemUIPrefab;
 
+    private DragItemUI DragItemUI;
+    [HideInInspector] public DragContext DragContext;
     private bool isDragged;
 
     private void Awake()
@@ -78,7 +79,7 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region DragItemUI
+    #region Drag
     
     public DragItemUI GetDragItem()
     {

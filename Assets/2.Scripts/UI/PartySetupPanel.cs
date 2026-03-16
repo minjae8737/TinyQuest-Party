@@ -87,7 +87,7 @@ public class PartySetupPanel : MonoBehaviour
         }
 
         unitListSlotUis.Add(unitListSlot);
-        unitListSlot.SetSlot(unitData.Icon, unitData.UnitName + "");
+        unitListSlot.SetSlot(unitData.Icon, unitData.UnitName);
     }
 
     public void RefreshUnitListPanel()

@@ -1,52 +1,46 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UnitListSlotUI : MonoBehaviour, DraggedItem
+public class UnitListSlotUI : DragSlotUI
 {
     [SerializeField] private Image unitImage;
     [SerializeField] private Text unitNameText;
 
     private UnitName unitName;
-    private int slotIdx;
     
-    private DragItemUI dragItemUI;
-    
-    public void SetSlot(Sprite unitSptrite, string unitName)
+    public void SetSlot(Sprite unitSptrite, UnitName unitName)
     {
         unitImage.sprite = unitSptrite;
-        unitNameText.text = unitName;
+        unitNameText.text = unitName+"";
+        this.unitName = unitName;
+    }
+    
+    public UnitName GetUnitName()
+    {
+        return unitName;
     }
     
     #region DragEvent
-
-    public void OnBeginDrag(PointerEventData eventData)
+    
+    protected override Image GetDragImage()
     {
-        Debug.Log("OnBeginDrag");
-        if (unitName == UnitName.None) return;
-        
-        dragItemUI = UIManager.Instance.GetDragItem();
-        dragItemUI.SetActive(true);
-        dragItemUI.SetSize(unitImage.rectTransform.sizeDelta);
-        dragItemUI.SetSprite(unitImage.sprite);
-
-        dragItemUI.transform.position = eventData.position;
+        return unitImage;
     }
 
-    public void OnDrag(PointerEventData eventData)
+    protected override bool CanDrag()
     {
-        Debug.Log("OnDrag");
-        if (unitName == UnitName.None) return;
-        
-        dragItemUI.transform.position = eventData.position;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        Debug.Log("OnEndDrag");
-        dragItemUI.SetActive(false);
-        dragItemUI = null;
+        return unitName != UnitName.None;
     }
     
     #endregion
+    
+    public override void SetDragContext()
+    {
+        UnitDragContext dragContext = new UnitDragContext();
+        dragContext.source = this;
+        dragContext.UnitName = unitName;
+        
+        UIManager.Instance.DragContext = dragContext;
+    }
+    
 }

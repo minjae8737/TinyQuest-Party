@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class PartySlotUI : MonoBehaviour, DraggedItem,IDropHandler
+public class PartySlotUI : DragSlotUI, IDropHandler
 {
     [Header("=== Reference ===")]
     [SerializeField] private Image unitImage;
@@ -11,8 +11,6 @@ public class PartySlotUI : MonoBehaviour, DraggedItem,IDropHandler
     private UnitName unitName;
     private int slotIdx;
     
-    public DragItemUI dragItemUI;
-
     public void SetSlot(Sprite unitSptrite, UnitName unitName, int idx)
     {
         unitImage.sprite = unitSptrite;
@@ -21,41 +19,43 @@ public class PartySlotUI : MonoBehaviour, DraggedItem,IDropHandler
         slotIdx = idx;
     }
 
+    public UnitName GetUnitName()
+    {
+        return unitName;
+    }
+
     #region DragEvent
 
-    public void OnBeginDrag(PointerEventData eventData)
+    protected override Image GetDragImage()
     {
-        Debug.Log("OnBeginDrag");
-        if (unitName == UnitName.None) return;
-        
-        dragItemUI = UIManager.Instance.GetDragItem();
-        dragItemUI.SetActive(true);
-        dragItemUI.SetSize(unitImage.rectTransform.sizeDelta);
-        dragItemUI.SetSprite(unitImage.sprite);
-
-        dragItemUI.transform.position = eventData.position;
+        return unitImage;
     }
 
-    public void OnDrag(PointerEventData eventData)
+    protected override bool CanDrag()
     {
-        Debug.Log("OnDrag");
-        if (unitName == UnitName.None) return;
-        
-        dragItemUI.transform.position = eventData.position;
-    }
-
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        Debug.Log("OnEndDrag");
-        dragItemUI.SetActive(false);
-        dragItemUI = null;
+        return unitName != UnitName.None;
     }
     
     #endregion
 
+    public override void SetDragContext()
+    {
+        UnitDragContext dragContext = new UnitDragContext();
+        dragContext.source = this;
+        dragContext.UnitName = unitName;
+        
+        UIManager.Instance.DragContext = dragContext;
+    }
+
     public void OnDrop(PointerEventData eventData)
     {
         Debug.Log("OnDrop");
-        
+
+        UnitDragContext dragContext = (UnitDragContext)UIManager.Instance.DragContext;
+
+        if (dragContext.source is PartySlotUI || dragContext.source is UnitListSlotUI)
+        {
+            UnitManager.Instance.AssignUnitToSlot(slotIdx, dragContext.UnitName);
+        }
     }
 }
