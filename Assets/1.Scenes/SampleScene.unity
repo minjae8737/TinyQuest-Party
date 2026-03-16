@@ -208,9 +208,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   worldCanvasRect: {fileID: 80696930}
+  canvasRect: {fileID: 1176185064}
   partySetupPanel: {fileID: 66538940}
   unitHpBarParent: {fileID: 1673844737}
   unitHpBars: []
+  DragItemUIPrefab: {fileID: 5557379188472952224, guid: d6de7baacc598414aa62bfbb4a583cd9, type: 3}
 --- !u!1 &66538938
 GameObject:
   m_ObjectHideFlags: 0
@@ -227,7 +229,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &66538939
 RectTransform:
   m_ObjectHideFlags: 0

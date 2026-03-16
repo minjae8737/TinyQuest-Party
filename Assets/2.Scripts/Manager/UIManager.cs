@@ -5,16 +5,19 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
+    public DragItemUI DragItemUI { get; private set; }
     
     [Header("=== Canvas References ===")]
     [SerializeField] private RectTransform worldCanvasRect;
+    [SerializeField] private RectTransform canvasRect;
     [SerializeField] private PartySetupPanel partySetupPanel;
-    
     
     [Header("=== Unit HP Bar ===")]
     [SerializeField] private RectTransform unitHpBarParent;
     [SerializeField] private List<UnitHpBar> unitHpBars;
 
+    [Header("=== Prefab ===")] 
+    [SerializeField] private GameObject DragItemUIPrefab;
 
     private bool isDragged;
 
@@ -30,6 +33,18 @@ public class UIManager : MonoBehaviour
     {
         isDragged = false;
         
+        // DragItemUI
+        GameObject dragItemObj = Instantiate(DragItemUIPrefab, canvasRect);
+        
+        if (!dragItemObj.TryGetComponent<DragItemUI>(out var dragItem))
+        {
+            Debug.LogError("Fail Create DragItemUI");
+        }
+        
+        DragItemUI = dragItem;
+        DragItemUI.SetActive(false);
+        
+        // PartySetupPanel
         partySetupPanel.Init();
     }
 
@@ -59,6 +74,15 @@ public class UIManager : MonoBehaviour
     public void OffPartySetupPanel()
     {
         partySetupPanel.gameObject.SetActive(false);
+    }
+
+    #endregion
+
+    #region DragItemUI
+    
+    public DragItemUI GetDragItem()
+    {
+        return DragItemUI;
     }
 
     #endregion

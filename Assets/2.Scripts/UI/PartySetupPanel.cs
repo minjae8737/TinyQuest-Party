@@ -67,8 +67,8 @@ public class PartySetupPanel : MonoBehaviour
         for (int i = 0; i < partyData.Count; i++)
         {
             Sprite unitSprite = partyData[i] == null ? emptyPartySlotSprite : partyData[i].Icon;
-            string unitNameStr = partyData[i] == null ? "" : partyData[i].UnitName+"";
-            partySlotUis[i].SetSlot(unitSprite, unitNameStr);
+            UnitName unitName = partyData[i] == null ? UnitName.None : partyData[i].UnitName;
+            partySlotUis[i].SetSlot(unitSprite, unitName, i);
         }
     }
 
