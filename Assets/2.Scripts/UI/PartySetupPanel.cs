@@ -3,44 +3,94 @@ using UnityEngine;
 
 public class PartySetupPanel : MonoBehaviour
 {
-
     [Header("=== References ===")] 
-    [SerializeField] private RectTransform slotParent;
-    [SerializeField] private RectTransform listParent;
+    [SerializeField] private RectTransform partySlotParent;
+    [SerializeField] private RectTransform unitListSlotParent;
     
     [Header("=== Prefabs ===")]
-    [SerializeField] private GameObject unitSlotPrefab;
-    [SerializeField] private GameObject unitListItemPrefab;
+    [SerializeField] private GameObject partySlotPrefab;
+    [SerializeField] private GameObject unitListSlotPrefab;
+
+    [Header("=== Resources ===")] 
+    [SerializeField] private Sprite emptyPartySlotSprite;
+    
+    private List<PartySlotUI> partySlotUis;
+    private List<UnitListSlotUI> unitListSlotUis;
     
     public void Init()
     {
         // PartyPanel
+        partySlotUis = new();
+        
+        for (int i = 0; i < UnitManager.MaxPartySize; i++)
+        {
+            CreatePartySlot();
+        }
+        
+        RefreshPartyPanel();
         
         // UnitListPanel
-        List<UnitName> unitNames = UnitManager.Instance.UnitNamesByTeam[TeamType.Player];
-
-
+        Dictionary<UnitName, UnitData> unitDatas = UnitManager.Instance.UnitDataDic;
+        unitListSlotUis = new();
+        
+        foreach (KeyValuePair<UnitName, UnitData> unitData in unitDatas)
+        {
+            if (unitData.Value.TeamType == TeamType.Player)
+            {
+                CreateUnitListItem(unitData.Value);
+            }
+        }
+        
         UnitManager.Instance.OnPartyChanged += RefreshPartyPanel;
         UnitManager.Instance.OnPartyChanged += RefreshUnitListPanel;
     }
 
     #region PartyPanel
 
+    private void CreatePartySlot()
+    {
+        GameObject partySlotObj = Instantiate(partySlotPrefab, partySlotParent);
+        
+        if (!partySlotObj.TryGetComponent<PartySlotUI>(out var partySlot))
+        {
+            Debug.LogError("CreatePartySlotUI Fail");
+            return;
+        } 
+        
+        partySlotUis.Add(partySlot);
+    }
+    
     public void RefreshPartyPanel()
     {
-        
+        List<UnitData> partyData = UnitManager.Instance.GetPartyData();
+
+        for (int i = 0; i < partyData.Count; i++)
+        {
+            Sprite unitSprite = partyData[i] == null ? emptyPartySlotSprite : partyData[i].Icon;
+            string unitNameStr = partyData[i] == null ? "" : partyData[i].UnitName+"";
+            partySlotUis[i].SetSlot(unitSprite, unitNameStr);
+        }
     }
 
     #endregion
 
     #region UnitListPanel
 
-    public void RefreshUnitListPanel()
+    public void CreateUnitListItem(UnitData unitData)
     {
-        
+        GameObject unitListSlotObj = Instantiate(unitListSlotPrefab, unitListSlotParent);
+
+        if (!unitListSlotObj.TryGetComponent<UnitListSlotUI>(out var unitListSlot))
+        {
+            Debug.LogError("CreateUnitListItemUI Fail. unitName : " + unitData.UnitName);
+            return;
+        }
+
+        unitListSlotUis.Add(unitListSlot);
+        unitListSlot.SetSlot(unitData.Icon, unitData.UnitName + "");
     }
 
-    public void CreateUnitListItem()
+    public void RefreshUnitListPanel()
     {
         
     }

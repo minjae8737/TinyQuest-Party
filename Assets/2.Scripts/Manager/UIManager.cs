@@ -48,4 +48,18 @@ public class UIManager : MonoBehaviour
         
         return hpBar;
     }
+
+    #region PartySetupPanel
+
+    public void OpenPartySetupPanel()
+    {
+        partySetupPanel.gameObject.SetActive(true);
+    }
+
+    public void OffPartySetupPanel()
+    {
+        partySetupPanel.gameObject.SetActive(false);
+    }
+
+    #endregion
 }

@@ -86,7 +86,7 @@ public class UnitManager : MonoBehaviour
         UnitNamesByTeam.Add(TeamType.Player, new());
         UnitNamesByTeam.Add(TeamType.Enemy, new());
 
-        // UnitDataDic 
+        // UnitDataDic 초기화
         foreach (UnitData unitData in datas)
         {
             UnitDataDic.Add(unitData.UnitName, unitData);
@@ -110,10 +110,10 @@ public class UnitManager : MonoBehaviour
         
         //TODO test code 파티 초기화
         party = new();
-        party.SetSlot(0,UnitName.Wizard);
-        party.SetSlot(1,UnitName.Priest);
-        party.SetSlot(2,UnitName.Swordsman);
-        party.SetSlot(3,UnitName.Knight);
+        AssignUnitToSlot(0,UnitName.Wizard);
+        AssignUnitToSlot(1,UnitName.Priest);
+        AssignUnitToSlot(2,UnitName.Swordsman);
+        AssignUnitToSlot(3,UnitName.Knight);
     }
 
     #region Unit
@@ -258,6 +258,19 @@ public class UnitManager : MonoBehaviour
         }
         
         OnPartyChanged?.Invoke();
+    }
+
+    public List<UnitData> GetPartyData()
+    {
+        List<UnitData> unitDatas = new();
+
+        foreach (PartySlot partySlot in party.Slots)
+        {
+            UnitDataDic.TryGetValue(partySlot.UnitName, out var unitData);
+            unitDatas.Add(unitData);
+        }
+
+        return unitDatas;
     }
 
     #endregion

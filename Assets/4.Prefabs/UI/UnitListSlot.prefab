@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 1580842567061244685}
   - component: {fileID: 665245692158406738}
   m_Layer: 5
-  m_Name: Text (Legacy)
+  m_Name: UnitNameText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -165,8 +165,9 @@ GameObject:
   - component: {fileID: 7623787374690828328}
   - component: {fileID: 6021258544371375863}
   - component: {fileID: 9103648298919425863}
+  - component: {fileID: 8381050994581152927}
   m_Layer: 5
-  m_Name: UnitSlot
+  m_Name: UnitListSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -231,3 +232,17 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 0.25
+--- !u!114 &8381050994581152927
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2850333729409114826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a21d1512b23242fbba3a0c193d340a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  unitImage: {fileID: 731304432186436198}
+  unitNameText: {fileID: 665245692158406738}
