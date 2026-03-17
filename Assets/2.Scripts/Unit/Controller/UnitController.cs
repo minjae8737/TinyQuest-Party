@@ -52,7 +52,6 @@ public class UnitController : MonoBehaviour
     {
         model.OnHpChanged -= OnHpChanged;
         view.OnDeathFinished -= HandleDeathFinished;
-        view.ReleaseHpbar();
     }
     
     #endregion
@@ -187,8 +186,14 @@ public class UnitController : MonoBehaviour
 
     public void HandleDeathFinished()
     {
-        UnitManager.Instance.Despawn(this);
+        Despawn();
     }
     
     #endregion
+
+    public void Despawn()
+    {
+        view.ReleaseHpbar();
+        UnitManager.Instance.Despawn(this);
+    }
 }

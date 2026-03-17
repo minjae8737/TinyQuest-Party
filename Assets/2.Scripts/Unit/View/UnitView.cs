@@ -19,7 +19,7 @@ public class UnitView : MonoBehaviour
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private Animator anim;
 
-    private UnitHpBar hpBar;
+    [SerializeField] private UnitHpBar hpBar;
     
     public event Action OnDeathFinished;
     
@@ -81,13 +81,15 @@ public class UnitView : MonoBehaviour
     
     public void ReleaseHpbar()
     {
-        hpBar?.Release();
+        if (hpBar == null) return;
+        
+        hpBar.Release();
+        hpBar = null;
     }
 
     public void OnDeathAnimationEnd()
     {
         ReleaseHpbar();
-        hpBar = null;
         OnDeathFinished?.Invoke();
     }
 }

@@ -195,7 +195,7 @@ public class UnitManager : MonoBehaviour
         {
             if (controller.gameObject.activeSelf)
             {
-                Despawn(controller);
+                controller.Despawn();
             }
         }
     }
