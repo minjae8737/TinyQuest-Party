@@ -209,6 +209,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldCanvasRect: {fileID: 80696930}
   canvasRect: {fileID: 1176185064}
+  mainButtonGroup: {fileID: 542121310}
   partySetupPanel: {fileID: 66538940}
   unitHpBarParent: {fileID: 1673844737}
   unitHpBars: []

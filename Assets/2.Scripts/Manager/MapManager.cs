@@ -5,14 +5,19 @@ public class MapManager : MonoBehaviour
 {
     public static MapManager Instance { get; private set; }
 
+    [Header("=== Reference ===")]
     [SerializeField] private Transform MapParent;
     
-    private int curstageIdx = 0;
-    private int[] islandXPos = { 0, 20, 40, 60 };
-    
-    private List<Island> islands = new();
+    [Header("=== Prefab ===")]
     [SerializeField] private List<GameObject> islandPrefabs;
-
+    
+    private int[] islandXPos = { 0, 20, 40, 60 };
+    private int islandTypeCount => islandPrefabs.Count;
+    
+    private List<Island> islands;
+    private Dictionary<int, List<Island>> islandPoolsDic;
+    
+    
     
     private void Awake()
     {
@@ -22,20 +27,87 @@ public class MapManager : MonoBehaviour
         }
     }
 
+    public void Init()
+    {
+        islands = new();
+        islandPoolsDic = new Dictionary<int, List<Island>>();
+        
+        
+    }
+
     public void LoadIsland(StageData stageData)
     {
-        //TODO 생성된 오브젝트 처리하기 -> pooling 하거나 destroy 
+        SetIslandsActive(false);
         islands.Clear();
 
         for (int i = 0; i < stageData.IslandDatas.Count; i++)
         {
-            int randomIdx = Random.Range(0, islandPrefabs.Count);
-            
-            GameObject islandObj = Instantiate(islandPrefabs[randomIdx], MapParent);
-            if(!islandObj.TryGetComponent<Island>(out var island)) continue;
+            int islandType = Random.Range(0, islandPrefabs.Count);
+
+            Island island = Get(islandType);
+            island.gameObject.SetActive(true);
             
             islands.Add(island);
             island.transform.position = new Vector2(islandXPos[i], 0f);
+        }
+    }
+
+    private Island CreateIsland(int islandType)
+    {
+        if (islandType >= islandTypeCount)
+        {
+            Debug.LogError("Create Island Fail. Invalid islandType.");
+        }
+
+        GameObject islandObj = Instantiate(islandPrefabs[islandType], MapParent);
+        islandObj.SetActive(false);
+        islandObj.TryGetComponent<Island>(out var island);
+        
+        if(!islandPoolsDic.TryGetValue(islandType,out List<Island> pool))
+        {
+            if (pool == null)
+            {
+                pool = new List<Island>();
+                islandPoolsDic.Add(islandType,pool);
+            }
+        }
+
+        pool.Add(island);
+        return island;
+    }
+
+    private Island Get(int islandType)
+    {
+        if(!islandPoolsDic.TryGetValue(islandType,out List<Island> pool))
+        {
+            CreateIsland(islandType);
+            pool = islandPoolsDic[islandType];
+        }
+
+        Island island = null;
+        
+        for (int i = 0; i < pool.Count; i++)
+        {
+            if (!pool[i].gameObject.activeSelf)
+            {
+                island = pool[i];
+                break;
+            }
+        }
+
+        if (island == null)
+        {
+            island = CreateIsland(islandType);
+        }
+
+        return island;
+    }
+
+    private void SetIslandsActive(bool active)
+    {
+        foreach (Island island in islands)
+        {
+            island.gameObject.SetActive(active);
         }
     }
 

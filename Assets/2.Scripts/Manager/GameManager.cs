@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // MapManager.Instance.Init();
+        MapManager.Instance.Init();
         PoolManager.Instance.Init();
         UnitManager.Instance.Init();
         UIManager.Instance.Init();

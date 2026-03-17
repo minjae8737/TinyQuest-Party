@@ -9,6 +9,7 @@ public class UIManager : MonoBehaviour
     [Header("=== Canvas References ===")]
     [SerializeField] private RectTransform worldCanvasRect;
     [SerializeField] private RectTransform canvasRect;
+    [SerializeField] private GameObject mainButtonGroup;
     [SerializeField] private PartySetupPanel partySetupPanel;
     
     [Header("=== Unit HP Bar ===")]
@@ -44,6 +45,9 @@ public class UIManager : MonoBehaviour
         
         DragItemUI = dragItem;
         DragItemUI.SetActive(false);
+        
+        // MainButtonGroup
+        mainButtonGroup.SetActive(true);
         
         // PartySetupPanel
         partySetupPanel.Init();
