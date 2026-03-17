@@ -67,4 +67,9 @@ public class PoolManager : MonoBehaviour
 
         return newObj;
     }
+
+    public void Release(GameObject obj)
+    {
+        obj.SetActive(false);
+    }
 }

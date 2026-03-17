@@ -29,11 +29,11 @@ public class UnitView : MonoBehaviour
     {
         if (hpBar == null)
         {
-            hpBar = UIManager.Instance.GetUnitHpBar();
+            hpBar = UnitManager.Instance.GetUnitHpBar();
         }
         hpBar?.Init(transform);
     }
-    
+
     #endregion
 
     public void SetSpeed(float speed)
@@ -78,10 +78,15 @@ public class UnitView : MonoBehaviour
     {
         hpBar.SetHp(maxHp, hp);
     }
+    
+    public void ReleaseHpbar()
+    {
+        hpBar?.Release();
+    }
 
     public void OnDeathAnimationEnd()
     {
-        hpBar?.Release();
+        ReleaseHpbar();
         hpBar = null;
         OnDeathFinished?.Invoke();
     }

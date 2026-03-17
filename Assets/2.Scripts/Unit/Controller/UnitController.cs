@@ -41,7 +41,7 @@ public class UnitController : MonoBehaviour
         canMove = true;
         col.enabled = true;
     }
-
+    
     private void OnEnable()
     {
         model.OnHpChanged += OnHpChanged;
@@ -52,6 +52,7 @@ public class UnitController : MonoBehaviour
     {
         model.OnHpChanged -= OnHpChanged;
         view.OnDeathFinished -= HandleDeathFinished;
+        view.ReleaseHpbar();
     }
     
     #endregion

@@ -51,9 +51,13 @@ public class UnitManager : MonoBehaviour
     [Header("=== Unit Prefabs ===")]
     [SerializeField] private List<GameObject> unitPrefabs;
     
+    [Header("=== Unit HP Bar ===")]
+    [SerializeField] private RectTransform unitHpBarParent;
+    
     [Header("=== Effect Prefabs ===")]
     [SerializeField] private GameObject skillEffectPrefab;
 
+    
     #region Event
 
     public event Action OnPartyChanged;
@@ -194,6 +198,26 @@ public class UnitManager : MonoBehaviour
                 Despawn(controller);
             }
         }
+    }
+    
+    public UnitHpBar GetUnitHpBar()
+    {
+        GameObject hpBarObj = PoolManager.Instance.Get(ObjType.UnitHpBar);
+        if (hpBarObj == null) return null;
+        
+        hpBarObj.TryGetComponent<UnitHpBar>(out var hpBar);
+
+        if (hpBar != null)
+        {
+            hpBar.transform.SetParent(unitHpBarParent, false);
+        }
+        
+        return hpBar;
+    }
+
+    public void ReleaseUnitHpBar(UnitHpBar hpBar)
+    {
+        PoolManager.Instance.Release(hpBar.gameObject);
     }
     
     public void CombatEnabled(bool enabled)

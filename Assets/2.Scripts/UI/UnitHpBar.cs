@@ -60,6 +60,6 @@ public class UnitHpBar : MonoBehaviour
     public void Release()
     {
         TargetUnit = null;
-        gameObject.SetActive(false);
+        UnitManager.Instance.ReleaseUnitHpBar(this);
     }
 }

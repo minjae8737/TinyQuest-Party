@@ -11,10 +11,6 @@ public class UIManager : MonoBehaviour
     [SerializeField] private RectTransform canvasRect;
     [SerializeField] private GameObject mainButtonGroup;
     [SerializeField] private PartySetupPanel partySetupPanel;
-    
-    [Header("=== Unit HP Bar ===")]
-    [SerializeField] private RectTransform unitHpBarParent;
-    [SerializeField] private List<UnitHpBar> unitHpBars;
 
     [Header("=== Prefab ===")] 
     [SerializeField] private GameObject DragItemUIPrefab;
@@ -51,22 +47,6 @@ public class UIManager : MonoBehaviour
         
         // PartySetupPanel
         partySetupPanel.Init();
-    }
-
-    public UnitHpBar GetUnitHpBar()
-    {
-        GameObject hpBarObj = PoolManager.Instance.Get(ObjType.UnitHpBar);
-        if (hpBarObj == null) return null;
-        
-        hpBarObj.TryGetComponent<UnitHpBar>(out var hpBar);
-
-        if (hpBar != null)
-        {
-            unitHpBars.Add(hpBar);
-            hpBar.transform.SetParent(unitHpBarParent, false);
-        }
-        
-        return hpBar;
     }
 
     #region PartySetupPanel
