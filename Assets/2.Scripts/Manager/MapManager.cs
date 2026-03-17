@@ -24,6 +24,7 @@ public class MapManager : MonoBehaviour
 
     public void LoadIsland(StageData stageData)
     {
+        //TODO 생성된 오브젝트 처리하기 -> pooling 하거나 destroy 
         islands.Clear();
 
         for (int i = 0; i < stageData.IslandDatas.Count; i++)
@@ -38,13 +39,23 @@ public class MapManager : MonoBehaviour
         }
     }
 
+    public GameObject GetCurIsland(int curIslandIdx)
+    {
+        return islands[curIslandIdx].gameObject;
+    }
+    
+    public Vector2 GetCurIslandPos(int curIslandIdx)
+    {
+        return islands[curIslandIdx].transform.position;
+    }
+
     public Vector2 GetEnemySpawnPos(int curIslandIdx)
     {
-        return (Vector2)islands[curIslandIdx].transform.position + islands[curIslandIdx].EnemySpawnPos;
+        return GetCurIslandPos(curIslandIdx) + islands[curIslandIdx].EnemySpawnPos;
     }
 
     public Vector2 GetPlayerSpawnPos(int curIslandIdx)
     {
-        return (Vector2)islands[curIslandIdx].transform.position + islands[curIslandIdx].PlayerSpawnPos;
+        return GetCurIslandPos(curIslandIdx) + islands[curIslandIdx].PlayerSpawnPos;
     }
 }

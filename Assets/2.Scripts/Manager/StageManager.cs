@@ -57,6 +57,9 @@ public class StageManager : MonoBehaviour
 
         Vector2 playerSpawnPos = MapManager.Instance.GetPlayerSpawnPos(curIslandIdx);
         
+        // 카메라 타겟 변경
+        CameraManager.Instance.SetTarget(MapManager.Instance.GetCurIsland(curIslandIdx));
+        
         // 유닛 생성
         UnitManager.Instance.SpawnParty(playerSpawnPos);
         SpawnEnemy(stageDatas[curStageLevel]);
