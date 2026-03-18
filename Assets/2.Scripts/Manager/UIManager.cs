@@ -8,7 +8,12 @@ public class UIManager : MonoBehaviour
     
     [Header("=== Canvas References ===")]
     [SerializeField] private RectTransform worldCanvasRect;
+
+    [SerializeField] private RectTransform damageTextRect;
+    public RectTransform DamageTextRect => damageTextRect;
     [SerializeField] private RectTransform canvasRect;
+    
+    
     [SerializeField] private GameObject mainButtonGroup;
     [SerializeField] private PartySetupPanel partySetupPanel;
 

@@ -21,6 +21,8 @@ public class UnitView : MonoBehaviour
 
     [SerializeField] private UnitHpBar hpBar;
     
+    private DamageTextSpawner damageTextSpawner = new();
+    
     public event Action OnDeathFinished;
     
     #region Init
@@ -91,5 +93,10 @@ public class UnitView : MonoBehaviour
     {
         ReleaseHpbar();
         OnDeathFinished?.Invoke();
+    }
+
+    public void HandleDamage(float damage)
+    {
+        damageTextSpawner.Spawn(transform.position, damage);
     }
 }

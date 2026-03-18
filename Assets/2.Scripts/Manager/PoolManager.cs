@@ -5,6 +5,7 @@ using UnityEngine;
 public enum ObjType
 {
     UnitHpBar,
+    FloatingText,
 }
 
 public class PoolManager : MonoBehaviour
@@ -63,6 +64,7 @@ public class PoolManager : MonoBehaviour
         }
 
         GameObject newObj = Instantiate(prefab);
+        newObj.SetActive(false);
         pool.Add(newObj);
 
         return newObj;

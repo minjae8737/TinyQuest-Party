@@ -23,7 +23,7 @@ public class HealSkillData : SkillData
             }
         }
         
-        minHpTarget?.Model.TakeHeal(healAmount);
+        minHpTarget?.TakeHeal(healAmount);
     }
     
     private int CalculateHealAmount(UnitController caster)

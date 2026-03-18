@@ -99,11 +99,13 @@ public class Unit
 
     #region Combat
 
-    public void TakeDamage(int damage)
+    public float TakeDamage(int damage)
     {
-        if (damage - Stat.Def < 0) return;
+        if (damage - Stat.Def < 0) return 0;
         damage -= Stat.Def;
         Status.TakeDamage(damage);
+        
+        return damage;
     }
 
     public void TakeHeal(int healAmount)

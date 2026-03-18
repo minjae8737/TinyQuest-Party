@@ -25,6 +25,8 @@ public class UnitController : MonoBehaviour
     public float HpPercent => (float)model.Status.Hp / model.Status.MaxHp * 100;
     
     #endregion
+
+    public event Action<float> OnDamage;
     
     #region Init
     
@@ -46,12 +48,14 @@ public class UnitController : MonoBehaviour
     {
         model.OnHpChanged += OnHpChanged;
         view.OnDeathFinished += HandleDeathFinished;
+        OnDamage += view.HandleDamage;
     }
 
     private void OnDisable()
     {
         model.OnHpChanged -= OnHpChanged;
         view.OnDeathFinished -= HandleDeathFinished;
+        OnDamage -= view.HandleDamage;
     }
     
     #endregion
@@ -166,6 +170,22 @@ public class UnitController : MonoBehaviour
 
         yield return new WaitForSeconds(skill.Data.RecoveryTime); // 후딜
         canMove = true;
+    }
+    
+    public void TakeDamage(int damage)
+    {
+        float calDamage = model.TakeDamage(damage);
+        
+        if (model.TeamType == TeamType.Enemy)
+        {
+            OnDamage?.Invoke(calDamage);
+        } 
+    }
+
+    public void TakeHeal(int healAmount)
+    {
+        model.TakeHeal(healAmount);
+        
     }
     
     #endregion
