@@ -202,22 +202,15 @@ public class UnitManager : MonoBehaviour
     
     public UnitHpBar GetUnitHpBar()
     {
-        GameObject hpBarObj = PoolManager.Instance.Get(ObjType.UnitHpBar);
-        if (hpBarObj == null) return null;
-        
-        hpBarObj.TryGetComponent<UnitHpBar>(out var hpBar);
-
-        if (hpBar != null)
-        {
-            hpBar.transform.SetParent(unitHpBarParent, false);
-        }
+        UnitHpBar hpBar = PoolManager.Instance.Get<UnitHpBar>();
+        if (hpBar == null) return null;
         
         return hpBar;
     }
 
     public void ReleaseUnitHpBar(UnitHpBar hpBar)
     {
-        PoolManager.Instance.Release(hpBar.gameObject);
+        PoolManager.Instance.Release(hpBar);
     }
     
     public void CombatEnabled(bool enabled)

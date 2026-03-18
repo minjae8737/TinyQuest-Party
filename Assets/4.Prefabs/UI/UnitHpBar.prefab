@@ -85,8 +85,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6410187305742260032}
   - component: {fileID: 7932481337980059016}
-  - component: {fileID: 4993729430095381451}
   - component: {fileID: 3586932927412713715}
+  - component: {fileID: 4993729430095381451}
   m_Layer: 5
   m_Name: UnitHpBar
   m_TagString: Untagged
@@ -122,6 +122,20 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7519341673117687997}
   m_CullTransparentMesh: 1
+--- !u!114 &3586932927412713715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7519341673117687997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d34be7f0d9b443fc99c6985fc57b0e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hpImg: {fileID: 5101601084667555024}
+  offset: {x: -0.0625, y: -0.25, z: 0}
 --- !u!114 &4993729430095381451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152,18 +166,3 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 16
---- !u!114 &3586932927412713715
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7519341673117687997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d34be7f0d9b443fc99c6985fc57b0e6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  hpImg: {fileID: 5101601084667555024}
-  targetUnit: {fileID: 0}
-  offset: {x: -0.0625, y: -0.25, z: 0}

@@ -1,10 +1,8 @@
-using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
-public class FloatingText : MonoBehaviour
+public class FloatingText : Poolable
 {
     [Header("=== Reference ===")]
     [SerializeField] private TextMeshProUGUI text;
@@ -35,7 +33,7 @@ public class FloatingText : MonoBehaviour
 
     private void OnComplete()
     {
-        PoolManager.Instance.Release(gameObject);
+        PoolManager.Instance.Release(this);
     }
 
 }

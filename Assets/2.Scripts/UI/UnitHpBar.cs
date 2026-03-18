@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitHpBar : MonoBehaviour
+public class UnitHpBar : Poolable
 {
     [Header("=== UI Reference ===")]
     [SerializeField] private Image hpImg;
@@ -28,7 +28,6 @@ public class UnitHpBar : MonoBehaviour
         rect = GetComponent<RectTransform>();
         
         TargetUnit = target;
-        gameObject.SetActive(true);
     }
     
     private void SetHpFillAmount(float fill)
