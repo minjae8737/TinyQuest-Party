@@ -1,6 +1,8 @@
+using System;
+
+[Serializable]
 public class Item
 {
-    public long Id;
     public string DataId;
     public int Stack;
 
@@ -8,10 +10,14 @@ public class Item
     {
     }
 
-    public Item(long id, string dataId, int stack = 1)
+    public Item(string dataId, int stack = 1)
     {
-        Id = id;
         DataId = dataId;
         Stack = stack;
+    }
+
+    public void AddItem(int amount)
+    {
+        Stack += 1;
     }
 }

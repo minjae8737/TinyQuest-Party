@@ -9,5 +9,5 @@ public class UnitSaveData
     public long Exp;
     
     // UnitEquipment
-    public Dictionary<EquipPart, long> Equipments;
+    public Dictionary<EquipPart, string> Equipments;
 }

@@ -4,10 +4,8 @@ using UnityEngine;
 public class ItemManager : MonoBehaviour
 {
     public static ItemManager Instance { get; private set; }
-
-    private static long itemId = 1L;
     
-    private Dictionary<long, Item> itemDic;
+    private Dictionary<string, Item> itemDic;
     private Dictionary<string, ItemData> itemDataDic;
 
     [Header("=== Item Data Tables ===")]
@@ -21,7 +19,7 @@ public class ItemManager : MonoBehaviour
             Instance = this;
         }
 
-        itemDic = new Dictionary<long, Item>();
+        itemDic = new Dictionary<string, Item>();
         itemDataDic = new Dictionary<string, ItemData>();
 
         foreach (ItemData itemData in armorDatas)
@@ -41,7 +39,7 @@ public class ItemManager : MonoBehaviour
         }
     }
 
-    public Item Get(long itemId)
+    public Item Get(string itemId)
     {
         if (!itemDic.TryGetValue(itemId, out var item))
         {
@@ -63,14 +61,13 @@ public class ItemManager : MonoBehaviour
 
     public Item CreateItem(ItemData itemData)
     {
-        Item newItem = new Item(itemId, itemData.DataId);
+        Item newItem = new Item(itemData.DataId);
         
-        if (!itemDic.TryAdd(itemId, newItem))
+        if (!itemDic.TryAdd(itemData.DataId, newItem))
         {
-            Debug.LogError(itemId + " ItemData is duplicated");
+            // itemDic[itemData.DataId].add
         }
-
-        itemId++;
+        
         return newItem;
     }
 }

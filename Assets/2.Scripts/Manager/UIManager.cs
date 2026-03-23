@@ -17,6 +17,11 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject mainButtonGroup;
     [SerializeField] private PartySetupPanel partySetupPanel;
 
+    [SerializeField] private RectTransform GoldPanel;
+    [SerializeField] private RectTransform ExpPanel;
+    private RectTransform GoldPanelIcon;
+    private RectTransform ExpPanelIcon;
+
     [Header("=== Prefab ===")] 
     [SerializeField] private GameObject DragItemUIPrefab;
 
@@ -52,6 +57,10 @@ public class UIManager : MonoBehaviour
         
         // PartySetupPanel
         partySetupPanel.Init();
+        
+        // MainTopGroup
+        GoldPanelIcon = GoldPanel.GetChild(0).GetComponent<RectTransform>();
+        ExpPanelIcon = ExpPanel.GetChild(0).GetComponent<RectTransform>();
     }
 
     #region PartySetupPanel
@@ -73,6 +82,40 @@ public class UIManager : MonoBehaviour
     public DragItemUI GetDragItem()
     {
         return DragItemUI;
+    }
+
+    #endregion
+
+    // MainTopGroup 임시 네이밍
+    #region MainTopGroup
+
+    public Vector3 GetCurrencyPos(CurrencyType type)
+    {
+        Vector3 screenPos = Vector3.zero;
+        
+        switch (type)
+        {
+            case CurrencyType.Gold:
+                screenPos= RectTransformUtility.WorldToScreenPoint(null, GoldPanelIcon.position);
+                break;
+            case CurrencyType.Exp:
+                screenPos= RectTransformUtility.WorldToScreenPoint(null, ExpPanelIcon.position);
+                break;
+        }
+
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+        worldPos.z = 0f;
+
+        return worldPos;
+    }
+
+    public Vector3 GetInventoryPos()
+    {
+        Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(null, GoldPanelIcon.position); //TODO GoldPanelIcon 을 inventoryButton으로 바꿀 것 
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPos);
+        worldPos.z = 0f;
+
+        return worldPos;
     }
 
     #endregion

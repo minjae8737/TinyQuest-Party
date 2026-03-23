@@ -206,6 +206,10 @@ public class UnitController : MonoBehaviour
 
     public void HandleDeathFinished()
     {
+        if (model.TeamType == TeamType.Enemy)
+        {
+            StageManager.Instance.RequestStageReward(transform.position);
+        }
         Despawn();
     }
     

@@ -115,4 +115,11 @@ public class StageManager : MonoBehaviour
     {
         return curStageLevel >= stageDatas.Count;
     }
+
+    public void RequestStageReward(Vector3 unitPos)
+    {
+        RewardData rewardData = stageDatas[curStageLevel].RewardData;
+
+        GameManager.Instance.DropReward(rewardData, unitPos);
+    }
 }
