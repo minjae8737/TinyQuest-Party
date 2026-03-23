@@ -31,6 +31,18 @@ public class CurrencyManager : MonoBehaviour
         }
     }
 
+    private void OnEnable()
+    {
+        OnGoldChanged += UIManager.Instance.RefreshGoldPanel;
+        OnExpChanged += UIManager.Instance.RefreshExpPanel;
+    }
+
+    private void OnDisable()
+    {
+        OnGoldChanged -= UIManager.Instance.RefreshGoldPanel;
+        OnExpChanged -= UIManager.Instance.RefreshExpPanel;
+    }
+
     public void Init()
     {
         Gold = 0L;
@@ -43,9 +55,6 @@ public class CurrencyManager : MonoBehaviour
             {
                 Debug.Log($"{data.Type} Data is Duplicated");
             }
-
-            Debug.Log($"DataDic Count = {dataDic.Count}");
-            
         }
     }
 

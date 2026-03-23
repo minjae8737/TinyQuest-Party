@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,14 +15,17 @@ public class UIManager : MonoBehaviour
     public RectTransform DamageTextRect => damageTextRect;
     [SerializeField] private RectTransform canvasRect;
     
-    
     [SerializeField] private GameObject mainButtonGroup;
+    
     [SerializeField] private PartySetupPanel partySetupPanel;
 
+    [Header("=== Main Top Panel ===")]
     [SerializeField] private RectTransform GoldPanel;
     [SerializeField] private RectTransform ExpPanel;
     private RectTransform GoldPanelIcon;
     private RectTransform ExpPanelIcon;
+    private TextMeshProUGUI goldText;
+    private TextMeshProUGUI expText;
 
     [Header("=== Prefab ===")] 
     [SerializeField] private GameObject DragItemUIPrefab;
@@ -58,9 +63,14 @@ public class UIManager : MonoBehaviour
         // PartySetupPanel
         partySetupPanel.Init();
         
-        // MainTopGroup
+        // Main Top Panel
         GoldPanelIcon = GoldPanel.GetChild(0).GetComponent<RectTransform>();
         ExpPanelIcon = ExpPanel.GetChild(0).GetComponent<RectTransform>();
+        goldText = GoldPanel.GetChild(1).GetComponent<TextMeshProUGUI>();
+        expText = ExpPanel.GetChild(1).GetComponent<TextMeshProUGUI>();
+        
+        RefreshGoldPanel();
+        RefreshExpPanel();
     }
 
     #region PartySetupPanel
@@ -89,6 +99,18 @@ public class UIManager : MonoBehaviour
     // MainTopGroup 임시 네이밍
     #region MainTopGroup
 
+    public void RefreshGoldPanel()
+    {
+        long gold = CurrencyManager.Instance.Gold;
+        goldText.text = gold+"";
+    }
+
+    public void RefreshExpPanel()
+    {
+        long exp = CurrencyManager.Instance.Exp;
+        expText.text = exp+"";
+    }
+    
     public Vector3 GetCurrencyPos(CurrencyType type)
     {
         Vector3 screenPos = Vector3.zero;

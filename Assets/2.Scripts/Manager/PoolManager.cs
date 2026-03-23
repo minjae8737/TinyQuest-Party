@@ -70,7 +70,6 @@ public class PoolManager : MonoBehaviour
 
         GameObject newObj = Instantiate(prefab, parent);
         var component = newObj.GetComponent<T>();
-        pool.Push(component);
 
         return component;
     }

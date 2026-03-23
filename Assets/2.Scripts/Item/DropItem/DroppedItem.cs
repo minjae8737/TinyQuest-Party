@@ -19,7 +19,14 @@ public class DroppedItem : Poolable
 
     private void OnEnable()
     {
+        CancelInvoke();
         Invoke("OnDrop", 0.2f);
+    }
+
+    private void OnDisable()
+    {
+        CancelInvoke();
+        transform.DOKill();
     }
 
     private void OnDrop()
@@ -34,6 +41,7 @@ public class DroppedItem : Poolable
 
         transform.DOMove(targetPos, 0.5f)
             .SetEase(Ease.InQuad)
+            .SetDelay(0.2f)
             .OnComplete(OnCompletePickup);
     }
 
