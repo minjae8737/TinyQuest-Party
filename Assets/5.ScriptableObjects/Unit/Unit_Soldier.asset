@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_Soldier
   m_EditorClassIdentifier: 
   UnitName: 6
+  TeamType: 0
+  Icon: {fileID: -3344574278607326588, guid: b8adc41d7f27244179614e1f83bb8fcb, type: 3}
   BaseStat:
     maxHp: 50
     atk: 3

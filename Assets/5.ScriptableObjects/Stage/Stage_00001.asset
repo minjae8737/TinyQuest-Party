@@ -22,3 +22,7 @@ MonoBehaviour:
   - Waves:
     - UnitName: 12
       SpawnCount: 3
+  RewardData:
+    Gold: 10
+    Exp: 10
+    Items: []

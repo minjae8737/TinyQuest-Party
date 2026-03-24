@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_Orcrider
   m_EditorClassIdentifier: 
   UnitName: 13
+  TeamType: 1
+  Icon: {fileID: 6341678186122497384, guid: 7801b0c48f8a34265b09dea0483bc3b7, type: 3}
   BaseStat:
     maxHp: 100
     atk: 5

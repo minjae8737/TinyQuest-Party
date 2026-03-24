@@ -25,6 +25,8 @@ public class UnitController : MonoBehaviour
     public float HpPercent => (float)model.Status.Hp / model.Status.MaxHp * 100;
     
     #endregion
+
+    public event Action<float> OnDamage;
     
     #region Init
     
@@ -41,17 +43,19 @@ public class UnitController : MonoBehaviour
         canMove = true;
         col.enabled = true;
     }
-
+    
     private void OnEnable()
     {
         model.OnHpChanged += OnHpChanged;
         view.OnDeathFinished += HandleDeathFinished;
+        OnDamage += view.HandleDamage;
     }
 
     private void OnDisable()
     {
         model.OnHpChanged -= OnHpChanged;
         view.OnDeathFinished -= HandleDeathFinished;
+        OnDamage -= view.HandleDamage;
     }
     
     #endregion
@@ -168,6 +172,22 @@ public class UnitController : MonoBehaviour
         canMove = true;
     }
     
+    public void TakeDamage(int damage)
+    {
+        float calDamage = model.TakeDamage(damage);
+        
+        if (model.TeamType == TeamType.Enemy)
+        {
+            OnDamage?.Invoke(calDamage);
+        } 
+    }
+
+    public void TakeHeal(int healAmount)
+    {
+        model.TakeHeal(healAmount);
+        
+    }
+    
     #endregion
 
     #region Event Handler
@@ -186,8 +206,18 @@ public class UnitController : MonoBehaviour
 
     public void HandleDeathFinished()
     {
-        UnitManager.Instance.Despawn(this);
+        if (model.TeamType == TeamType.Enemy)
+        {
+            StageManager.Instance.RequestStageReward(transform.position);
+        }
+        Despawn();
     }
     
     #endregion
+
+    public void Despawn()
+    {
+        view.ReleaseHpbar();
+        UnitManager.Instance.Despawn(this);
+    }
 }

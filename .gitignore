@@ -104,3 +104,6 @@ InitTestScene*.unity*
 
 # Editor
 /[Aa]ssets/Editor/
+
+#Font
+/[Aa]ssets/8.Fonts

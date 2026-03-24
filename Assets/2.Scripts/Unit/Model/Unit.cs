@@ -48,9 +48,9 @@ public class Unit
         Level.Level = saveData.Level;
         Level.Exp = saveData.Exp;
         // Equipment
-        foreach (KeyValuePair<EquipPart, long> equipment in saveData.Equipments)
+        foreach (KeyValuePair<EquipPart, string> equipment in saveData.Equipments)
         {
-            long itemId = equipment.Value;
+            string itemId = equipment.Value;
             PutOnEquipment(itemId);
         }
     }
@@ -59,7 +59,7 @@ public class Unit
 
     #region Equipment
     
-    public void PutOnEquipment(long itemId)
+    public void PutOnEquipment(string itemId)
     {
         Item item = ItemManager.Instance.Get(itemId);
         if (item == null) return;
@@ -69,18 +69,18 @@ public class Unit
 
         EquipPart equipPart = equipmentData.Part;
 
-        long preItemId = Equipment.GetEquipmentId(equipPart);
-        if (preItemId != -1)
+        string preItemId = Equipment.GetEquipmentId(equipPart);
+        if (!preItemId.Equals("EmptyId"))
         {
             RemoveEquipment(preItemId);
         }
 
-        Equipment.SetEquipment(equipPart, item.Id);
+        Equipment.SetEquipment(equipPart, item.DataId);
         Stat.EquipStat.Add(equipmentData.Stat);
         Stat.RefreshStat();
     }
 
-    public void RemoveEquipment(long itemId)
+    public void RemoveEquipment(string itemId)
     {
         Item item = ItemManager.Instance.Get(itemId);
         if (item == null) return;
@@ -99,11 +99,13 @@ public class Unit
 
     #region Combat
 
-    public void TakeDamage(int damage)
+    public float TakeDamage(int damage)
     {
-        if (damage - Stat.Def < 0) return;
+        if (damage - Stat.Def < 0) return 0;
         damage -= Stat.Def;
         Status.TakeDamage(damage);
+        
+        return damage;
     }
 
     public void TakeHeal(int healAmount)
@@ -166,7 +168,7 @@ public class Unit
         saveData.Level = Level.Level;
         saveData.Exp = Level.Exp;
 
-        saveData.Equipments = new Dictionary<EquipPart, long>(Equipment.Equipments);
+        saveData.Equipments = new Dictionary<EquipPart, string>(Equipment.Equipments);
 
         return saveData;
     }

@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_Werebear
   m_EditorClassIdentifier: 
   UnitName: 17
+  TeamType: 1
+  Icon: {fileID: 4384719738903243301, guid: 1bf10a09c2be8475a817d4c15d42add4, type: 3}
   BaseStat:
     maxHp: 70
     atk: 5

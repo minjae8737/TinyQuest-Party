@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_Werewolf
   m_EditorClassIdentifier: 
   UnitName: 18
+  TeamType: 1
+  Icon: {fileID: -839096294005867635, guid: 1ed3b933808134e83996a0c2da807e4a, type: 3}
   BaseStat:
     maxHp: 70
     atk: 5

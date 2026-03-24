@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_Skeleton
   m_EditorClassIdentifier: 
   UnitName: 14
+  TeamType: 1
+  Icon: {fileID: 1212381619672523746, guid: c0ddf49aafea04556b5a914306449032, type: 3}
   BaseStat:
     maxHp: 50
     atk: 3

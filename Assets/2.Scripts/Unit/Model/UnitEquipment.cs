@@ -11,15 +11,15 @@ public enum EquipPart
 
 public class UnitEquipment
 {
-    private Dictionary<EquipPart, long> equipments;
-    public IReadOnlyDictionary<EquipPart, long> Equipments => equipments;
+    private Dictionary<EquipPart, string> equipments;
+    public IReadOnlyDictionary<EquipPart, string> Equipments => equipments;
 
-    public long GetEquipmentId(EquipPart part)
+    public string GetEquipmentId(EquipPart part)
     {
-        return equipments.TryGetValue(part, out var id) ? id : -1L;
+        return equipments.TryGetValue(part, out var id) ? id : "EmptyId";
     }
 
-    public void SetEquipment(EquipPart part, long itemId)
+    public void SetEquipment(EquipPart part, string itemId)
     {
         equipments[part] = itemId;
     }

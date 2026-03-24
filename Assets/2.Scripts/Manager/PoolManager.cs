@@ -2,19 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ObjType
-{
-    UnitHpBar,
-}
-
 public class PoolManager : MonoBehaviour
 {
     public static PoolManager Instance { get; private set; }
     
-    private Dictionary<ObjType, List<GameObject>> poolDic;
-    private Dictionary<ObjType, GameObject> prefabDic;
+    private Dictionary<Type, Stack<Poolable>> poolDic;
+    private Dictionary<Type, GameObject> prefabDic;
+    private Dictionary<Type, Transform> parentDic;
 
-    [Header("=== UI Prefabs ===")] 
+    [Header("=== Prefabs ===")]
     [SerializeField] private List<ObjPrefab> prefabs;
 
     private void Awake()
@@ -23,45 +19,89 @@ public class PoolManager : MonoBehaviour
         {
             Instance = this;
         }
+    }
 
-        poolDic = new Dictionary<ObjType, List<GameObject>>();
-        prefabDic = new Dictionary<ObjType, GameObject>();
-
-        for (int i = 0; i < prefabs.Count; i++)
+    public void Init()
+    {
+        poolDic = new();
+        prefabDic = new();
+        parentDic = new();
+        
+        foreach (ObjPrefab objPrefab in prefabs)
         {
-            ObjPrefab objPrefab = prefabs[i];
-            if (!prefabDic.ContainsKey(objPrefab.Type) && objPrefab.Prefab != null)
+            if (objPrefab.Prefab == null)
             {
-                prefabDic.Add(objPrefab.Type, objPrefab.Prefab);
-                poolDic.Add(objPrefab.Type, new List<GameObject>());
+                Debug.LogError("Prefab is null");
+                continue;
             }
+
+            Poolable poolable = objPrefab.Prefab.GetComponent<Poolable>();
+
+            if (poolable == null)
+            {
+                Debug.LogError($"{objPrefab.Prefab.name} : Poolable 없음");
+                continue;
+            }
+
+            Type type = poolable.GetType();
+            
+            prefabDic.Add(type, objPrefab.Prefab);
+            parentDic.Add(type, objPrefab.parent);
         }
     }
 
-
-    public GameObject Get(ObjType type)
+    private T Create<T>() where T : Poolable
     {
-        if (!poolDic.TryGetValue(type, out List<GameObject> pool))
+        Type type = typeof(T);
+
+        if (!poolDic.TryGetValue(type, out var pool))
         {
-            Debug.LogError("pool is Null. Type : " + type);
+            poolDic.Add(type, new Stack<Poolable>());
+            pool = poolDic[type];
+        }
+
+        if (!prefabDic.TryGetValue(type, out var prefab))
+        {
+            Debug.LogError($"Not Found {type} prefab." );
+            return null;
         }
         
-        foreach (GameObject poolObj in pool)
+        Transform parent = parentDic[type];
+
+        GameObject newObj = Instantiate(prefab, parent);
+        var component = newObj.GetComponent<T>();
+
+        return component;
+    }
+    
+    public T Get<T>() where T : Poolable
+    {
+        Type type = typeof(T);
+
+        if (!poolDic.TryGetValue(type, out var pool) || pool.Count == 0)
         {
-            if (poolObj != null && !poolObj.activeSelf)
-            {
-                return poolObj;
-            }
+            T newObj = Create<T>();
+            newObj.gameObject.SetActive(true);
+            return newObj;
         }
 
-        if (!prefabDic.TryGetValue(type, out GameObject prefab))
+        Component obj = pool.Pop();
+        obj.gameObject.SetActive(true);
+        
+        return (T)obj;
+    }
+
+    public void Release(Poolable obj)
+    {
+        Type type = obj.GetType();
+        obj.gameObject.SetActive(false);
+        
+        if (!poolDic.TryGetValue(type, out var pool))
         {
-            Debug.LogError("prefab is Null. Type : " + type);
+            Debug.LogError($"Release Fail. " + type + " not registered in PoolManager.");
+            return;
         }
-
-        GameObject newObj = Instantiate(prefab);
-        pool.Add(newObj);
-
-        return newObj;
+        
+        poolDic[type].Push(obj);
     }
 }

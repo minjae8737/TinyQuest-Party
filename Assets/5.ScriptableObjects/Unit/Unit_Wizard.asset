@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_Wizard
   m_EditorClassIdentifier: 
   UnitName: 7
+  TeamType: 0
+  Icon: {fileID: 7685688494458101020, guid: 6292767a0f0aa44e3a999bfcd00ef0d1, type: 3}
   BaseStat:
     maxHp: 30
     atk: 5

@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_Priest
   m_EditorClassIdentifier: 
   UnitName: 8
+  TeamType: 0
+  Icon: {fileID: -2924314235367310802, guid: d1737ea8049b745edaf0dd3665dfce1d, type: 3}
   BaseStat:
     maxHp: 20000
     atk: 2

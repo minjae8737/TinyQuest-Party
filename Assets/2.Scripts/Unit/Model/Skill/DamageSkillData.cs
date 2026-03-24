@@ -13,7 +13,7 @@ public class DamageSkillData : SkillData
 
         foreach (UnitController target in targets)
         {
-            target.Model.TakeDamage(damage);
+            target.TakeDamage(damage);
         }
     }
 

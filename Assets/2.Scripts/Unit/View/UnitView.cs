@@ -19,7 +19,9 @@ public class UnitView : MonoBehaviour
     [SerializeField] private SpriteRenderer sr;
     [SerializeField] private Animator anim;
 
-    private UnitHpBar hpBar;
+    [SerializeField] private UnitHpBar hpBar;
+    
+    private DamageTextSpawner damageTextSpawner = new();
     
     public event Action OnDeathFinished;
     
@@ -29,11 +31,11 @@ public class UnitView : MonoBehaviour
     {
         if (hpBar == null)
         {
-            hpBar = UIManager.Instance.GetUnitHpBar();
+            hpBar = UnitManager.Instance.GetUnitHpBar();
         }
         hpBar?.Init(transform);
     }
-    
+
     #endregion
 
     public void SetSpeed(float speed)
@@ -78,11 +80,23 @@ public class UnitView : MonoBehaviour
     {
         hpBar.SetHp(maxHp, hp);
     }
+    
+    public void ReleaseHpbar()
+    {
+        if (hpBar == null) return;
+        
+        hpBar.Release();
+        hpBar = null;
+    }
 
     public void OnDeathAnimationEnd()
     {
-        hpBar?.Release();
-        hpBar = null;
+        ReleaseHpbar();
         OnDeathFinished?.Invoke();
+    }
+
+    public void HandleDamage(float damage)
+    {
+        damageTextSpawner.Spawn(transform.position, damage);
     }
 }

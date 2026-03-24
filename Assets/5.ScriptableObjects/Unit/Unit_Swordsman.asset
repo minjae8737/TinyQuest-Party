@@ -13,6 +13,8 @@ MonoBehaviour:
   m_Name: Unit_Swordsman
   m_EditorClassIdentifier: 
   UnitName: 3
+  TeamType: 0
+  Icon: {fileID: -1208887893909939070, guid: e8ac446b3fa6645dcaaf8246628008c1, type: 3}
   BaseStat:
     maxHp: 5000000
     atk: 5
