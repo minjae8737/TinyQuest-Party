@@ -31,19 +31,10 @@ public class StageManager : MonoBehaviour
     public void Init()
     {
         // 세이브 데이터 로드
-                
         curStageLevel = 0;
         curIslandIdx = 0;
     }
 
-    /// <summary>
-    /// Stage 시작  StartStage()
-    ///   → Island 반복 
-    ///     → 전투  StartIsland()
-    ///     → 결과 대기  OnIslandClear(),OnIslandFail()
-    ///     → 다음 Island
-    ///   → Stage 종료
-    /// </summary>
     #region Stage Cycle
     
     public void StartStage()
