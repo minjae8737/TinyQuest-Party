@@ -79,6 +79,24 @@ public class UIManager : MonoBehaviour
         RefreshExpPanel();
     }
 
+    #region Util
+    
+    public string NumberFormatter(double value)
+    {
+        if (value >= 1_000_000_000_000)
+            return $"{(value / 1_000_000_000_000):0.#}T";
+        if (value >= 1_000_000_000)
+            return $"{(value / 1_000_000_000):0.#}B";
+        if (value >= 1_000_000)
+            return $"{(value / 1_000_000):0.#}M";
+        if (value >= 1_000)
+            return $"{(value / 1_000):0.#}K";
+        
+        return $"{value}";
+    }
+
+    #endregion
+
     #region PartySetupPanel
 
     public void OpenPartySetupPanel()
