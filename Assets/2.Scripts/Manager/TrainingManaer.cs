@@ -30,9 +30,10 @@ public class TrainingManaer : MonoBehaviour
             int maxLevel = MaxTrainingLevel - 1;
             int clamp = Math.Clamp(value, 0, maxLevel);
             
-            // if (trainingLevel == clamp) return;
+            if (trainingLevel == clamp) return;
             
             trainingLevel = clamp;
+            OnTrainingLevelChanged?.Invoke();
         }
     }
 
@@ -82,7 +83,7 @@ public class TrainingManaer : MonoBehaviour
     }
 
     private Stat totalStat;
-    
+    public event Action OnTrainingLevelChanged;
     public event Action<int> OnAttackLevelChanged;
     public event Action<int> OnDefenceLevelChanged;
     public event Action<int> OnHealthLevelChanged;
@@ -95,15 +96,27 @@ public class TrainingManaer : MonoBehaviour
         }
     }
 
+    public void Init()
+    {
+        // 업데이트 후 데이터가 늘어났을시 자동으로 레벨업
+        CheckAllLevelMax();
+        
+        OnAttackLevelChanged += _ => CheckAllLevelMax();
+        OnDefenceLevelChanged += _ => CheckAllLevelMax();
+        OnHealthLevelChanged += _ => CheckAllLevelMax();
+    }
+
     #region LevelUp
 
     private void LevelUpTrainingLevel()
     {
+        if (TrainingLevel >= MaxTrainingLevel - 1) return;
+        
         TrainingLevel++;
         
         AttackLevel = 0; 
         DefenceLevel = 0; 
-        HealthLevel = 0; 
+        HealthLevel = 0;
     }
 
     private bool IsAllLevelMax()
@@ -113,6 +126,11 @@ public class TrainingManaer : MonoBehaviour
         if (HealthLevel != GetMaxLevel(TrainingLevel)) return false;
         
         return true;
+    }
+
+    private void CheckAllLevelMax()
+    {
+        if (IsAllLevelMax()) LevelUpTrainingLevel();
     }
 
     public void LevelUpAttack(int level)
@@ -237,28 +255,28 @@ public class TrainingManaer : MonoBehaviour
         );
     }
 
-    public int GetAttackIncrease(int trainingLevel, int level)
+    public int GetAttackIncrease(int trainingLv, int level)
     {
-        TrainingData data = datas[trainingLevel];
+        TrainingData data = datas[trainingLv];
         return data.attackPerLevel * level;
     }
     
-    public int GetDefenceIncrease(int trainingLevel, int level)
+    public int GetDefenceIncrease(int trainingLv, int level)
     {
-        TrainingData data = datas[trainingLevel];
+        TrainingData data = datas[trainingLv];
         return data.defencePerLevel * level;
     }
     
-    public int GetHealthIncrease(int trainingLevel, int level)
+    public int GetHealthIncrease(int trainingLv, int level)
     {
-        TrainingData data = datas[trainingLevel];
+        TrainingData data = datas[trainingLv];
         return data.healthPerLevel * level;
     }
 
-    public int GetMaxLevel(int trainingLevel)
+    public int GetMaxLevel(int trainingLv)
     {
-        if (trainingLevel >= MaxTrainingLevel) return -1;
+        if (trainingLv >= MaxTrainingLevel) return -1;
 
-        return datas[trainingLevel].MaxLevel;
+        return datas[trainingLv].MaxLevel;
     }
 }

@@ -59,7 +59,8 @@ public class TrainingPanel : MonoBehaviour
         attackUpgradeBtn.onClick.AddListener(OnClickAttackLevelUp);
         defenceUpgradeBtn.onClick.AddListener(OnClickDefenceLevelUp);
         healthUpgradeBtn.onClick.AddListener(OnClickHealthLevelUp);
-
+        
+        TrainingManaer.Instance.OnTrainingLevelChanged += HandleLevelUpTrainingLevel;
         TrainingManaer.Instance.OnAttackLevelChanged += _ => RefreshBtn();
         TrainingManaer.Instance.OnDefenceLevelChanged += _ => RefreshBtn();
         TrainingManaer.Instance.OnHealthLevelChanged += _ => RefreshBtn();
@@ -81,9 +82,7 @@ public class TrainingPanel : MonoBehaviour
 
     private void OnClickPlus()
     {
-        int maxTrainingLevel = TrainingManaer.Instance.MaxTrainingLevel - 1;
-        
-        if (viewTrainingLevel == maxTrainingLevel) return;
+        if (viewTrainingLevel == TrainingManaer.Instance.TrainingLevel) return;
 
         viewTrainingLevel++;
         SetTrainingLevelText();
@@ -95,6 +94,13 @@ public class TrainingPanel : MonoBehaviour
         int maxTrainingLevel = TrainingManaer.Instance.MaxTrainingLevel;
 
         trainingLevelText.text = $"{viewTrainingLevel + 1}/{maxTrainingLevel}";
+    }
+
+    private void HandleLevelUpTrainingLevel()
+    {
+        viewTrainingLevel = TrainingManaer.Instance.TrainingLevel;
+        SetTrainingLevelText();
+        RefreshBtn();
     }
     
     #endregion
@@ -163,11 +169,11 @@ public class TrainingPanel : MonoBehaviour
     private void RefreshBtn()
     {
         //viewTrainingLevel
-        bool isViewTrainingLevelMax = viewTrainingLevel == TrainingManaer.Instance.MaxTrainingLevel;
+        bool lessViewTrainingLevel = viewTrainingLevel < TrainingManaer.Instance.TrainingLevel;
         int maxLevel = TrainingManaer.Instance.GetMaxLevel(viewTrainingLevel);
 
         // Attack
-        int attackLevel = isViewTrainingLevelMax ? maxLevel : TrainingManaer.Instance.AttackLevel;
+        int attackLevel = lessViewTrainingLevel ? maxLevel : TrainingManaer.Instance.AttackLevel;
         int attackIncrease = TrainingManaer.Instance.GetAttackIncrease(viewTrainingLevel, attackLevel);
         long attackUpgradeCost = TrainingManaer.Instance.GetAttackUpgradeCost(viewTrainingLevel, upgradeMultiplier);
         string attackUpgradeCostStr = UIManager.Instance.NumberFormatter(attackUpgradeCost);
@@ -177,7 +183,7 @@ public class TrainingPanel : MonoBehaviour
         atkGoldCostText.text = attackUpgradeCostStr;
 
         // Defence
-        int defenceLevel = isViewTrainingLevelMax ? maxLevel : TrainingManaer.Instance.DefenceLevel;
+        int defenceLevel = lessViewTrainingLevel ? maxLevel : TrainingManaer.Instance.DefenceLevel;
         int defenceIncrease = TrainingManaer.Instance.GetDefenceIncrease(viewTrainingLevel, defenceLevel);
         long defenceUpgradeCost = TrainingManaer.Instance.GetDefenceUpgradeCost(viewTrainingLevel, upgradeMultiplier);
         string defenceUpgradeCostStr = UIManager.Instance.NumberFormatter(defenceUpgradeCost);
@@ -187,7 +193,7 @@ public class TrainingPanel : MonoBehaviour
         defGoldCostText.text = defenceUpgradeCostStr;
 
         // Health
-        int healthLevel = isViewTrainingLevelMax ? maxLevel : TrainingManaer.Instance.HealthLevel;
+        int healthLevel = lessViewTrainingLevel ? maxLevel : TrainingManaer.Instance.HealthLevel;
         int healthIncrease = TrainingManaer.Instance.GetHealthIncrease(viewTrainingLevel, healthLevel);
         long healthUpgradeCost = TrainingManaer.Instance.GetHealthUpgradeCost(viewTrainingLevel, upgradeMultiplier);
         string healthUpgradeCostStr = UIManager.Instance.NumberFormatter(healthUpgradeCost);
