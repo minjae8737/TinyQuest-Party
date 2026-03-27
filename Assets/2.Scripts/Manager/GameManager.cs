@@ -21,10 +21,12 @@ public class GameManager : MonoBehaviour
         
         MapManager.Instance.Init();
         PoolManager.Instance.Init();
+        TrainingManaer.Instance.Init();
         UnitManager.Instance.Init();
-        UIManager.Instance.Init();
         StageManager.Instance.Init();
         CurrencyManager.Instance.Init();
+        
+        UIManager.Instance.Init();
         
         // TODO Manager들 Init()후 시작하도록 수정
         GameStart();

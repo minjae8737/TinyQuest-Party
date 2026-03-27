@@ -30,7 +30,7 @@ public class Unit
     public void Init(UnitSaveData saveData)
     {
         Level.Init();
-        Stat.BaseStat = Data.BaseStat.Clone();
+        Stat.SetBaseStat(Data.BaseStat.Clone());
         
         if (saveData != null)
         {
@@ -53,6 +53,14 @@ public class Unit
             string itemId = equipment.Value;
             PutOnEquipment(itemId);
         }
+    }
+
+    public void ApplyTariningStat(Stat stat)
+    {
+        Stat.SetTrainingStat(stat);
+        int roseHp = Status.MaxHp - Status.Hp;
+
+        Status.Init(Stat.MaxHp - roseHp, Stat.MaxHp);
     }
     
     #endregion

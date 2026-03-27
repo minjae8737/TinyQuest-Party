@@ -27,6 +27,9 @@ public class UIManager : MonoBehaviour
     private TextMeshProUGUI goldText;
     private TextMeshProUGUI expText;
 
+    [Header("=== Training Panel ===")] 
+    [SerializeField] private TrainingPanel trainingPanel;
+
     [Header("=== Prefab ===")] 
     [SerializeField] private GameObject DragItemUIPrefab;
 
@@ -69,9 +72,30 @@ public class UIManager : MonoBehaviour
         goldText = GoldPanel.GetChild(1).GetComponent<TextMeshProUGUI>();
         expText = ExpPanel.GetChild(1).GetComponent<TextMeshProUGUI>();
         
+        // Training Panel
+        trainingPanel.Init();
+        
         RefreshGoldPanel();
         RefreshExpPanel();
     }
+
+    #region Util
+    
+    public string NumberFormatter(double value)
+    {
+        if (value >= 1_000_000_000_000)
+            return $"{(value / 1_000_000_000_000):0.#}T";
+        if (value >= 1_000_000_000)
+            return $"{(value / 1_000_000_000):0.#}B";
+        if (value >= 1_000_000)
+            return $"{(value / 1_000_000):0.#}M";
+        if (value >= 1_000)
+            return $"{(value / 1_000):0.#}K";
+        
+        return $"{value}";
+    }
+
+    #endregion
 
     #region PartySetupPanel
 
@@ -138,6 +162,20 @@ public class UIManager : MonoBehaviour
         worldPos.z = 0f;
 
         return worldPos;
+    }
+
+    #endregion
+
+    #region TrainingPanel
+
+    public void OpenTrainingPanel()
+    {
+        trainingPanel.gameObject.SetActive(true);
+    }
+
+    public void OffTrainingPanel()
+    {
+        trainingPanel.gameObject.SetActive(false);
     }
 
     #endregion

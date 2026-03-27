@@ -60,9 +60,9 @@ public class CurrencyManager : MonoBehaviour
 
     #region Gold
 
-    private bool CheckGold(long amount)
+    private bool HasEnoughGold(long amount)
     {
-        return amount >= Gold;
+        return Gold >= amount;
     }
     
     public void AddGold(long amount)
@@ -72,21 +72,23 @@ public class CurrencyManager : MonoBehaviour
         OnGoldChanged?.Invoke();
     }
 
-    public void SpendGold(long amount)
+    public bool SpendGold(long amount)
     {
-        if (!CheckGold(amount)) return;
+        if (!HasEnoughGold(amount)) return false;
         
         Gold -= amount;
         OnGoldChanged?.Invoke();
+
+        return true;
     }
     
     #endregion
 
     #region Exp
 
-    private bool CheckExp(long amount)
+    private bool HasEnoughExp(long amount)
     {
-        return amount >= Exp;
+        return Exp >= amount;
     }
 
     public void AddExp(long amount)
@@ -96,12 +98,14 @@ public class CurrencyManager : MonoBehaviour
         OnExpChanged?.Invoke();
     }
 
-    public void SpendExp(long amount)
+    public bool SpendExp(long amount)
     {
-        if (!CheckExp(amount)) return;
+        if (!HasEnoughExp(amount)) return false;
         
         Exp -= amount;
         OnExpChanged?.Invoke();
+
+        return true;
     }
 
     #endregion
