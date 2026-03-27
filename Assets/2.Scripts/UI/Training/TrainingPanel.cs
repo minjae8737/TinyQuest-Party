@@ -181,6 +181,7 @@ public class TrainingPanel : MonoBehaviour
         atkLevelText.text = $"Lv.{attackLevel:000}";
         attackIncreaseText.text = $"+{attackIncrease}";
         atkGoldCostText.text = attackUpgradeCostStr;
+        attackUpgradeBtn.interactable = attackUpgradeCost != 0L; 
 
         // Defence
         int defenceLevel = lessViewTrainingLevel ? maxLevel : TrainingManaer.Instance.DefenceLevel;
@@ -191,6 +192,7 @@ public class TrainingPanel : MonoBehaviour
         defLevelText.text = $"Lv.{defenceLevel:000}";
         defenceIncreaseText.text = $"+{defenceIncrease}";
         defGoldCostText.text = defenceUpgradeCostStr;
+        defenceUpgradeBtn.interactable = defenceUpgradeCost != 0L;
 
         // Health
         int healthLevel = lessViewTrainingLevel ? maxLevel : TrainingManaer.Instance.HealthLevel;
@@ -201,6 +203,7 @@ public class TrainingPanel : MonoBehaviour
         hpLevelText.text = $"Lv.{healthLevel:000}";
         healthIncreaseText.text = $"+{healthIncrease}";
         hpGoldCostText.text = healthUpgradeCostStr;
+        healthUpgradeBtn.interactable = healthUpgradeCost != 0L;
     }
     
     #endregion
