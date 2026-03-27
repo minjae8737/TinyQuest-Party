@@ -62,7 +62,7 @@ public class CurrencyManager : MonoBehaviour
 
     private bool HasEnoughGold(long amount)
     {
-        return amount >= Gold;
+        return Gold >= amount;
     }
     
     public void AddGold(long amount)
@@ -88,7 +88,7 @@ public class CurrencyManager : MonoBehaviour
 
     private bool HasEnoughExp(long amount)
     {
-        return amount >= Exp;
+        return Exp >= amount;
     }
 
     public void AddExp(long amount)
