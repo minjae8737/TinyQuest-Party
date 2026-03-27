@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -153,17 +152,17 @@ public class TrainingPanel : MonoBehaviour
 
     private void OnClickAttackLevelUp()
     {
-        TrainingManaer.Instance.LevelUpAttack(upgradeMultiplier);
+        TrainingManaer.Instance.LevelUpStat(TrainingType.Attack, upgradeMultiplier);
     }
     
     private void OnClickDefenceLevelUp()
     {
-        TrainingManaer.Instance.LevelUpDefence(upgradeMultiplier);
+        TrainingManaer.Instance.LevelUpStat(TrainingType.Defence, upgradeMultiplier);
     }
     
     private void OnClickHealthLevelUp()
     {
-        TrainingManaer.Instance.LevelUpHealth(upgradeMultiplier);
+        TrainingManaer.Instance.LevelUpStat(TrainingType.Health, upgradeMultiplier);
     }
 
     private void RefreshBtn()
@@ -174,8 +173,8 @@ public class TrainingPanel : MonoBehaviour
 
         // Attack
         int attackLevel = lessViewTrainingLevel ? maxLevel : TrainingManaer.Instance.AttackLevel;
-        int attackIncrease = TrainingManaer.Instance.GetAttackIncrease(viewTrainingLevel, attackLevel);
-        long attackUpgradeCost = TrainingManaer.Instance.GetAttackUpgradeCost(viewTrainingLevel, upgradeMultiplier);
+        int attackIncrease = TrainingManaer.Instance.GetIncrease(TrainingType.Attack, viewTrainingLevel, attackLevel);
+        long attackUpgradeCost = TrainingManaer.Instance.GetUpgradeCost(TrainingType.Attack, viewTrainingLevel, upgradeMultiplier);
         string attackUpgradeCostStr = UIManager.Instance.NumberFormatter(attackUpgradeCost);
 
         atkLevelText.text = $"Lv.{attackLevel:000}";
@@ -185,8 +184,8 @@ public class TrainingPanel : MonoBehaviour
 
         // Defence
         int defenceLevel = lessViewTrainingLevel ? maxLevel : TrainingManaer.Instance.DefenceLevel;
-        int defenceIncrease = TrainingManaer.Instance.GetDefenceIncrease(viewTrainingLevel, defenceLevel);
-        long defenceUpgradeCost = TrainingManaer.Instance.GetDefenceUpgradeCost(viewTrainingLevel, upgradeMultiplier);
+        int defenceIncrease = TrainingManaer.Instance.GetIncrease(TrainingType.Defence, viewTrainingLevel, defenceLevel);
+        long defenceUpgradeCost = TrainingManaer.Instance.GetUpgradeCost(TrainingType.Defence, viewTrainingLevel, upgradeMultiplier);
         string defenceUpgradeCostStr = UIManager.Instance.NumberFormatter(defenceUpgradeCost);
 
         defLevelText.text = $"Lv.{defenceLevel:000}";
@@ -196,8 +195,8 @@ public class TrainingPanel : MonoBehaviour
 
         // Health
         int healthLevel = lessViewTrainingLevel ? maxLevel : TrainingManaer.Instance.HealthLevel;
-        int healthIncrease = TrainingManaer.Instance.GetHealthIncrease(viewTrainingLevel, healthLevel);
-        long healthUpgradeCost = TrainingManaer.Instance.GetHealthUpgradeCost(viewTrainingLevel, upgradeMultiplier);
+        int healthIncrease = TrainingManaer.Instance.GetIncrease(TrainingType.Health, viewTrainingLevel, healthLevel);
+        long healthUpgradeCost = TrainingManaer.Instance.GetUpgradeCost(TrainingType.Health, viewTrainingLevel, upgradeMultiplier);
         string healthUpgradeCostStr = UIManager.Instance.NumberFormatter(healthUpgradeCost);
 
         hpLevelText.text = $"Lv.{healthLevel:000}";

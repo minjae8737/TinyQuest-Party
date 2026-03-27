@@ -15,6 +15,8 @@ public class TrainingManaer : MonoBehaviour
 
     [SerializeField] private List<TrainingData> datas;
 
+    private List<Stat> Stats;
+
     private int trainingLevel;
     private int attackLevel;
     private int defenceLevel;
@@ -82,8 +84,9 @@ public class TrainingManaer : MonoBehaviour
         }
     }
 
-    private Stat totalStat;
+    public Stat TotalStat { get; private set; }
     public event Action OnTrainingLevelChanged;
+    public event Action OnChangedTrainingStat;
     public event Action<int> OnAttackLevelChanged;
     public event Action<int> OnDefenceLevelChanged;
     public event Action<int> OnHealthLevelChanged;
@@ -98,12 +101,21 @@ public class TrainingManaer : MonoBehaviour
 
     public void Init()
     {
-        // 업데이트 후 데이터가 늘어났을시 자동으로 레벨업
-        CheckAllLevelMax();
+        Stats = new();
+
+        foreach (TrainingData data in datas)
+        {
+            Stats.Add(new Stat());
+        }
         
-        OnAttackLevelChanged += _ => CheckAllLevelMax();
-        OnDefenceLevelChanged += _ => CheckAllLevelMax();
-        OnHealthLevelChanged += _ => CheckAllLevelMax();
+        // 업데이트 후 데이터가 늘어났을시 자동으로 레벨업
+        TryLevelUpTrainingLevel();
+        
+        OnAttackLevelChanged += _ => TryLevelUpTrainingLevel();
+        OnDefenceLevelChanged += _ => TryLevelUpTrainingLevel();
+        OnHealthLevelChanged += _ => TryLevelUpTrainingLevel();
+
+        OnChangedTrainingStat += UnitManager.Instance.ApplyTrainingStat;
     }
 
     #region LevelUp
@@ -128,64 +140,102 @@ public class TrainingManaer : MonoBehaviour
         return true;
     }
 
-    private void CheckAllLevelMax()
+    private void TryLevelUpTrainingLevel()
     {
         if (IsAllLevelMax()) LevelUpTrainingLevel();
     }
 
-    public void LevelUpAttack(int level)
+    public void LevelUpStat(TrainingType type, int level)
     {
         TrainingData data = datas[trainingLevel];
-
-        // 최대 레벨이면 리턴
-        if (AttackLevel == data.MaxLevel) return;
+        int startLevel = GetStatLevel(type);
         
-        int targetLevel = Math.Clamp(AttackLevel + level, 0, data.MaxLevel);
-        long goldCost = GetAttackUpgradeCost(trainingLevel, level);
+        // 최대 레벨이면 리턴
+        if (startLevel == data.MaxLevel) return;
+        
+        int targetLevel = Math.Clamp(startLevel + level, 0, data.MaxLevel);
+        long goldCost = GetUpgradeCost(type, trainingLevel, level);
 
         // Gold 부족시 리턴
         if (!CurrencyManager.Instance.SpendGold(goldCost)) return;
-
-        AttackLevel = targetLevel;
+        
+        int statValue = GetIncrease(type,trainingLevel,targetLevel - startLevel);
+        
+        SetStatLevel(type, targetLevel);
+        AddStat(type, statValue);
     }
 
-    public void LevelUpDefence(int level)
+    private void SetStatLevel(TrainingType type, int targetLevel)
     {
-        TrainingData data = datas[trainingLevel];
-
-        // 최대 레벨이면 리턴
-        if (DefenceLevel == data.MaxLevel) return;
-        
-        int targetLevel = Math.Clamp(DefenceLevel + level, 0, data.MaxLevel);
-        long goldCost = GetDefenceUpgradeCost(trainingLevel, level);
-
-        // Gold 부족시 리턴
-        if (!CurrencyManager.Instance.SpendGold(goldCost)) return;
-
-        DefenceLevel = targetLevel;
+        switch (type)
+        {
+            case TrainingType.Attack:
+                AttackLevel = targetLevel;
+                break;
+            case TrainingType.Defence:
+                DefenceLevel = targetLevel;
+                break;
+            case TrainingType.Health:
+                HealthLevel = targetLevel;
+                break;
+        }
     }
 
-    public void LevelUpHealth(int level)
+    private int GetStatLevel(TrainingType type)
     {
-        TrainingData data = datas[trainingLevel];
-
-        // 최대 레벨이면 리턴
-        if (HealthLevel == data.MaxLevel) return;
+        int startLevel = 0;
         
-        int targetLevel = Math.Clamp(HealthLevel + level, 0, data.MaxLevel);
-        long goldCost = GetHealthUpgradeCost(trainingLevel, level);
+        switch (type)
+        {
+            case TrainingType.Attack:
+                startLevel = AttackLevel;
+                break;
+            case TrainingType.Defence:
+                startLevel = DefenceLevel;
+                break;
+            case TrainingType.Health:
+                startLevel = HealthLevel;
+                break;
+        }
 
-        // Gold 부족시 리턴
-        if (!CurrencyManager.Instance.SpendGold(goldCost)) return;
-
-        HealthLevel = targetLevel;
+        return startLevel;
     }
     
     #endregion
 
     #region Stat
 
-    
+    private void AddStat(TrainingType type, int statValue)
+    {
+        Stat stat = Stats[TrainingLevel];
+        
+        switch (type)
+        {
+            case TrainingType.Attack:
+                stat.Atk += statValue;
+                break;
+            case TrainingType.Defence:
+                stat.Def += statValue;
+                break;
+            case TrainingType.Health:
+                stat.MaxHp += statValue;
+                break;
+        }
+
+        RefreshTotalStat();
+    }
+
+    public void RefreshTotalStat()
+    {
+        TotalStat = new();
+        
+        foreach (Stat stat in Stats)
+        {
+            TotalStat += stat;
+        }
+        
+        OnChangedTrainingStat?.Invoke();
+    }
 
     #endregion
 
@@ -207,76 +257,62 @@ public class TrainingManaer : MonoBehaviour
         return baseCost + (level - 1) * costPerLevel;
     }
     
-    public long GetAttackUpgradeCost(int trainingLv, int level)
+    public long GetUpgradeCost(TrainingType type, int trainingLv, int level)
     {
         TrainingData data = datas[trainingLv];
+        int startLevel = 0;
 
-        if (AttackLevel >= data.MaxLevel) return 0;
+        switch (type)
+        {
+            case TrainingType.Attack:
+                startLevel = AttackLevel;
+                break;
+            case TrainingType.Defence:
+                startLevel = DefenceLevel;
+                break;
+            case TrainingType.Health:
+                startLevel = HealthLevel;
+                break;
+        }
 
-        int targetLevel = Math.Clamp(AttackLevel + level, 0, data.MaxLevel);
+        if (startLevel >= data.MaxLevel) return 0;
+
+        int targetLevel = Math.Clamp(startLevel + level, 0, data.MaxLevel);
+
 
         return CalculateUpgradeCost(
             data.baseGoldCost,
-            AttackLevel,
-            targetLevel,
-            data.goldCostPerLevel
-        );
-    }
-    
-    public long GetDefenceUpgradeCost(int trainingLv, int level)
-    {
-        TrainingData data = datas[trainingLv];
-
-        if (DefenceLevel >= data.MaxLevel) return 0;
-
-        int targetLevel = Math.Clamp(DefenceLevel + level, 0, data.MaxLevel);
-
-        return CalculateUpgradeCost(
-            data.baseGoldCost,
-            DefenceLevel,
-            targetLevel,
-            data.goldCostPerLevel
-        );
-    }
-
-    public long GetHealthUpgradeCost(int trainingLv, int level)
-    {
-        TrainingData data = datas[trainingLv];
-
-        if (HealthLevel >= data.MaxLevel) return 0;
-
-        int targetLevel = Math.Clamp(HealthLevel + level, 0, data.MaxLevel);
-
-        return CalculateUpgradeCost(
-            data.baseGoldCost,
-            HealthLevel,
+            startLevel,
             targetLevel,
             data.goldCostPerLevel
         );
     }
 
-    public int GetAttackIncrease(int trainingLv, int level)
+    public int GetIncrease(TrainingType type, int trainingLv, int level)
     {
         TrainingData data = datas[trainingLv];
-        return data.attackPerLevel * level;
-    }
-    
-    public int GetDefenceIncrease(int trainingLv, int level)
-    {
-        TrainingData data = datas[trainingLv];
-        return data.defencePerLevel * level;
-    }
-    
-    public int GetHealthIncrease(int trainingLv, int level)
-    {
-        TrainingData data = datas[trainingLv];
-        return data.healthPerLevel * level;
-    }
+        int increase = 0;
 
+        switch (type)
+        {
+            case TrainingType.Attack:
+                increase = data.attackPerLevel * level;
+                break;
+            case TrainingType.Defence:
+                increase = data.defencePerLevel * level;
+                break;
+            case TrainingType.Health:
+                increase = data.healthPerLevel * level;
+                break;
+        }
+
+        return increase;
+    }
+    
     public int GetMaxLevel(int trainingLv)
     {
         if (trainingLv >= MaxTrainingLevel) return -1;
-
+    
         return datas[trainingLv].MaxLevel;
     }
 }

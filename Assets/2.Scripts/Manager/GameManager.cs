@@ -21,8 +21,8 @@ public class GameManager : MonoBehaviour
         
         MapManager.Instance.Init();
         PoolManager.Instance.Init();
-        UnitManager.Instance.Init();
         TrainingManaer.Instance.Init();
+        UnitManager.Instance.Init();
         StageManager.Instance.Init();
         CurrencyManager.Instance.Init();
         

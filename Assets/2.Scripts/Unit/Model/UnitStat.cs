@@ -5,6 +5,7 @@ public class UnitStat
 {
     [ReadOnly] public Stat BaseStat;
     [ReadOnly] public Stat EquipStat;
+    [ReadOnly] public Stat TrainingStat;
     [ReadOnly] public Stat TotalStat;
 
     #region Property
@@ -29,6 +30,12 @@ public class UnitStat
         BaseStat = stat;
         RefreshStat();
     }
+
+    public void SetTrainingStat(Stat stat)
+    {
+        TrainingStat = stat;
+        RefreshStat();
+    }
     
     public void SetEquipStat(Stat stat)
     {
@@ -38,6 +45,6 @@ public class UnitStat
     
     public void RefreshStat()
     {
-        TotalStat = BaseStat + EquipStat;
+        TotalStat = BaseStat + TrainingStat + EquipStat;
     }
 }
