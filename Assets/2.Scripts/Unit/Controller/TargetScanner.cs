@@ -16,6 +16,7 @@ public class TargetScanner : MonoBehaviour
         
         // 필터 적용
         targets = ApplyTeamFilter(caster, targets);
+        ApplyActiveFilter(targets);
 
         UnitController nearestTarget = FindNearestEnemy(casterPos, targets);
         targets.Clear();
@@ -66,6 +67,11 @@ public class TargetScanner : MonoBehaviour
             default:
                 return targets;
         }
+    }
+
+    private void ApplyActiveFilter(List<UnitController> targets)
+    {
+        targets.RemoveAll(u => !u.gameObject.activeSelf);
     }
 
     // public void SelectNearestTarget(int count, Skill skill, Vector2 casterPos, Vector2 forward)

@@ -217,6 +217,7 @@ public class UnitController : MonoBehaviour
 
     public void Despawn()
     {
+        nextPos = null;
         view.ReleaseHpbar();
         UnitManager.Instance.Despawn(this);
     }

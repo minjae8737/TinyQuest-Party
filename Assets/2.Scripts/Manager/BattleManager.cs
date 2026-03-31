@@ -30,7 +30,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void BattleStart()
+    public void  BattleStart()
     {
         UnitManager.Instance.CombatEnabled(true);
         isBattle = true;
