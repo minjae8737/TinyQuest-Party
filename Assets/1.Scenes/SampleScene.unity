@@ -1775,7 +1775,7 @@ GameObject:
   m_Component:
   - component: {fileID: 275414831}
   m_Layer: 0
-  m_Name: Object
+  m_Name: Objects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47773,6 +47773,10 @@ MonoBehaviour:
   stages: []
   stageDatas:
   - {fileID: 11400000, guid: 88a4a0f1707ab49c5b8f4728f3990edd, type: 2}
+  - {fileID: 11400000, guid: b546b37e71ca443eebc1e1bc313a7e58, type: 2}
+  - {fileID: 11400000, guid: fa9ae4052f8904bf98fde8e029e1e13c, type: 2}
+  - {fileID: 11400000, guid: aed10e30180884fc59cdf45fca81ab9e, type: 2}
+  - {fileID: 11400000, guid: 8449b0f710b10468ba797521776abe06, type: 2}
 --- !u!1 &1582468370
 GameObject:
   m_ObjectHideFlags: 0
@@ -48942,6 +48946,9 @@ MonoBehaviour:
   MapParent: {fileID: 57849219}
   islandPrefabs:
   - {fileID: 1177919625464596531, guid: d7322a58b1f3341ddb340458e48f4e1e, type: 3}
+  - {fileID: 6688623930826399477, guid: ef69042af7d374fc3bd71de0f5031142, type: 3}
+  - {fileID: 1339663400765895634, guid: f3f85df9463dd460da21f7849080b3e0, type: 3}
+  - {fileID: 8823965668875466512, guid: b903598bb4796477b851f043fc198010, type: 3}
 --- !u!1 &1948946211
 GameObject:
   m_ObjectHideFlags: 0

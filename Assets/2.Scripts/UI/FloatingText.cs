@@ -28,7 +28,9 @@ public class FloatingText : Poolable
 
     private void Play()
     {
-        transform.DOMoveY(0.7f, duration).OnComplete(OnComplete);
+        float originPosY = transform.position.y;
+
+        transform.DOMoveY(originPosY + 0.7f, duration).OnComplete(OnComplete);
     }
 
     private void OnComplete()

@@ -17,8 +17,6 @@ public class MapManager : MonoBehaviour
     private List<Island> islands;
     private Dictionary<int, List<Island>> islandPoolsDic;
     
-    
-    
     private void Awake()
     {
         if (Instance == null)
@@ -31,8 +29,6 @@ public class MapManager : MonoBehaviour
     {
         islands = new();
         islandPoolsDic = new Dictionary<int, List<Island>>();
-        
-        
     }
 
     public void LoadIsland(StageData stageData)
@@ -48,7 +44,8 @@ public class MapManager : MonoBehaviour
             island.gameObject.SetActive(true);
             
             islands.Add(island);
-            island.transform.position = new Vector2(islandXPos[i], 0f);
+            float Ypos = Random.Range(-12f, 12f);
+            island.transform.position = new Vector2(islandXPos[i], Ypos);
         }
     }
 
