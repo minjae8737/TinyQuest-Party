@@ -24,6 +24,7 @@ public class HealSkillData : SkillData
         }
         
         minHpTarget?.TakeHeal(healAmount);
+        AudioManager.Instance.PlaySfx(Sfx);
     }
     
     private int CalculateHealAmount(UnitController caster)

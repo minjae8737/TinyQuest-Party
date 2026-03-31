@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         // Json 데이터 로드
+        AudioManager.Instance.Init();
         
         MapManager.Instance.Init();
         PoolManager.Instance.Init();

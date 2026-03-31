@@ -130,6 +130,7 @@ public class TrainingPanel : MonoBehaviour
         if (x100Toggle.isOn) PlayHighlight(x100Highlight);
         
         RefreshBtn();
+        AudioManager.Instance.PlaySfx(Sfx.ChangeToggle);
     }
 
     private void PlayHighlight(RectTransform target)

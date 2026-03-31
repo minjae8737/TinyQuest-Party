@@ -107,3 +107,6 @@ InitTestScene*.unity*
 
 #Font
 /[Aa]ssets/8.Fonts
+
+#Audio
+/[Aa]ssets/7.Audio

@@ -14,12 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   TargetType: 3
-  TargetData: {fileID: 11400000, guid: 0967485a2cd294820be5049353838816, type: 2}
-  StartType: 0
   DeliveryType: 0
-  effectClip: {fileID: 0}
+  EffectSpawnType: 0
+  TargetData: {fileID: 11400000, guid: 0967485a2cd294820be5049353838816, type: 2}
   CastTime: 0.4
   RecoveryTime: 0.69
   Cooldown: 5
-  lastUseTime: 0
+  EffectClip: {fileID: 0}
+  Sfx: 8
   Damage: 10

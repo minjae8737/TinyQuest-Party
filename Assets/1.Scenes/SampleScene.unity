@@ -5059,7 +5059,7 @@ MonoBehaviour:
   onValueChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_IsOn: 0
+  m_IsOn: 1
 --- !u!1 &791990364
 GameObject:
   m_ObjectHideFlags: 0
@@ -5250,6 +5250,7 @@ Transform:
   - {fileID: 1484260517}
   - {fileID: 870002642}
   - {fileID: 504459811}
+  - {fileID: 2099987607}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &819586937
@@ -49812,6 +49813,66 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2058184856}
   m_CullTransparentMesh: 1
+--- !u!1 &2099987606
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2099987607}
+  - component: {fileID: 2099987608}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2099987607
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099987606}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 816725046}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2099987608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2099987606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7640a51fa553842a98ca1f07b919de79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bgmClip: {fileID: 8300000, guid: 0e1d9f2a92d254eed9cf4b44b84e848d, type: 3}
+  bgmVolume: 1
+  sfxClips:
+  - {fileID: 8300000, guid: 55aa4bb9acc9f4640a1bbc20fd2dd186, type: 3}
+  - {fileID: 8300000, guid: 7de49b500ab6f4a4fa080167e9f411d2, type: 3}
+  - {fileID: 8300000, guid: e79ec242da4464ef7bc65eefa00c1f75, type: 3}
+  - {fileID: 8300000, guid: 80b37031c66394502bc23c0bb1bfcba9, type: 3}
+  - {fileID: 8300000, guid: 11f2899d8637e4547909b0ca3a4e0224, type: 3}
+  - {fileID: 8300000, guid: 35ad8da7636f449db9b2b1e3dda808d6, type: 3}
+  - {fileID: 8300000, guid: aa44569a4f88e466fb9320b8a70ee824, type: 3}
+  - {fileID: 8300000, guid: 9947a6ef3214543bf84e661d2acefec5, type: 3}
+  - {fileID: 8300000, guid: aedf504f739a941fa99118cd4a19fe5e, type: 3}
+  - {fileID: 8300000, guid: a83916c5f323c49fca46541371585ee0, type: 3}
+  - {fileID: 8300000, guid: 49dbe53b242c045879aad9a4d5c6bf6c, type: 3}
+  sfxVolume: 0.5
+  channels: 10
 --- !u!1 &2114821577
 GameObject:
   m_ObjectHideFlags: 0

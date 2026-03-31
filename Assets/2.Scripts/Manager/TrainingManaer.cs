@@ -163,6 +163,7 @@ public class TrainingManaer : MonoBehaviour
         
         SetStatLevel(type, targetLevel);
         AddStat(type, statValue);
+        AudioManager.Instance.PlaySfx(Sfx.UIUpgrade);
     }
 
     private void SetStatLevel(TrainingType type, int targetLevel)

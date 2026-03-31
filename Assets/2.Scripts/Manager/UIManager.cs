@@ -102,11 +102,13 @@ public class UIManager : MonoBehaviour
     public void OpenPartySetupPanel()
     {
         partySetupPanel.gameObject.SetActive(true);
+        AudioManager.Instance.PlaySfx(Sfx.UIOpen);
     }
 
     public void OffPartySetupPanel()
     {
         partySetupPanel.gameObject.SetActive(false);
+        AudioManager.Instance.PlaySfx(Sfx.UIClose);
     }
 
     #endregion
@@ -171,11 +173,13 @@ public class UIManager : MonoBehaviour
     public void OpenTrainingPanel()
     {
         trainingPanel.gameObject.SetActive(true);
+        AudioManager.Instance.PlaySfx(Sfx.UIOpen);
     }
 
     public void OffTrainingPanel()
     {
         trainingPanel.gameObject.SetActive(false);
+        AudioManager.Instance.PlaySfx(Sfx.UIClose);
     }
 
     #endregion
