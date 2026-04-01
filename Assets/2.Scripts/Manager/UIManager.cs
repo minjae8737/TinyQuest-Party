@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -102,11 +99,13 @@ public class UIManager : MonoBehaviour
     public void OpenPartySetupPanel()
     {
         partySetupPanel.gameObject.SetActive(true);
+        AudioManager.Instance.PlaySfx(Sfx.UIOpen);
     }
 
     public void OffPartySetupPanel()
     {
         partySetupPanel.gameObject.SetActive(false);
+        AudioManager.Instance.PlaySfx(Sfx.UIClose);
     }
 
     #endregion
@@ -126,13 +125,13 @@ public class UIManager : MonoBehaviour
     public void RefreshGoldPanel()
     {
         long gold = CurrencyManager.Instance.Gold;
-        goldText.text = gold+"";
+        goldText.text = NumberFormatter(gold);
     }
 
     public void RefreshExpPanel()
     {
         long exp = CurrencyManager.Instance.Exp;
-        expText.text = exp+"";
+        expText.text = NumberFormatter(exp);
     }
     
     public Vector3 GetCurrencyPos(CurrencyType type)
@@ -171,11 +170,13 @@ public class UIManager : MonoBehaviour
     public void OpenTrainingPanel()
     {
         trainingPanel.gameObject.SetActive(true);
+        AudioManager.Instance.PlaySfx(Sfx.UIOpen);
     }
 
     public void OffTrainingPanel()
     {
         trainingPanel.gameObject.SetActive(false);
+        AudioManager.Instance.PlaySfx(Sfx.UIClose);
     }
 
     #endregion

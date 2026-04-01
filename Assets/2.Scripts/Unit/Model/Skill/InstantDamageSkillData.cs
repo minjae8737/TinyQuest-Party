@@ -7,5 +7,6 @@ public class InstantDamageSkillData : DamageSkillData
     public override void Use(UnitController caster, List<UnitController> targets)
     {
         ApplyDamage(caster, targets);
+        AudioManager.Instance.PlaySfx(Sfx);
     }
 }

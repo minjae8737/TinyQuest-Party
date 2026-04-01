@@ -21,5 +21,6 @@ MonoBehaviour:
   RecoveryTime: 0.09
   Cooldown: 10
   EffectClip: {fileID: 7400000, guid: 8868bc5b1219f4962b24c784a82f6bcd, type: 2}
+  Sfx: 4
   Damage: 15
   Speed: 5

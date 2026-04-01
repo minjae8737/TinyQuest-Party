@@ -19,6 +19,9 @@ public class SkillData : ScriptableObject
 
     [Header("=== Visual ===")]
     public AnimationClip EffectClip;
+    
+    [Header("=== Audio ===")]
+    public Sfx Sfx;
 
     public virtual void Use(UnitController caster, List<UnitController> targets) { }
 }

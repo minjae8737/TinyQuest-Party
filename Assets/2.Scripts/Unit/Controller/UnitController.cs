@@ -166,7 +166,7 @@ public class UnitController : MonoBehaviour
         canMove = false;
         yield return new WaitForSeconds(skill.Data.CastTime); // 선딜
         
-        skill.Use(this);  
+        skill.Use(this);
 
         yield return new WaitForSeconds(skill.Data.RecoveryTime); // 후딜
         canMove = true;
@@ -217,6 +217,7 @@ public class UnitController : MonoBehaviour
 
     public void Despawn()
     {
+        nextPos = null;
         view.ReleaseHpbar();
         UnitManager.Instance.Despawn(this);
     }

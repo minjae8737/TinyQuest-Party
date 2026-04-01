@@ -47,6 +47,9 @@ public class TrainingPanel : MonoBehaviour
         x1Toggle.onValueChanged.AddListener(OnChangedToggle);
         x10Toggle.onValueChanged.AddListener(OnChangedToggle);
         x100Toggle.onValueChanged.AddListener(OnChangedToggle);
+        x1Toggle.onValueChanged.AddListener(_ => AudioManager.Instance.PlaySfx(Sfx.ChangeToggle));
+        x10Toggle.onValueChanged.AddListener(_ => AudioManager.Instance.PlaySfx(Sfx.ChangeToggle));
+        x100Toggle.onValueChanged.AddListener(_ => AudioManager.Instance.PlaySfx(Sfx.ChangeToggle));
         
         x1Highlight = x1Toggle.transform.GetChild(1).GetComponent<RectTransform>();
         x10Highlight = x10Toggle.transform.GetChild(1).GetComponent<RectTransform>();
@@ -65,7 +68,7 @@ public class TrainingPanel : MonoBehaviour
         TrainingManaer.Instance.OnHealthLevelChanged += _ => RefreshBtn();
         
         SetTrainingLevelText();
-        RefreshBtn();
+        OnChangedToggle(false);
     }
 
     #region Training Level
@@ -128,7 +131,7 @@ public class TrainingPanel : MonoBehaviour
         if (x1Toggle.isOn) PlayHighlight(x1Highlight);
         if (x10Toggle.isOn) PlayHighlight(x10Highlight);
         if (x100Toggle.isOn) PlayHighlight(x100Highlight);
-        
+
         RefreshBtn();
     }
 
