@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -128,13 +125,13 @@ public class UIManager : MonoBehaviour
     public void RefreshGoldPanel()
     {
         long gold = CurrencyManager.Instance.Gold;
-        goldText.text = gold+"";
+        goldText.text = NumberFormatter(gold);
     }
 
     public void RefreshExpPanel()
     {
         long exp = CurrencyManager.Instance.Exp;
-        expText.text = exp+"";
+        expText.text = NumberFormatter(exp);
     }
     
     public Vector3 GetCurrencyPos(CurrencyType type)
