@@ -101,3 +101,12 @@ InitTestScene*.unity*
 
 # Sprites
 /[Aa]ssets/3.Sprites/
+
+# Editor
+/[Aa]ssets/Editor/
+
+#Font
+/[Aa]ssets/8.Fonts
+
+#Audio
+/[Aa]ssets/7.Audio

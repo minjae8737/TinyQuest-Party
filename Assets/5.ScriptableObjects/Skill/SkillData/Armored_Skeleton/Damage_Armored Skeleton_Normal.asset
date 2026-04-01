@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c2ab7197640044974ba5d0670e72f596, type: 3}
+  m_Name: Damage_Armored Skeleton_Normal
+  m_EditorClassIdentifier: 
+  Type: 0
+  TargetType: 0
+  DeliveryType: 0
+  EffectSpawnType: 0
+  TargetData: {fileID: 11400000, guid: 09296888ec0af46a8bae10d04ec6053a, type: 2}
+  CastTime: 0.3
+  RecoveryTime: 0.49
+  Cooldown: 1.5
+  EffectClip: {fileID: 0}
+  Sfx: 8
+  Damage: 2

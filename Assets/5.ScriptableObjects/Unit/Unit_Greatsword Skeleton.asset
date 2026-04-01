@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe988da49a5334320aff7fd75a78da07, type: 3}
+  m_Name: Unit_Greatsword Skeleton
+  m_EditorClassIdentifier: 
+  UnitName: 11
+  TeamType: 1
+  Icon: {fileID: 5796680278298347171, guid: acc5549dea796454f903df86bd1445af, type: 3}
+  BaseStat:
+    maxHp: 50
+    atk: 8
+    def: 1
+    speed: 1

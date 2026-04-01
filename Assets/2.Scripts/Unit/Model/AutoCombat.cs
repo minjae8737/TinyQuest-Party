@@ -1,0 +1,77 @@
+using System;
+using UnityEngine;
+
+public class AutoCombat : MonoBehaviour
+{
+    [Header("Reference")]
+    [SerializeField] private UnitController controller;
+    
+    [Header("Settings")]
+    [SerializeField] [Range(0.1f, 0.3f)] private float delay;
+
+    #region Runtime
+    
+    private float lastTime;
+    private bool isEnabled = true;
+    
+    #endregion
+
+    public void SetEnabled(bool enabled)
+    {
+        isEnabled = enabled;
+    }
+    
+    private void Update()
+    {
+        if (!isEnabled) return;
+        
+        if (Time.time - lastTime >= delay)
+        {
+            //스킬 선택
+            int nextSkill = DecideNextSkill();
+
+            bool attacked = false;
+
+            // 공격 시도
+            if (nextSkill != -1)
+            {
+                attacked = controller.DoAttack(nextSkill, transform.position, Time.time);
+            }
+
+            // 이동 시도
+            if (!attacked)
+            {
+                if (controller.TryGetNextPos(nextSkill, out Vector2 nextPos))
+                {
+                    controller.SetNextPos(nextPos);
+                }
+            }
+
+            lastTime = Time.time;
+        }
+    }
+
+    private int DecideNextSkill()
+    {
+        int nextSkill = -1;
+
+        if (controller.CanUseSkill((int)SkillSlot.Skill3, Time.time))
+        {
+            nextSkill = (int)SkillSlot.Skill3;
+        }
+        else if (controller.CanUseSkill((int)SkillSlot.Skill2, Time.time))
+        {
+            nextSkill = (int)SkillSlot.Skill2;
+        }
+        else if (controller.CanUseSkill((int)SkillSlot.Skill1, Time.time))
+        {
+            nextSkill = (int)SkillSlot.Skill1;
+        }
+        else if (controller.CanUseSkill((int)SkillSlot.Normal, Time.time))
+        {
+            nextSkill = (int)SkillSlot.Normal;
+        }
+        
+        return nextSkill;
+    }
+}

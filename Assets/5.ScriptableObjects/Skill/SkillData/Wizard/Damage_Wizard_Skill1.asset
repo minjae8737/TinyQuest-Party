@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38009b03100964728a84d8c0eded7336, type: 3}
+  m_Name: Damage_Wizard_Skill1
+  m_EditorClassIdentifier: 
+  Type: 0
+  TargetType: 1
+  DeliveryType: 1
+  EffectSpawnType: 2
+  TargetData: {fileID: 11400000, guid: 3617706e789864a0384395bc35a03762, type: 2}
+  CastTime: 0.5
+  RecoveryTime: 0.09
+  Cooldown: 10
+  EffectClip: {fileID: 7400000, guid: 8868bc5b1219f4962b24c784a82f6bcd, type: 2}
+  Sfx: 4
+  Damage: 15
+  Speed: 5
