@@ -52,5 +52,5 @@ jobs:
                             
       # 5. 빌드후 라이센스 반환
       - name: Return license
-      uses: game-ci/unity-return-license@v2
-      if: always()
+        uses: game-ci/unity-return-license@v2
+        if: always()
