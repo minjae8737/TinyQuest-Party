@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main          # main 브랜치에 푸시할 때 실행
+      - dev
   pull_request:
     branches:
       - main
+      - dev
 
 jobs:
   build:
