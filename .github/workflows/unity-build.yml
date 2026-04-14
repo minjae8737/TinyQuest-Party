@@ -49,3 +49,8 @@ jobs:
           name: Build-Android
           path: build/Android
           retention-days: 7   # 7일간 보관
+                            
+      # 5. 빌드후 라이센스 반환
+      - name: Return license
+      uses: game-ci/unity-return-license@v2
+      if: always()
