@@ -99,7 +99,7 @@ public class TrainingManaer : MonoBehaviour
         }
     }
 
-    public void Init()
+    public void Init(TrainingSaveData saveData = null)
     {
         Stats = new();
 
@@ -107,6 +107,8 @@ public class TrainingManaer : MonoBehaviour
         {
             Stats.Add(new Stat());
         }
+        
+        ApplySaveData(saveData);
         
         // 업데이트 후 데이터가 늘어났을시 자동으로 레벨업
         TryLevelUpTrainingLevel();
@@ -316,4 +318,25 @@ public class TrainingManaer : MonoBehaviour
     
         return datas[trainingLv].MaxLevel;
     }
+
+
+    #region SaveData
+
+    public TrainingSaveData GetSaveData()
+    {
+        return new TrainingSaveData(trainingLevel, attackLevel, defenceLevel, healthLevel);
+    }
+
+    private void ApplySaveData(TrainingSaveData saveData)
+    {
+        if (saveData != null)
+        {
+            TrainingLevel = saveData.TrainingLevel;
+            AttackLevel = saveData.AttackLevel;
+            DefenceLevel = saveData.DefenceLevel;
+            HealthLevel = saveData.HealthLevel;
+        }
+    }
+    
+    #endregion
 }

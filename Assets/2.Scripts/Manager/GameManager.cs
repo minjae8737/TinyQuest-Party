@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -5,6 +6,10 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
+    
+       
+    private string savePath => Path.Combine(Application.persistentDataPath, "playerData.json");
+    private SaveData saveData = new();
 
 
     private void Awake()
@@ -18,42 +23,90 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         // Json 데이터 로드
+        Load();
+        
         AudioManager.Instance.Init();
         
         MapManager.Instance.Init();
         PoolManager.Instance.Init();
-        TrainingManaer.Instance.Init();
-        UnitManager.Instance.Init();
+        TrainingManaer.Instance.Init(saveData.TrainingSaveData);
+        UnitManager.Instance.Init(saveData.PartySaveData);
         StageManager.Instance.Init();
-        CurrencyManager.Instance.Init();
+        CurrencyManager.Instance.Init(saveData.CurrencySaveData);
         
         UIManager.Instance.Init();
         
-        // TODO Manager들 Init()후 시작하도록 수정
         GameStart();
+    }
+
+    private void OnApplicationQuit()
+    {
+        Save();
     }
 
     #region DataSave
 
-    public void SaveData()
+    private void Update()
     {
-        UnitSaveData unitSaveData = new UnitSaveData();
-
-        string path = Path.Combine(Application.persistentDataPath, "player.json");
-        string json = JsonConvert.SerializeObject(unitSaveData, Formatting.Indented);
-        Debug.Log(json);
-        File.WriteAllText(path, json);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            TestSaveData();
+        }
     }
 
-    public void LoadSaveData()
+    public void TestSaveData()
     {
-        string path = Path.Combine(Application.persistentDataPath, "player.json");
+        // SaveData saveData = new SaveData();
+        //
+        // saveData.CurrencySaveData = CurrencyManager.Instance.GetCurrencySaveData();
+        // saveData.PartySaveData = UnitManager.Instance.GetPartySaveData();
+        // saveData.TrainingSaveData = TrainingManaer.Instance.GetSaveData();
+        //
+        // string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+        //
+        // Debug.Log(Application.persistentDataPath);
+        // Debug.Log($"{json}");
+    }
+    
+    public bool Save()
+    {
+        SaveData saveData = new SaveData();
+        
+        saveData.CurrencySaveData = CurrencyManager.Instance.GetCurrencySaveData();
+        saveData.PartySaveData = UnitManager.Instance.GetPartySaveData();
+        saveData.TrainingSaveData = TrainingManaer.Instance.GetSaveData();
 
-        if (File.Exists(path))
+        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+        Debug.Log(Application.persistentDataPath);
+        Debug.Log(json);
+
+        try
         {
-            string json = File.ReadAllText(path);
-            UnitSaveData data = JsonConvert.DeserializeObject<UnitSaveData>(json);
+            File.WriteAllText(savePath, json);
         }
+        catch (Exception e)
+        {
+            throw new IOException("Fail Write SaveData File.");
+        }
+
+        return true;
+    }
+
+    public bool Load()
+    {
+        try
+        {
+            if (File.Exists(savePath))
+            {
+                string json = File.ReadAllText(savePath);
+                saveData = JsonConvert.DeserializeObject<SaveData>(json);
+            }
+        }
+        catch (Exception e)
+        {
+            throw new FileLoadException("Fail Load SaveData File.");
+        }
+        return true;
     }
 
     #endregion
