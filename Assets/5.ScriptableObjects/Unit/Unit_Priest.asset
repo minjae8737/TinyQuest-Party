@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe988da49a5334320aff7fd75a78da07, type: 3}
   m_Name: Unit_Priest
   m_EditorClassIdentifier: 
-  UnitName: 8
+  UnitName: 9
   TeamType: 0
   Icon: {fileID: -2924314235367310802, guid: d1737ea8049b745edaf0dd3665dfce1d, type: 3}
   BaseStat:

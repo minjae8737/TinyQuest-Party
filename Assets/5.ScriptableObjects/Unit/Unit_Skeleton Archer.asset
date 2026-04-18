@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe988da49a5334320aff7fd75a78da07, type: 3}
   m_Name: Unit_Skeleton Archer
   m_EditorClassIdentifier: 
-  UnitName: 15
+  UnitName: 16
   TeamType: 1
   Icon: {fileID: -4456188695679804916, guid: 06cf87ab8f33643419cb560a3206a5d4, type: 3}
   BaseStat:

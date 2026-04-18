@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe988da49a5334320aff7fd75a78da07, type: 3}
   m_Name: Unit_Lancer
   m_EditorClassIdentifier: 
-  UnitName: 19
+  UnitName: 20
   TeamType: 0
   Icon: {fileID: 143134222742969968, guid: 47d31b12ed9204e30a28467450c8a6b3, type: 3}
   BaseStat:
