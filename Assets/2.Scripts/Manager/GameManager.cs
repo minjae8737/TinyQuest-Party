@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour
         PoolManager.Instance.Init();
         TrainingManaer.Instance.Init(saveData.TrainingSaveData);
         UnitManager.Instance.Init(saveData.PartySaveData);
-        StageManager.Instance.Init();
+        StageManager.Instance.Init(saveData.StageSaveData);
         CurrencyManager.Instance.Init(saveData.CurrencySaveData);
 
         UIManager.Instance.Init();
@@ -50,19 +50,17 @@ public class GameManager : MonoBehaviour
 
     #region DataSave
 
-    public bool Save()
+    private bool Save()
     {
         SaveData saveData = new SaveData();
 
         saveData.CurrencySaveData = CurrencyManager.Instance.GetCurrencySaveData();
         saveData.PartySaveData = UnitManager.Instance.GetPartySaveData();
+        saveData.StageSaveData = StageManager.Instance.GetPartySaveData();
         saveData.TrainingSaveData = TrainingManaer.Instance.GetSaveData();
 
         string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
         string cipherText = Encrypt(json);
-
-        Debug.Log(Application.persistentDataPath);
-        Debug.Log(json);
 
         try
         {
@@ -76,7 +74,7 @@ public class GameManager : MonoBehaviour
         return true;
     }
 
-    public bool Load()
+    private bool Load()
     {
         try
         {
@@ -137,7 +135,7 @@ public class GameManager : MonoBehaviour
 
     #region Stage
 
-    public void GameStart()
+    private void GameStart()
     {
         StageManager.Instance.StartStage();
     }

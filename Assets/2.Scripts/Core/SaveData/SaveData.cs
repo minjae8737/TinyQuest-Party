@@ -9,6 +9,9 @@ public class SaveData
     // 파티 데이터
     public PartySaveData PartySaveData;
     
+    // 스테이지 데이터
+    public StageSaveData StageSaveData;
+    
     // Training 데이터
     public TrainingSaveData TrainingSaveData;
 }

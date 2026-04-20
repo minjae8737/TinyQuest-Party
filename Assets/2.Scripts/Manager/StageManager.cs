@@ -28,11 +28,10 @@ public class StageManager : MonoBehaviour
         }
     }
 
-    public void Init()
+    public void Init(StageSaveData saveData = null)
     {
-        // 세이브 데이터 로드
-        curStageLevel = 0;
-        curIslandIdx = 0;
+        curStageLevel = saveData != null ? saveData.CurStageLevel : 0;
+        curIslandIdx = saveData != null ? saveData.CurIslandIdx : 0;
     }
 
     #region Stage Cycle
@@ -54,7 +53,7 @@ public class StageManager : MonoBehaviour
             NextStage();
             return;
         }
-
+        
         Vector2 playerSpawnPos = MapManager.Instance.GetPlayerSpawnPos(curIslandIdx);
         
         // 카메라 타겟 변경
@@ -131,4 +130,13 @@ public class StageManager : MonoBehaviour
 
         GameManager.Instance.DropReward(rewardData, unitPos);
     }
+
+    #region SaveData
+
+    public StageSaveData GetPartySaveData()
+    {
+        return new StageSaveData(curStageLevel, curIslandIdx);
+    }
+
+    #endregion
 }
