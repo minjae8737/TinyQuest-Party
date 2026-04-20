@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe988da49a5334320aff7fd75a78da07, type: 3}
   m_Name: Unit_ArmoredSkeleton
   m_EditorClassIdentifier: 
-  UnitName: 9
+  UnitName: 10
   TeamType: 1
   Icon: {fileID: -8607426308904735001, guid: 24ce1ce8ff9ae4c5d93d647f24d9592c, type: 3}
   BaseStat:

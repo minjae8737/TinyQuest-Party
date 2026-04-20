@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum UnitName
 {
-    None = -1,
+    None = 0,
     Archer,
     Armored_Orc,
     Knight,
@@ -72,7 +73,7 @@ public class UnitManager : MonoBehaviour
         }
     }
 
-    public void Init()
+    public void Init(PartySaveData saveData = null)
     {
         UnitDataDic = new Dictionary<UnitName, UnitData>();
         unitPrefabDic = new Dictionary<UnitName, GameObject>();
@@ -110,14 +111,13 @@ public class UnitManager : MonoBehaviour
             UnitNamesByTeam[unitController.TeamType].Add(unitName);
         }
         
-      
-        
-        //TODO test code 파티 초기화
         party = new();
-        AssignUnitToSlot(0,UnitName.Wizard);
-        AssignUnitToSlot(1,UnitName.Priest);
-        AssignUnitToSlot(2,UnitName.Swordsman);
-        AssignUnitToSlot(3,UnitName.Knight);
+        
+        // 기본 유닛 세팅
+        AssignUnitToSlot(0, UnitName.Archer);
+        
+        // 파티 세이브 데이터 적용
+        ApplySaveData(saveData);
     }
 
     #region Unit
@@ -326,4 +326,31 @@ public class UnitManager : MonoBehaviour
 
     #endregion
 
+    #region SaveData
+
+    public PartySaveData GetPartySaveData()
+    {
+        List<UnitName> UnitList = new List<UnitName>();
+        
+        foreach (PartySlot slot in party.Slots)
+        {
+            UnitList.Add(slot.UnitName);
+        }
+        
+        return new PartySaveData(UnitList);
+    }
+
+    private void ApplySaveData(PartySaveData saveData)
+    {
+        if (saveData != null)
+        {
+            for (int i = 0; i < MaxPartySize; i++)
+            {
+                UnitName unitName = saveData.UnitList.ElementAtOrDefault(i);
+                AssignUnitToSlot(i, unitName);
+            }
+        }
+    }
+
+    #endregion
 }

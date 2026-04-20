@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe988da49a5334320aff7fd75a78da07, type: 3}
   m_Name: Unit_Werebear
   m_EditorClassIdentifier: 
-  UnitName: 17
+  UnitName: 18
   TeamType: 1
   Icon: {fileID: 4384719738903243301, guid: 1bf10a09c2be8475a817d4c15d42add4, type: 3}
   BaseStat:

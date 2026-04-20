@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe988da49a5334320aff7fd75a78da07, type: 3}
   m_Name: Unit_Orcrider
   m_EditorClassIdentifier: 
-  UnitName: 13
+  UnitName: 14
   TeamType: 1
   Icon: {fileID: 6341678186122497384, guid: 7801b0c48f8a34265b09dea0483bc3b7, type: 3}
   BaseStat:

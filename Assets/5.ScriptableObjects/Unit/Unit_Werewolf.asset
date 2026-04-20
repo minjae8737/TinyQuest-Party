@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe988da49a5334320aff7fd75a78da07, type: 3}
   m_Name: Unit_Werewolf
   m_EditorClassIdentifier: 
-  UnitName: 18
+  UnitName: 19
   TeamType: 1
   Icon: {fileID: -839096294005867635, guid: 1ed3b933808134e83996a0c2da807e4a, type: 3}
   BaseStat:

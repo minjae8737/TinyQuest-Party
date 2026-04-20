@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe988da49a5334320aff7fd75a78da07, type: 3}
   m_Name: Unit_Archer
   m_EditorClassIdentifier: 
-  UnitName: 0
+  UnitName: 1
   TeamType: 0
   Icon: {fileID: 1691440987438862163, guid: 756d9e54db954441da8458b6ba673fc3, type: 3}
   BaseStat:
-    maxHp: 30
+    maxHp: 1000
     atk: 3
     def: 1
     speed: 5

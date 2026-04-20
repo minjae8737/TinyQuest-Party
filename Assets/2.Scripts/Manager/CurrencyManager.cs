@@ -15,14 +15,14 @@ public class CurrencyManager : MonoBehaviour
     [SerializeField] private List<CurrencyData> Datas;
     private Dictionary<CurrencyType, CurrencyData> dataDic;
     public IReadOnlyDictionary<CurrencyType, CurrencyData> DataDic => dataDic;
-    
+
     private const long MaxValue = 9999999999999999L;
     public long Gold { get; private set; }
     public long Exp { get; private set; }
 
     public event Action OnGoldChanged;
     public event Action OnExpChanged;
-    
+
     private void Awake()
     {
         if (Instance == null)
@@ -43,10 +43,11 @@ public class CurrencyManager : MonoBehaviour
         OnExpChanged -= UIManager.Instance.RefreshExpPanel;
     }
 
-    public void Init()
+    public void Init(CurrencySaveData saveData = null)
     {
         Gold = 0L;
         Exp = 0L;
+        ApplySaveData(saveData);
         dataDic = new();
 
         foreach (CurrencyData data in Datas)
@@ -64,7 +65,7 @@ public class CurrencyManager : MonoBehaviour
     {
         return Gold >= amount;
     }
-    
+
     public void AddGold(long amount)
     {
         Gold += amount;
@@ -75,13 +76,13 @@ public class CurrencyManager : MonoBehaviour
     public bool SpendGold(long amount)
     {
         if (!HasEnoughGold(amount)) return false;
-        
+
         Gold -= amount;
         OnGoldChanged?.Invoke();
 
         return true;
     }
-    
+
     #endregion
 
     #region Exp
@@ -101,11 +102,29 @@ public class CurrencyManager : MonoBehaviour
     public bool SpendExp(long amount)
     {
         if (!HasEnoughExp(amount)) return false;
-        
+
         Exp -= amount;
         OnExpChanged?.Invoke();
 
         return true;
+    }
+
+    #endregion
+
+    #region SaveData
+
+    public CurrencySaveData GetCurrencySaveData()
+    {
+        return new CurrencySaveData(Gold, Exp);
+    }
+
+    private void ApplySaveData(CurrencySaveData saveData)
+    {
+        if (saveData != null)
+        {
+            Gold = saveData.Gold;
+            Exp = saveData.Exp;
+        }
     }
 
     #endregion

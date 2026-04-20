@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe988da49a5334320aff7fd75a78da07, type: 3}
   m_Name: Unit_ArmoredOrc
   m_EditorClassIdentifier: 
-  UnitName: 1
+  UnitName: 2
   TeamType: 1
   Icon: {fileID: 4401974842081874036, guid: 9b35648f3b62f4344bf840a96de5f41a, type: 3}
   BaseStat:
