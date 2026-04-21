@@ -87,6 +87,7 @@ public class TrainingManager : MonoBehaviour
     public Stat TotalStat { get; private set; }
     public event Action OnTrainingLevelChanged;
     public event Action OnChangedTrainingStat;
+    public event Action OnStatLevelChanged;
     public event Action<int> OnAttackLevelChanged;
     public event Action<int> OnDefenceLevelChanged;
     public event Action<int> OnHealthLevelChanged;
@@ -166,6 +167,7 @@ public class TrainingManager : MonoBehaviour
         SetStatLevel(type, targetLevel);
         AddStat(type, statValue);
         AudioManager.Instance.PlaySfx(Sfx.UIUpgrade);
+        OnStatLevelChanged?.Invoke();
     }
 
     private void SetStatLevel(TrainingType type, int targetLevel)

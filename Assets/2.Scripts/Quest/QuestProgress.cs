@@ -1,9 +1,19 @@
+using System.Collections.Generic;
+
 public class QuestProgress
 {
     public long Count;
 
-    public void AddCount(long count)
+    private Dictionary<string, long> counter = new();
+
+    public void Init()
     {
-        Count += count;
+        counter = new();
+    }
+
+    public void Add(string key, long count = 1L)
+    {
+        counter.TryGetValue(key, out long counts);
+        counter[key] = counts + count;
     }
 }

@@ -22,8 +22,8 @@ public class CurrencyManager : MonoBehaviour
 
     public event Action OnGoldChanged;
     public event Action OnExpChanged;
-    public event Action<long> OnAddGold;
-    public event Action<long> OnAddExp;
+    public event Action<string, long> OnAddGold;
+    public event Action<string, long> OnAddExp;
 
     private void Awake()
     {
@@ -73,7 +73,7 @@ public class CurrencyManager : MonoBehaviour
         Gold += amount;
         Gold = Gold >= MaxValue ? MaxValue : Gold;
         OnGoldChanged?.Invoke();
-        OnAddGold?.Invoke(amount);
+        OnAddGold?.Invoke("AddGold", amount);
     }
 
     public bool SpendGold(long amount)
@@ -100,7 +100,7 @@ public class CurrencyManager : MonoBehaviour
         Exp += amount;
         Exp = Exp >= MaxValue ? MaxValue : Exp;
         OnExpChanged?.Invoke();
-        OnAddExp?.Invoke(amount);
+        OnAddExp?.Invoke("AddExp", amount);
     }
 
     public bool SpendExp(long amount)

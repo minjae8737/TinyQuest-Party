@@ -6898,7 +6898,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a61c201b784d040378cfd9daa73e904b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questDatas:
+  mainQuestDatas:
   - {fileID: 11400000, guid: 1a5ad67a4e72148b0b135bc5e85df33f, type: 2}
   - {fileID: 11400000, guid: 346e73a877c73454fbcccf46351e2d42, type: 2}
   - {fileID: 11400000, guid: bf3fe8b44a308482aba7ce88f7cefd6f, type: 2}

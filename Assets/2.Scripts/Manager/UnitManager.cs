@@ -62,7 +62,7 @@ public class UnitManager : MonoBehaviour
     #region Event
 
     public event Action OnPartyChanged;
-    public event Action OnEnemyDied;
+    public event Action<string, long> OnEnemyDied;
 
     #endregion
 
@@ -190,7 +190,7 @@ public class UnitManager : MonoBehaviour
         // 적 유닛이 사망시
         if (isDeath && unitController.TeamType == TeamType.Enemy) 
         {
-            OnEnemyDied?.Invoke();
+            OnEnemyDied?.Invoke("KillUnit", 1L);
         }
     }
 
