@@ -62,6 +62,7 @@ public class UnitManager : MonoBehaviour
     #region Event
 
     public event Action OnPartyChanged;
+    public event Action OnEnemyDied;
 
     #endregion
 
@@ -181,10 +182,16 @@ public class UnitManager : MonoBehaviour
         TeamAliveCount[unitController.TeamType]++;
     }
 
-    public void Despawn(UnitController unitController)
+    public void Despawn(UnitController unitController, bool isDeath)
     {
         unitController.gameObject.SetActive(false);
         TeamAliveCount[unitController.TeamType]--;
+        
+        // 적 유닛이 사망시
+        if (isDeath && unitController.TeamType == TeamType.Enemy) 
+        {
+            OnEnemyDied?.Invoke();
+        }
     }
 
     public void DespawnPlayerParty()
@@ -292,7 +299,7 @@ public class UnitManager : MonoBehaviour
 
     public void ApplyTrainingStat()
     {
-        Stat trainingStat = TrainingManaer.Instance.TotalStat;
+        Stat trainingStat = TrainingManager.Instance.TotalStat;
         List<UnitController> playerTeam = TeamUnitDic[TeamType.Player];
 
         foreach (UnitController controller in playerTeam)

@@ -33,10 +33,11 @@ public class GameManager : MonoBehaviour
 
         MapManager.Instance.Init();
         PoolManager.Instance.Init();
-        TrainingManaer.Instance.Init(saveData.TrainingSaveData);
+        TrainingManager.Instance.Init(saveData.TrainingSaveData);
         UnitManager.Instance.Init(saveData.PartySaveData);
         StageManager.Instance.Init(saveData.StageSaveData);
         CurrencyManager.Instance.Init(saveData.CurrencySaveData);
+        QuestManager.Instance.Init();
 
         UIManager.Instance.Init();
 
@@ -57,7 +58,7 @@ public class GameManager : MonoBehaviour
         saveData.CurrencySaveData = CurrencyManager.Instance.GetCurrencySaveData();
         saveData.PartySaveData = UnitManager.Instance.GetPartySaveData();
         saveData.StageSaveData = StageManager.Instance.GetPartySaveData();
-        saveData.TrainingSaveData = TrainingManaer.Instance.GetSaveData();
+        saveData.TrainingSaveData = TrainingManager.Instance.GetSaveData();
 
         string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
         string cipherText = Encrypt(json);

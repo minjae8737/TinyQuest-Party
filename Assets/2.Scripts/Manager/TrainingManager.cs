@@ -9,9 +9,9 @@ public enum TrainingType
     Health
 }
 
-public class TrainingManaer : MonoBehaviour
+public class TrainingManager : MonoBehaviour
 {
-    public static TrainingManaer Instance { get; private set; }
+    public static TrainingManager Instance { get; private set; }
 
     [SerializeField] private List<TrainingData> datas;
 
@@ -186,22 +186,22 @@ public class TrainingManaer : MonoBehaviour
 
     private int GetStatLevel(TrainingType type)
     {
-        int startLevel = 0;
+        int statLevel = 0;
         
         switch (type)
         {
             case TrainingType.Attack:
-                startLevel = AttackLevel;
+                statLevel = AttackLevel;
                 break;
             case TrainingType.Defence:
-                startLevel = DefenceLevel;
+                statLevel = DefenceLevel;
                 break;
             case TrainingType.Health:
-                startLevel = HealthLevel;
+                statLevel = HealthLevel;
                 break;
         }
 
-        return startLevel;
+        return statLevel;
     }
     
     #endregion
@@ -338,5 +338,25 @@ public class TrainingManaer : MonoBehaviour
         }
     }
     
+    #endregion
+
+    #region Quest
+
+    public int GetStatLevel(TrainingType type, int trainingLevel)
+    {
+        int statLevel = 0; // 다음 트레이닝 레벨
+
+        if (this.trainingLevel == trainingLevel) // 현재 트레이닝 레벨 일때
+        {
+            statLevel = GetStatLevel(type);
+        }
+        else if(this.trainingLevel > trainingLevel) // 이전 트레이닝 레벨 일때
+        {
+            statLevel = GetMaxLevel(trainingLevel);
+        }
+        
+        return statLevel;
+    }
+
     #endregion
 }

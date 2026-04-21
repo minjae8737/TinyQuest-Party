@@ -3483,7 +3483,7 @@ GameObject:
   - component: {fileID: 504459811}
   - component: {fileID: 504459812}
   m_Layer: 0
-  m_Name: TrainingManaer
+  m_Name: TrainingManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5251,6 +5251,7 @@ Transform:
   - {fileID: 870002642}
   - {fileID: 504459811}
   - {fileID: 2099987607}
+  - {fileID: 1146930581}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &819586937
@@ -6853,6 +6854,63 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &1146930580
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1146930581}
+  - component: {fileID: 1146930582}
+  m_Layer: 0
+  m_Name: QuestManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1146930581
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146930580}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 816725046}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1146930582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146930580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a61c201b784d040378cfd9daa73e904b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questDatas:
+  - {fileID: 11400000, guid: 1a5ad67a4e72148b0b135bc5e85df33f, type: 2}
+  - {fileID: 11400000, guid: 346e73a877c73454fbcccf46351e2d42, type: 2}
+  - {fileID: 11400000, guid: bf3fe8b44a308482aba7ce88f7cefd6f, type: 2}
+  - {fileID: 11400000, guid: 5bcb4be913c684dc0b40a546ee154931, type: 2}
+  - {fileID: 11400000, guid: 2fcbbc0b4d71b41dfb769fed50a44f10, type: 2}
+  - {fileID: 11400000, guid: 6d24b4513167b4a4f9ff80ce929f124b, type: 2}
+  - {fileID: 11400000, guid: ed5df1ac1a92945c79b2fd91ae632d06, type: 2}
+  - {fileID: 11400000, guid: f76b824c9b4634a29bb2f3cb388a50fb, type: 2}
+  - {fileID: 11400000, guid: 2b987ffa05fae452280dc56b13068f96, type: 2}
+  - {fileID: 11400000, guid: b3a0f95d90f0e46f78d5bbdbf38bec04, type: 2}
+  - {fileID: 11400000, guid: f6ffcfcb51b85467dbda3377094f35bc, type: 2}
+  - {fileID: 11400000, guid: c525db490494d45f390c30cf68c0d3bf, type: 2}
 --- !u!1 &1165384774
 GameObject:
   m_ObjectHideFlags: 0
