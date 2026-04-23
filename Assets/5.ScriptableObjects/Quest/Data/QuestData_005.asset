@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   index: 0
   Title: 
-  Desc: 
   Condition: {fileID: 11400000, guid: 0a4eaace716d34504a6e2361c3ebffa7, type: 2}
-  Rewards:
-  - Type: 2
-    Amount: 1000
+  Reward:
+    Type: 2
+    Amount: 1500

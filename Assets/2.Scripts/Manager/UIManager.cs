@@ -27,6 +27,9 @@ public class UIManager : MonoBehaviour
     [Header("=== Training Panel ===")] 
     [SerializeField] private TrainingPanel trainingPanel;
 
+    [Header("=== MainQuest Panel ===")] 
+    [SerializeField] private MainQuestPanel mainQuestPanel;
+
     [Header("=== Prefab ===")] 
     [SerializeField] private GameObject DragItemUIPrefab;
 
@@ -71,6 +74,9 @@ public class UIManager : MonoBehaviour
         
         // Training Panel
         trainingPanel.Init();
+        
+        // Main Quest Panel
+        mainQuestPanel.Init();
         
         RefreshGoldPanel();
         RefreshExpPanel();
@@ -177,6 +183,22 @@ public class UIManager : MonoBehaviour
     {
         trainingPanel.gameObject.SetActive(false);
         AudioManager.Instance.PlaySfx(Sfx.UIClose);
+    }
+
+    #endregion
+
+    #region MainQuestPanel
+
+    public void OpenMainQuestPanel()
+    {
+        if (mainQuestPanel.gameObject.activeSelf) return;
+        mainQuestPanel.gameObject.SetActive(true);
+    }
+
+    public void OffMainQuestPanel()
+    {
+        if (!mainQuestPanel.gameObject.activeSelf) return;
+        mainQuestPanel.gameObject.SetActive(false);
     }
 
     #endregion

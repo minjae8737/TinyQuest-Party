@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,6 +11,9 @@ public class QuestManager : MonoBehaviour
     private QuestData CurMainQuestData => mainQuestDatas[curMainQuestIdx];
 
     private QuestProgress progress;
+    public event Action OnMainQuestUpdated;
+    public event Action OnMainQuestClear;
+    public event Action OnMainQuestRewardProvided;
 
     private void Awake()
     {
@@ -32,11 +36,18 @@ public class QuestManager : MonoBehaviour
     
     private void StartMainQuest()
     {
+        UnitManager.Instance.OnEnemyDied -= HandleEvent;
+        CurrencyManager.Instance.OnAddGold -= HandleEvent;
+        TrainingManager.Instance.OnStatLevelChanged -= CheckProgress;
+
         if (curMainQuestIdx >= mainQuestDatas.Count)
         {
             Debug.Log("Quest End");
+            UIManager.Instance.OffMainQuestPanel();
             return;
         }
+
+        UIManager.Instance.OpenMainQuestPanel();
 
         switch (CurMainQuestData.Condition)
         {
@@ -50,11 +61,15 @@ public class QuestManager : MonoBehaviour
                 TrainingManager.Instance.OnStatLevelChanged += CheckProgress;
                 break;
         }
+        
+        OnMainQuestUpdated?.Invoke();
+        CheckProgress();
     }
 
     private void HandleEvent(string key, long count = 1L)
     {
         progress.Add(key, count);
+        OnMainQuestUpdated?.Invoke();
         CheckProgress();
     }
 
@@ -66,14 +81,32 @@ public class QuestManager : MonoBehaviour
 
     private void ClearQuest()
     {
+        OnMainQuestClear?.Invoke();
+    }
+
+    public void ProvideReward()
+    {
+        CurMainQuestData.Reward.Provide();
+        
+        OnMainQuestRewardProvided?.Invoke();
+        
         curMainQuestIdx++;
         progress.Init();
-
         StartMainQuest();
     }
     
     #endregion
 
+    public string GetMainQuestDesc()
+    {
+        return CurMainQuestData.Condition.GetDesc(progress);
+    }
+
+    public RewardType GetRewardType()
+    {
+        return CurMainQuestData.Reward.Type;
+    }
+    
     #region SaveData
 
     

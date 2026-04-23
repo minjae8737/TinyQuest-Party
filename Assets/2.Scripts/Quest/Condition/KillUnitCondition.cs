@@ -5,14 +5,15 @@ using UnityEngine;
 public class KillUnitCondition : QuestCondition
 {
     public int RequiredCount;
+    private const string Key = "KillUnit";
 
-    public override string GetDesc()
+    public override string GetDesc(QuestProgress progress)
     {
-        throw new NotImplementedException();
+        return $"유닛 처치하기 ({progress.GetCount(Key)}/{RequiredCount})";
     }
 
     public override bool isSatisfied(QuestProgress progress)
     {
-        return progress.Count >= RequiredCount;
+        return progress.GetCount(Key) >= RequiredCount;
     }
 }
