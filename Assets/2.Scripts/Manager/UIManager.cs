@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -36,7 +37,7 @@ public class UIManager : MonoBehaviour
     private DragItemUI DragItemUI;
     [HideInInspector] public DragContext DragContext;
     private bool isDragged;
-
+    
     private void Awake()
     {
         if (Instance == null)
@@ -199,6 +200,21 @@ public class UIManager : MonoBehaviour
     {
         if (!mainQuestPanel.gameObject.activeSelf) return;
         mainQuestPanel.gameObject.SetActive(false);
+    }
+
+    #endregion
+
+    #region Test
+    
+    [SerializeField] private RewardEffect rewardEffect = new();
+    [SerializeField] private Sprite icon;
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            rewardEffect.PlayEffect(3, icon, mainQuestPanel.GetComponent<RectTransform>(), GoldPanelIcon);
+        }
     }
 
     #endregion

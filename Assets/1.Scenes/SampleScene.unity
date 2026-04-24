@@ -429,6 +429,12 @@ MonoBehaviour:
   trainingPanel: {fileID: 1120472925}
   mainQuestPanel: {fileID: 1829953777}
   DragItemUIPrefab: {fileID: 5557379188472952224, guid: d6de7baacc598414aa62bfbb4a583cd9, type: 3}
+  rewardEffect:
+    scatterDuration: 0.4
+    scatterRadius: 150
+    waitBeforeFly: 0.2
+    flyDuration: 0.7
+  icon: {fileID: 21300000, guid: 73cb8625307f94792b85a7df336c01c6, type: 3}
 --- !u!1 &66538938
 GameObject:
   m_ObjectHideFlags: 0
@@ -4274,7 +4280,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 389.6}
+  m_AnchoredPosition: {x: 0, y: 389.59998}
   m_SizeDelta: {x: 0, y: -779.2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &599553157
@@ -5061,6 +5067,41 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_IsOn: 1
+--- !u!1 &791733592
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 791733593}
+  m_Layer: 5
+  m_Name: RewardItemParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &791733593
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 791733592}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1176185064}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &791990364
 GameObject:
   m_ObjectHideFlags: 0
@@ -7192,6 +7233,7 @@ RectTransform:
   - {fileID: 1829953776}
   - {fileID: 66538939}
   - {fileID: 1120472924}
+  - {fileID: 791733593}
   m_Father: {fileID: 1145508584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -48664,6 +48706,8 @@ MonoBehaviour:
     parent: {fileID: 1398437390}
   - Prefab: {fileID: 7896734410155511125, guid: c9fb5fe085a9b42009304d6f7166e633, type: 3}
     parent: {fileID: 275414831}
+  - Prefab: {fileID: 1988788136441602901, guid: d9d8284186d34444190035009a9d20ea, type: 3}
+    parent: {fileID: 791733593}
 --- !u!1 &1659613684
 GameObject:
   m_ObjectHideFlags: 0
@@ -49738,7 +49782,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -75, y: 0.92401123}
+  m_AnchoredPosition: {x: -75, y: 0.92407227}
   m_SizeDelta: {x: -150, y: -59.696}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1945483887
