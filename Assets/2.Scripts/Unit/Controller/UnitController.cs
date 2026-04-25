@@ -210,15 +210,15 @@ public class UnitController : MonoBehaviour
         {
             StageManager.Instance.RequestStageReward(transform.position);
         }
-        Despawn();
+        Despawn(true);
     }
     
     #endregion
 
-    public void Despawn()
+    public void Despawn(bool isDeath = false)
     {
         nextPos = null;
         view.ReleaseHpbar();
-        UnitManager.Instance.Despawn(this);
+        UnitManager.Instance.Despawn(this, isDeath);
     }
 }

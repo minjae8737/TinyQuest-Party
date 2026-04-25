@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 
@@ -27,13 +28,16 @@ public class UIManager : MonoBehaviour
     [Header("=== Training Panel ===")] 
     [SerializeField] private TrainingPanel trainingPanel;
 
+    [Header("=== MainQuest Panel ===")] 
+    [SerializeField] private MainQuestPanel mainQuestPanel;
+
     [Header("=== Prefab ===")] 
     [SerializeField] private GameObject DragItemUIPrefab;
 
     private DragItemUI DragItemUI;
     [HideInInspector] public DragContext DragContext;
     private bool isDragged;
-
+    
     private void Awake()
     {
         if (Instance == null)
@@ -71,6 +75,9 @@ public class UIManager : MonoBehaviour
         
         // Training Panel
         trainingPanel.Init();
+        
+        // Main Quest Panel
+        mainQuestPanel.Init();
         
         RefreshGoldPanel();
         RefreshExpPanel();
@@ -162,6 +169,19 @@ public class UIManager : MonoBehaviour
 
         return worldPos;
     }
+    
+    public RectTransform GetPanelIcon(RewardType type)
+    {
+        switch (type)
+        {
+            case RewardType.Gold:
+                return GoldPanelIcon;
+            case RewardType.Exp:
+                return ExpPanelIcon;
+            default:
+                return null;
+        }
+    }
 
     #endregion
 
@@ -180,4 +200,21 @@ public class UIManager : MonoBehaviour
     }
 
     #endregion
+
+    #region MainQuestPanel
+
+    public void OpenMainQuestPanel()
+    {
+        if (mainQuestPanel.gameObject.activeSelf) return;
+        mainQuestPanel.gameObject.SetActive(true);
+    }
+
+    public void OffMainQuestPanel()
+    {
+        if (!mainQuestPanel.gameObject.activeSelf) return;
+        mainQuestPanel.gameObject.SetActive(false);
+    }
+
+    #endregion
+    
 }
