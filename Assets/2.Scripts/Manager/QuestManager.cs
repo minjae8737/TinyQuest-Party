@@ -102,9 +102,9 @@ public class QuestManager : MonoBehaviour
         return CurMainQuestData.Condition.GetDesc(progress);
     }
 
-    public RewardType GetRewardType()
+    public QuestReward GetRewardData()
     {
-        return CurMainQuestData.Reward.Type;
+        return CurMainQuestData.Reward;
     }
     
     #region SaveData

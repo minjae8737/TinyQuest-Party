@@ -169,6 +169,19 @@ public class UIManager : MonoBehaviour
 
         return worldPos;
     }
+    
+    public RectTransform GetPanelIcon(RewardType type)
+    {
+        switch (type)
+        {
+            case RewardType.Gold:
+                return GoldPanelIcon;
+            case RewardType.Exp:
+                return ExpPanelIcon;
+            default:
+                return null;
+        }
+    }
 
     #endregion
 
@@ -203,19 +216,5 @@ public class UIManager : MonoBehaviour
     }
 
     #endregion
-
-    #region Test
     
-    [SerializeField] private RewardEffect rewardEffect = new();
-    [SerializeField] private Sprite icon;
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            rewardEffect.PlayEffect(3, icon, mainQuestPanel.GetComponent<RectTransform>(), GoldPanelIcon);
-        }
-    }
-
-    #endregion
 }

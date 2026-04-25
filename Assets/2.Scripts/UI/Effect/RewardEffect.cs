@@ -10,7 +10,7 @@ public class RewardEffect
     [SerializeField] private float scatterDuration = 0.4f; // 동전 퍼트릴때
     [SerializeField] private float scatterRadius = 150f; // 동전 퍼트릴때 범위
     [SerializeField] private float waitBeforeFly = 0.2f;  // 퍼트린 후 대기 시간
-    [SerializeField] private float randDelay = 0.2f;  // 딜레이 시간 범위
+    [SerializeField] private float randDelayRange = 0.2f;  // 딜레이 시간 범위
     [SerializeField] private float flyDuration = 0.7f; // 동전 날아갈때
 
     public void PlayEffect(int count, Sprite sprite, RectTransform start, RectTransform target, Action onComplete = null)
@@ -26,7 +26,7 @@ public class RewardEffect
             rewardEffectItems.Add(item);
             
             RectTransform itemRect = item.GetComponent<RectTransform>();
-            itemRect.anchoredPosition = start.anchoredPosition;
+            itemRect.position = start.position;
             
             items.Add(itemRect);
         }
@@ -46,7 +46,7 @@ public class RewardEffect
         // 날아가기
         for (int i = 0; i < items.Count; i++)
         {           
-            float randDelay = Random.Range(0, 0.5f);
+            float randDelay = Random.Range(0, randDelayRange);
            
             int idx = i;
             var item = items[i];

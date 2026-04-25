@@ -14,11 +14,14 @@ public class MainQuestPanel : MonoBehaviour
     [SerializeField] private Button highlightBtn;
 
     [Header("=== Resource ===")] 
-    [SerializeField] private Sprite goldIcon; 
-    [SerializeField] private Sprite expIcon; 
+    [SerializeField] private QuestRewardConfig rewardConfig;
+
+    [Header("=== Effect ===")] 
+    [SerializeField] private RewardEffect rewardEffect;
 
     public void Init()
     {
+        rewardConfig.Init();
         QuestManager.Instance.OnMainQuestClear += OnClearQuest;
         QuestManager.Instance.OnMainQuestRewardProvided += OnProvideReward;
         QuestManager.Instance.OnMainQuestUpdated += RefreshPanel;
@@ -30,9 +33,10 @@ public class MainQuestPanel : MonoBehaviour
 
     private void RefreshPanel()
     {
+        QuestReward rewardData = QuestManager.Instance.GetRewardData();
+        
         desc.text = QuestManager.Instance.GetMainQuestDesc();
-        //TODO 나중에 보상 종류가 늘어날수 있게 구조 고치기
-        rewardIcon.sprite = QuestManager.Instance.GetRewardType() == RewardType.Gold ? goldIcon : expIcon;
+        rewardIcon.sprite = rewardConfig.GetIcon(rewardData.Type); 
     }
     
     private void PlayHighlight(RectTransform target)
@@ -65,6 +69,12 @@ public class MainQuestPanel : MonoBehaviour
 
     private void OnClickHighlightBtn()
     {
+        QuestReward rewardData = QuestManager.Instance.GetRewardData();
+        Sprite icon = rewardConfig.GetIcon(rewardData.Type);
+        RectTransform panelIconRect = UIManager.Instance.GetPanelIcon(rewardData.Type);
+        
+        rewardEffect.PlayEffect(10, icon, highlightRect, panelIconRect);
+        
         highlightBtn.onClick.RemoveAllListeners();
         QuestManager.Instance.ProvideReward();
     }
