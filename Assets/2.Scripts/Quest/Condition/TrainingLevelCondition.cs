@@ -18,7 +18,7 @@ public class TrainingLevelCondition: QuestCondition
     {
         int statLevel = GetStatLevel();
         
-        return statLevel > RequiredTypeLevel;
+        return statLevel >= RequiredTypeLevel;
     }
 
     private int GetStatLevel()
