@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
+    private Stack<UIPage> pageStack;
     
     [Header("=== Canvas References ===")]
     [SerializeField] private RectTransform worldCanvasRect;
@@ -16,6 +18,7 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject mainButtonGroup;
     
     [SerializeField] private PartySetupPanel partySetupPanel;
+    [SerializeField] private RectTransform dragItemUIParent;
 
     [Header("=== Main Top Panel ===")]
     [SerializeField] private RectTransform GoldPanel;
@@ -51,7 +54,7 @@ public class UIManager : MonoBehaviour
         isDragged = false;
         
         // DragItemUI
-        GameObject dragItemObj = Instantiate(DragItemUIPrefab, canvasRect);
+        GameObject dragItemObj = Instantiate(DragItemUIPrefab, dragItemUIParent);
         
         if (!dragItemObj.TryGetComponent<DragItemUI>(out var dragItem))
         {
@@ -105,14 +108,12 @@ public class UIManager : MonoBehaviour
 
     public void OpenPartySetupPanel()
     {
-        partySetupPanel.gameObject.SetActive(true);
-        AudioManager.Instance.PlaySfx(Sfx.UIOpen);
+        partySetupPanel.Show();
     }
 
     public void OffPartySetupPanel()
     {
-        partySetupPanel.gameObject.SetActive(false);
-        AudioManager.Instance.PlaySfx(Sfx.UIClose);
+        partySetupPanel.Hide();
     }
 
     #endregion
@@ -189,14 +190,12 @@ public class UIManager : MonoBehaviour
 
     public void OpenTrainingPanel()
     {
-        trainingPanel.gameObject.SetActive(true);
-        AudioManager.Instance.PlaySfx(Sfx.UIOpen);
+        trainingPanel.Show();
     }
 
     public void OffTrainingPanel()
     {
-        trainingPanel.gameObject.SetActive(false);
-        AudioManager.Instance.PlaySfx(Sfx.UIClose);
+        trainingPanel.Hide();
     }
 
     #endregion
@@ -205,14 +204,12 @@ public class UIManager : MonoBehaviour
 
     public void OpenMainQuestPanel()
     {
-        if (mainQuestPanel.gameObject.activeSelf) return;
-        mainQuestPanel.gameObject.SetActive(true);
+        mainQuestPanel.Show();
     }
 
     public void OffMainQuestPanel()
     {
-        if (!mainQuestPanel.gameObject.activeSelf) return;
-        mainQuestPanel.gameObject.SetActive(false);
+        mainQuestPanel.Hide();
     }
 
     #endregion

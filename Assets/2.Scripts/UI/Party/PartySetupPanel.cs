@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PartySetupPanel : MonoBehaviour
+public class PartySetupPanel : UIPage
 {
     [Header("=== References ===")] 
     [SerializeField] private RectTransform partySlotParent;
@@ -16,7 +16,7 @@ public class PartySetupPanel : MonoBehaviour
     
     private List<PartySlotUI> partySlotUis;
     private List<UnitListSlotUI> unitListSlotUis;
-    
+
     public void Init()
     {
         // PartyPanel
@@ -43,6 +43,18 @@ public class PartySetupPanel : MonoBehaviour
         
         UnitManager.Instance.OnPartyChanged += RefreshPartyPanel;
         UnitManager.Instance.OnPartyChanged += RefreshUnitListPanel;
+    }
+    
+    public override void Show()
+    {
+        gameObject.SetActive(true);
+        AudioManager.Instance.PlaySfx(Sfx.UIOpen);
+    }
+
+    public override void Hide()
+    {
+        gameObject.SetActive(false);
+        AudioManager.Instance.PlaySfx(Sfx.UIClose);
     }
 
     #region PartyPanel

@@ -10,7 +10,7 @@ public abstract class DragSlotUI : MonoBehaviour, IBeginDragHandler, IDragHandle
     
     public void OnBeginDrag(PointerEventData eventData)
     {
-        Debug.Log("OnBeginDrag");
+        // Debug.Log("OnBeginDrag");
         if (!CanDrag()) return;
         
         dragItemUI = UIManager.Instance.GetDragItem();
@@ -24,7 +24,7 @@ public abstract class DragSlotUI : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     public void OnDrag(PointerEventData eventData)
     {
-        Debug.Log("OnDrag");
+        // Debug.Log("OnDrag");
         if (!CanDrag()) return;
         
         dragItemUI.transform.position = eventData.position;
@@ -32,7 +32,7 @@ public abstract class DragSlotUI : MonoBehaviour, IBeginDragHandler, IDragHandle
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        Debug.Log("OnEndDrag");
+        // Debug.Log("OnEndDrag");
         if (!CanDrag()) return;
 
         dragItemUI.SetActive(false);
