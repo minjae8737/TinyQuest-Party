@@ -2,11 +2,13 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
-    private Stack<UIPage> pageStack;
+    
+    private UIPage currentPage;
     
     [Header("=== Canvas References ===")]
     [SerializeField] private RectTransform worldCanvasRect;
@@ -15,9 +17,7 @@ public class UIManager : MonoBehaviour
     public RectTransform DamageTextRect => damageTextRect;
     [SerializeField] private RectTransform canvasRect;
     
-    [SerializeField] private GameObject mainButtonGroup;
     
-    [SerializeField] private PartySetupPanel partySetupPanel;
     [SerializeField] private RectTransform dragItemUIParent;
 
     [Header("=== Main Top Panel ===")]
@@ -27,7 +27,15 @@ public class UIManager : MonoBehaviour
     private RectTransform ExpPanelIcon;
     private TextMeshProUGUI goldText;
     private TextMeshProUGUI expText;
+    
+    
+    [Header("=== MainButtonGroup ===")] 
+    [SerializeField] private GameObject mainButtonGroup;
+    [SerializeField]private List<Button> mainButtonList;
 
+    [Header("=== PartySetup Panel ===")] 
+    [SerializeField] private PartySetupPanel partySetupPanel;
+    
     [Header("=== Training Panel ===")] 
     [SerializeField] private TrainingPanel trainingPanel;
 
@@ -51,6 +59,7 @@ public class UIManager : MonoBehaviour
 
     public void Init()
     {
+        currentPage = null;
         isDragged = false;
         
         // DragItemUI
@@ -66,7 +75,13 @@ public class UIManager : MonoBehaviour
         
         // MainButtonGroup
         mainButtonGroup.SetActive(true);
-        
+        Button[] mainButtons = mainButtonGroup.GetComponentsInChildren<Button>();
+        mainButtonList = new(mainButtons);
+        foreach (Button button in mainButtons)
+        {
+            button.onClick.AddListener(()=> UIEffect.Punch(button.transform as RectTransform));
+        }
+
         // PartySetupPanel
         partySetupPanel.Init();
         
@@ -82,8 +97,23 @@ public class UIManager : MonoBehaviour
         // Main Quest Panel
         mainQuestPanel.Init();
         
-        RefreshGoldPanel();
-        RefreshExpPanel();
+        RefreshGoldPanel(0);
+        RefreshExpPanel(0);
+    }
+
+    private void ShowPage(UIPage page)
+    {
+        if (currentPage == page) return;
+        
+        currentPage?.Hide();
+        currentPage = page;
+        currentPage.Show();
+    }
+    
+    private void HidePage()
+    {
+        currentPage?.Hide();
+        currentPage = null;
     }
 
     #region Util
@@ -108,12 +138,12 @@ public class UIManager : MonoBehaviour
 
     public void OpenPartySetupPanel()
     {
-        partySetupPanel.Show();
+        ShowPage(partySetupPanel);
     }
 
     public void OffPartySetupPanel()
     {
-        partySetupPanel.Hide();
+        HidePage();
     }
 
     #endregion
@@ -130,16 +160,16 @@ public class UIManager : MonoBehaviour
     // MainTopGroup 임시 네이밍
     #region MainTopGroup
 
-    public void RefreshGoldPanel()
+    public void RefreshGoldPanel(long amount)
     {
         long gold = CurrencyManager.Instance.Gold;
-        goldText.text = NumberFormatter(gold);
+        UIEffect.CounterTo(goldText, gold - amount, gold, 0.7f);
     }
 
-    public void RefreshExpPanel()
+    public void RefreshExpPanel(long amount)
     {
         long exp = CurrencyManager.Instance.Exp;
-        expText.text = NumberFormatter(exp);
+        UIEffect.CounterTo(expText, exp - amount, exp, 0.7f);
     }
     
     public Vector3 GetCurrencyPos(CurrencyType type)
@@ -190,12 +220,12 @@ public class UIManager : MonoBehaviour
 
     public void OpenTrainingPanel()
     {
-        trainingPanel.Show();
+        ShowPage(trainingPanel);
     }
 
     public void OffTrainingPanel()
     {
-        trainingPanel.Hide();
+        HidePage();
     }
 
     #endregion
