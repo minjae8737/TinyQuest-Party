@@ -483,6 +483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67a5fe5d6abec487ca6d217dd3c2c9cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  panelGroup: {fileID: 931515443}
   partySlotParent: {fileID: 933379223}
   unitListSlotParent: {fileID: 243335633}
   partySlotPrefab: {fileID: 1316826682559508944, guid: 0777faaf7c1764d4f9113c859ef98695, type: 3}

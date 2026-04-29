@@ -3,7 +3,8 @@ using UnityEngine;
 
 public class PartySetupPanel : UIPage
 {
-    [Header("=== References ===")] 
+    [Header("=== References ===")]
+    [SerializeField] private RectTransform panelGroup;
     [SerializeField] private RectTransform partySlotParent;
     [SerializeField] private RectTransform unitListSlotParent;
     
@@ -13,6 +14,9 @@ public class PartySetupPanel : UIPage
 
     [Header("=== Resources ===")] 
     [SerializeField] private Sprite emptyPartySlotSprite;
+
+    [Header("=== Caching ===")]
+    private Vector2 panelGroupOriginPos;
     
     private List<PartySlotUI> partySlotUis;
     private List<UnitListSlotUI> unitListSlotUis;
@@ -40,6 +44,8 @@ public class PartySetupPanel : UIPage
                 CreateUnitListItem(unitData.Value);
             }
         }
+
+        panelGroupOriginPos = panelGroup.anchoredPosition;
         
         UnitManager.Instance.OnPartyChanged += RefreshPartyPanel;
         UnitManager.Instance.OnPartyChanged += RefreshUnitListPanel;
@@ -49,6 +55,7 @@ public class PartySetupPanel : UIPage
     {
         gameObject.SetActive(true);
         AudioManager.Instance.PlaySfx(Sfx.UIOpen);
+        UIEffect.SlideUp(panelGroup, panelGroupOriginPos, 50f, 0.7f);
     }
 
     public override void Hide()
