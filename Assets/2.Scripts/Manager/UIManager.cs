@@ -31,7 +31,8 @@ public class UIManager : MonoBehaviour
     
     [Header("=== MainButtonGroup ===")] 
     [SerializeField] private GameObject mainButtonGroup;
-    [SerializeField]private List<Button> mainButtonList;
+    [SerializeField] private List<MainMenuButton> mainMenuButtons;
+    private MainMenuButton currentOnMenuButton; 
 
     [Header("=== PartySetup Panel ===")] 
     [SerializeField] private PartySetupPanel partySetupPanel;
@@ -44,6 +45,9 @@ public class UIManager : MonoBehaviour
 
     [Header("=== Prefab ===")] 
     [SerializeField] private GameObject DragItemUIPrefab;
+
+    [Header("=== Resource ===")] 
+    [SerializeField] private Sprite backIcon;
 
     private DragItemUI DragItemUI;
     [HideInInspector] public DragContext DragContext;
@@ -75,11 +79,12 @@ public class UIManager : MonoBehaviour
         
         // MainButtonGroup
         mainButtonGroup.SetActive(true);
-        Button[] mainButtons = mainButtonGroup.GetComponentsInChildren<Button>();
-        mainButtonList = new(mainButtons);
-        foreach (Button button in mainButtons)
+        MainMenuButton[] mainButtons = mainButtonGroup.GetComponentsInChildren<MainMenuButton>();
+        mainMenuButtons = new(mainButtons);
+        
+        foreach (MainMenuButton button in mainButtons)
         {
-            button.onClick.AddListener(()=> UIEffect.Punch(button.transform as RectTransform));
+            button.Init();
         }
 
         // PartySetupPanel
@@ -134,22 +139,8 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region PartySetupPanel
-
-    public void OpenPartySetupPanel()
-    {
-        ShowPage(partySetupPanel);
-    }
-
-    public void OffPartySetupPanel()
-    {
-        HidePage();
-    }
-
-    #endregion
-
     #region Drag
-    
+
     public DragItemUI GetDragItem()
     {
         return DragItemUI;
@@ -216,8 +207,46 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region TrainingPanel
+    #region MainButton
 
+    public void OnMainButtonClicked(MainMenuButton clicked)
+    {
+        if (currentOnMenuButton == clicked)
+        {
+            HidePage();
+            clicked.SetState(false);
+            currentOnMenuButton = null;
+            return;
+        }
+
+        if (currentOnMenuButton != null)
+        {
+            currentOnMenuButton.SetState(false);
+        }
+        
+        ShowPage(clicked.TargetPage);
+        clicked.SetState(true);
+        currentOnMenuButton = clicked;
+    }
+
+    #endregion
+
+    #region PartySetupPanel
+
+    public void OpenPartySetupPanel()
+    {
+        ShowPage(partySetupPanel);
+    }
+
+    public void OffPartySetupPanel()
+    {
+        HidePage();
+    }
+
+    #endregion
+
+    #region TrainingPanel
+    
     public void OpenTrainingPanel()
     {
         ShowPage(trainingPanel);
