@@ -49,7 +49,7 @@ public class PartySlotUI : DragSlotUI, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        Debug.Log("OnDrop");
+        // Debug.Log("OnDrop");
 
         UnitDragContext dragContext = (UnitDragContext)UIManager.Instance.DragContext;
 

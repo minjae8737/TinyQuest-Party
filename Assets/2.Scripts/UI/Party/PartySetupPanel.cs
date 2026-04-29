@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PartySetupPanel : MonoBehaviour
+public class PartySetupPanel : UIPage
 {
-    [Header("=== References ===")] 
+    [Header("=== References ===")]
+    [SerializeField] private RectTransform panelGroup;
     [SerializeField] private RectTransform partySlotParent;
     [SerializeField] private RectTransform unitListSlotParent;
     
@@ -13,10 +14,13 @@ public class PartySetupPanel : MonoBehaviour
 
     [Header("=== Resources ===")] 
     [SerializeField] private Sprite emptyPartySlotSprite;
+
+    [Header("=== Caching ===")]
+    private Vector2 panelGroupOriginPos;
     
     private List<PartySlotUI> partySlotUis;
     private List<UnitListSlotUI> unitListSlotUis;
-    
+
     public void Init()
     {
         // PartyPanel
@@ -40,9 +44,24 @@ public class PartySetupPanel : MonoBehaviour
                 CreateUnitListItem(unitData.Value);
             }
         }
+
+        panelGroupOriginPos = panelGroup.anchoredPosition;
         
         UnitManager.Instance.OnPartyChanged += RefreshPartyPanel;
         UnitManager.Instance.OnPartyChanged += RefreshUnitListPanel;
+    }
+    
+    public override void Show()
+    {
+        gameObject.SetActive(true);
+        AudioManager.Instance.PlaySfx(Sfx.UIOpen);
+        UIEffect.SlideUp(panelGroup, panelGroupOriginPos, 50f, 0.7f);
+    }
+
+    public override void Hide()
+    {
+        gameObject.SetActive(false);
+        AudioManager.Instance.PlaySfx(Sfx.UIClose);
     }
 
     #region PartyPanel

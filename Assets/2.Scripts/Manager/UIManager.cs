@@ -1,10 +1,14 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
     public static UIManager Instance { get; private set; }
+    
+    private UIPage currentPage;
     
     [Header("=== Canvas References ===")]
     [SerializeField] private RectTransform worldCanvasRect;
@@ -13,9 +17,8 @@ public class UIManager : MonoBehaviour
     public RectTransform DamageTextRect => damageTextRect;
     [SerializeField] private RectTransform canvasRect;
     
-    [SerializeField] private GameObject mainButtonGroup;
     
-    [SerializeField] private PartySetupPanel partySetupPanel;
+    [SerializeField] private RectTransform dragItemUIParent;
 
     [Header("=== Main Top Panel ===")]
     [SerializeField] private RectTransform GoldPanel;
@@ -24,7 +27,16 @@ public class UIManager : MonoBehaviour
     private RectTransform ExpPanelIcon;
     private TextMeshProUGUI goldText;
     private TextMeshProUGUI expText;
+    
+    
+    [Header("=== MainButtonGroup ===")] 
+    [SerializeField] private GameObject mainButtonGroup;
+    [SerializeField] private List<MainMenuButton> mainMenuButtons;
+    private MainMenuButton currentOnMenuButton; 
 
+    [Header("=== PartySetup Panel ===")] 
+    [SerializeField] private PartySetupPanel partySetupPanel;
+    
     [Header("=== Training Panel ===")] 
     [SerializeField] private TrainingPanel trainingPanel;
 
@@ -33,6 +45,9 @@ public class UIManager : MonoBehaviour
 
     [Header("=== Prefab ===")] 
     [SerializeField] private GameObject DragItemUIPrefab;
+
+    [Header("=== Resource ===")] 
+    [SerializeField] private Sprite backIcon;
 
     private DragItemUI DragItemUI;
     [HideInInspector] public DragContext DragContext;
@@ -48,10 +63,11 @@ public class UIManager : MonoBehaviour
 
     public void Init()
     {
+        currentPage = null;
         isDragged = false;
         
         // DragItemUI
-        GameObject dragItemObj = Instantiate(DragItemUIPrefab, canvasRect);
+        GameObject dragItemObj = Instantiate(DragItemUIPrefab, dragItemUIParent);
         
         if (!dragItemObj.TryGetComponent<DragItemUI>(out var dragItem))
         {
@@ -63,7 +79,14 @@ public class UIManager : MonoBehaviour
         
         // MainButtonGroup
         mainButtonGroup.SetActive(true);
+        MainMenuButton[] mainButtons = mainButtonGroup.GetComponentsInChildren<MainMenuButton>();
+        mainMenuButtons = new(mainButtons);
         
+        foreach (MainMenuButton button in mainButtons)
+        {
+            button.Init();
+        }
+
         // PartySetupPanel
         partySetupPanel.Init();
         
@@ -79,8 +102,23 @@ public class UIManager : MonoBehaviour
         // Main Quest Panel
         mainQuestPanel.Init();
         
-        RefreshGoldPanel();
-        RefreshExpPanel();
+        RefreshGoldPanel(0);
+        RefreshExpPanel(0);
+    }
+
+    private void ShowPage(UIPage page)
+    {
+        if (currentPage == page) return;
+        
+        currentPage?.Hide();
+        currentPage = page;
+        currentPage.Show();
+    }
+    
+    private void HidePage()
+    {
+        currentPage?.Hide();
+        currentPage = null;
     }
 
     #region Util
@@ -101,24 +139,8 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region PartySetupPanel
-
-    public void OpenPartySetupPanel()
-    {
-        partySetupPanel.gameObject.SetActive(true);
-        AudioManager.Instance.PlaySfx(Sfx.UIOpen);
-    }
-
-    public void OffPartySetupPanel()
-    {
-        partySetupPanel.gameObject.SetActive(false);
-        AudioManager.Instance.PlaySfx(Sfx.UIClose);
-    }
-
-    #endregion
-
     #region Drag
-    
+
     public DragItemUI GetDragItem()
     {
         return DragItemUI;
@@ -129,16 +151,16 @@ public class UIManager : MonoBehaviour
     // MainTopGroup 임시 네이밍
     #region MainTopGroup
 
-    public void RefreshGoldPanel()
+    public void RefreshGoldPanel(long amount)
     {
         long gold = CurrencyManager.Instance.Gold;
-        goldText.text = NumberFormatter(gold);
+        UIEffect.CounterTo(goldText, gold - amount, gold, 0.7f);
     }
 
-    public void RefreshExpPanel()
+    public void RefreshExpPanel(long amount)
     {
         long exp = CurrencyManager.Instance.Exp;
-        expText.text = NumberFormatter(exp);
+        UIEffect.CounterTo(expText, exp - amount, exp, 0.7f);
     }
     
     public Vector3 GetCurrencyPos(CurrencyType type)
@@ -185,18 +207,54 @@ public class UIManager : MonoBehaviour
 
     #endregion
 
-    #region TrainingPanel
+    #region MainButton
 
+    public void OnMainButtonClicked(MainMenuButton clicked)
+    {
+        if (currentOnMenuButton == clicked)
+        {
+            HidePage();
+            clicked.SetState(false);
+            currentOnMenuButton = null;
+            return;
+        }
+
+        if (currentOnMenuButton != null)
+        {
+            currentOnMenuButton.SetState(false);
+        }
+        
+        ShowPage(clicked.TargetPage);
+        clicked.SetState(true);
+        currentOnMenuButton = clicked;
+    }
+
+    #endregion
+
+    #region PartySetupPanel
+
+    public void OpenPartySetupPanel()
+    {
+        ShowPage(partySetupPanel);
+    }
+
+    public void OffPartySetupPanel()
+    {
+        HidePage();
+    }
+
+    #endregion
+
+    #region TrainingPanel
+    
     public void OpenTrainingPanel()
     {
-        trainingPanel.gameObject.SetActive(true);
-        AudioManager.Instance.PlaySfx(Sfx.UIOpen);
+        ShowPage(trainingPanel);
     }
 
     public void OffTrainingPanel()
     {
-        trainingPanel.gameObject.SetActive(false);
-        AudioManager.Instance.PlaySfx(Sfx.UIClose);
+        HidePage();
     }
 
     #endregion
@@ -205,14 +263,12 @@ public class UIManager : MonoBehaviour
 
     public void OpenMainQuestPanel()
     {
-        if (mainQuestPanel.gameObject.activeSelf) return;
-        mainQuestPanel.gameObject.SetActive(true);
+        mainQuestPanel.Show();
     }
 
     public void OffMainQuestPanel()
     {
-        if (!mainQuestPanel.gameObject.activeSelf) return;
-        mainQuestPanel.gameObject.SetActive(false);
+        mainQuestPanel.Hide();
     }
 
     #endregion

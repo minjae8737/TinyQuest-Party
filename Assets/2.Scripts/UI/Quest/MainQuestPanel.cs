@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class MainQuestPanel : MonoBehaviour
+public class MainQuestPanel : UIPage
 {
     
     [SerializeField] private TextMeshProUGUI desc;
@@ -29,6 +29,18 @@ public class MainQuestPanel : MonoBehaviour
         RefreshPanel();
         
         StopHighlight(highlightRect);
+    }
+    
+    public override void Show()
+    {
+        if (gameObject.activeSelf) return;
+        gameObject.SetActive(true);
+    }
+
+    public override void Hide()
+    {
+        if (!gameObject.activeSelf) return;
+        gameObject.SetActive(false);
     }
 
     private void RefreshPanel()
