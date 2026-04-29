@@ -7,10 +7,11 @@ public class TrainingPanel : UIPage
 {
     [Header("=== Training Level Group ===")] 
     [SerializeField] private Button minusBtn;
-    [SerializeField] private TextMeshProUGUI trainingLevelText;
-    [SerializeField] private Button plusBtn; 
-    
-    [Header("=== Top ===")]
+    [SerializeField] private TMP_Text trainingLevelText;
+    [SerializeField] private Button plusBtn;
+
+    [Header("=== Top ===")] 
+    [SerializeField] private RectTransform TopRect;
     [SerializeField] private Toggle x1Toggle;
     [SerializeField] private Toggle x10Toggle;
     [SerializeField] private Toggle x100Toggle;
@@ -19,18 +20,23 @@ public class TrainingPanel : UIPage
     private RectTransform x100Highlight;
 
     [Header("=== Bottom ===")]
+    [SerializeField] private RectTransform BottomRect;
     [SerializeField] private Button attackUpgradeBtn;   // Atk
     [SerializeField] private Button defenceUpgradeBtn;  // Def
     [SerializeField] private Button healthUpgradeBtn;   // Hp
-    [SerializeField] private TextMeshProUGUI atkLevelText;
-    [SerializeField] private TextMeshProUGUI defLevelText;
-    [SerializeField] private TextMeshProUGUI hpLevelText;
-    [SerializeField] private TextMeshProUGUI attackIncreaseText;
-    [SerializeField] private TextMeshProUGUI defenceIncreaseText;
-    [SerializeField] private TextMeshProUGUI healthIncreaseText;
-    [SerializeField] private TextMeshProUGUI atkGoldCostText;
-    [SerializeField] private TextMeshProUGUI defGoldCostText;
-    [SerializeField] private TextMeshProUGUI hpGoldCostText;
+    [SerializeField] private TMP_Text atkLevelText;
+    [SerializeField] private TMP_Text defLevelText;
+    [SerializeField] private TMP_Text hpLevelText;
+    [SerializeField] private TMP_Text attackIncreaseText;
+    [SerializeField] private TMP_Text defenceIncreaseText;
+    [SerializeField] private TMP_Text healthIncreaseText;
+    [SerializeField] private TMP_Text atkGoldCostText;
+    [SerializeField] private TMP_Text defGoldCostText;
+    [SerializeField] private TMP_Text hpGoldCostText;
+
+    [Header("=== Caching ===")] 
+    private Vector2 topOriginPos;
+    private Vector2 bottomOriginPos;
 
     private int upgradeMultiplier => GetMultiplier();
     private int viewTrainingLevel; // 1부터 시작
@@ -62,10 +68,15 @@ public class TrainingPanel : UIPage
         defenceUpgradeBtn.onClick.AddListener(OnClickDefenceLevelUp);
         healthUpgradeBtn.onClick.AddListener(OnClickHealthLevelUp);
         
+        // Caching
+        topOriginPos = TopRect.anchoredPosition;
+        bottomOriginPos = BottomRect.anchoredPosition;
+        
         TrainingManager.Instance.OnTrainingLevelChanged += HandleLevelUpTrainingLevel;
         TrainingManager.Instance.OnAttackLevelChanged += _ => RefreshBtn();
         TrainingManager.Instance.OnDefenceLevelChanged += _ => RefreshBtn();
         TrainingManager.Instance.OnHealthLevelChanged += _ => RefreshBtn();
+        
         
         SetTrainingLevelText();
         OnChangedToggle(false);
@@ -75,6 +86,8 @@ public class TrainingPanel : UIPage
     {
         gameObject.SetActive(true);
         AudioManager.Instance.PlaySfx(Sfx.UIOpen);
+        UIEffect.SlideUp(TopRect, topOriginPos, 50f, 0.7f);
+        UIEffect.SlideUp(BottomRect, bottomOriginPos, 50f, 0.7f);
     }
 
     public override void Hide()

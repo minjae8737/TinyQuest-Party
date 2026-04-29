@@ -11,6 +11,13 @@ public static class UIEffect
         rect.localScale = Vector3.one;
         rect.DOPunchScale(Vector3.one * 0.2f, 0.3f, 5);
     }
+
+    public static void SlideUp(RectTransform rect, Vector2 targetPos, float offset = 30f, float duration = 0.4f)
+    {
+        rect.DOKill();
+        rect.anchoredPosition = targetPos + Vector2.down * offset;
+        rect.DOAnchorPosY(targetPos.y, duration).SetEase(Ease.OutCubic);
+    }
     
     public static void CounterTo(TMP_Text text, long start, long end, float duration = 1.5f)
     {
