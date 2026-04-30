@@ -16,7 +16,6 @@ public class UnitLevel
         set
         {
             level = value;
-            // OnLevelChanged?.Invoke(level);
         }
     }
 

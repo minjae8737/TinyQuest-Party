@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b978f3bffa6ff45c1acbb30e8947fbfa, type: 3}
+  m_Name: Player_Lancer
+  m_EditorClassIdentifier: 
+  Icon: {fileID: 143134222742969968, guid: 47d31b12ed9204e30a28467450c8a6b3, type: 3}
+  UnitName: 20
+  BaseStat:
+    maxHp: 0
+    atk: 0
+    def: 0
+    speed: 0
+  UnitClass: 1
+  StartStarGrade: 1

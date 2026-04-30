@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public enum TeamType
 {
@@ -7,12 +8,30 @@ public enum TeamType
     Enemy
 }
 
+public enum UnitClass
+{
+    Tank,
+    Warrior,
+    Archer,
+    Mage,
+    Healer,
+}
+
+public enum UnitGrade
+{
+    Normal,     // 흰,회
+    Rare,       // 하늘
+    Epic,       // 보라
+    Legendary,  // 노랑,주황, 금
+    Mythic      // 무지개
+}
+
 [Serializable]
 public class Unit
 {
     #region Components
-
-    public TeamType TeamType;
+    
+    public TeamType TeamType => Data.TeamType;
     public UnitData Data;
     public UnitLevel Level;
     public UnitStat Stat;
@@ -22,6 +41,9 @@ public class Unit
     public List<Skill> Skills;
     
     #endregion
+
+    public int StarGrade;
+    public UnitGrade UnitGrade;
     
     public bool IsDeath => Status.IsDeath;
     

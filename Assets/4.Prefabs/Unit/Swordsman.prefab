@@ -206,10 +206,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b038be1c90cc04013bcac5bcf12dd35e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  skillTargetPos: {x: 0, y: 0}
+  enemyLayer: 0
 --- !u!114 &4542515317107554533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,7 +221,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   model:
     TeamType: 0
-    Data: {fileID: 11400000, guid: e0e1a485ec49c47d2afd2c18efe1fdf0, type: 2}
+    Data: {fileID: 11400000, guid: 573006cd064f54fb9968714a8702586e, type: 2}
     Level:
       level: 1
       exp: 0
@@ -235,6 +232,11 @@ MonoBehaviour:
         def: 0
         speed: 0
       EquipStat:
+        maxHp: 0
+        atk: 0
+        def: 0
+        speed: 0
+      TrainingStat:
         maxHp: 0
         atk: 0
         def: 0
@@ -255,6 +257,7 @@ MonoBehaviour:
       scanner: {fileID: 11400000, guid: a31072d1f1965491284d10454a2fa429, type: 2}
     - Data: {fileID: 11400000, guid: c1b95bea428874a95a5aace3a64800b3, type: 2}
       scanner: {fileID: 11400000, guid: a31072d1f1965491284d10454a2fa429, type: 2}
+    StarGrade: 0
   view: {fileID: 621179891479532263}
   scanner: {fileID: 748321809331351450}
   col: {fileID: 929606212458693939}
@@ -272,3 +275,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sr: {fileID: 5027770694363374496}
   anim: {fileID: 2202572902015093368}
+  hpBar: {fileID: 0}
