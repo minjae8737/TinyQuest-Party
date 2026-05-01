@@ -5341,26 +5341,26 @@ MonoBehaviour:
   playerGroupTransform: {fileID: 218500784}
   enemyGroupTransform: {fileID: 949574707}
   datas:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: ec7a2d349040c46bfbdbaece7cb04041, type: 2}
+  - {fileID: 11400000, guid: 335c7baf9521f4df9a3521d6cb174029, type: 2}
+  - {fileID: 11400000, guid: 6a753487abf0741f5a9afb0e905d1f36, type: 2}
+  - {fileID: 11400000, guid: ee146e8c8254b4b38bae920507fb343a, type: 2}
+  - {fileID: 11400000, guid: a2be66b81b300462fa264cadbd7db63a, type: 2}
+  - {fileID: 11400000, guid: a60f13531371049178e5534aadca72a3, type: 2}
+  - {fileID: 11400000, guid: dc88a61ee54ce455d914661df72e4a45, type: 2}
+  - {fileID: 11400000, guid: 573006cd064f54fb9968714a8702586e, type: 2}
+  - {fileID: 11400000, guid: a16862629f94c4032ae3678e1a8fec00, type: 2}
+  - {fileID: 11400000, guid: ab3fdddbf9c5d46209f5aeaef2ed3019, type: 2}
+  - {fileID: 11400000, guid: 442dc30ace0824c95a262f269b0ff15a, type: 2}
+  - {fileID: 11400000, guid: fe932785029cf41dd9f33b26118c3ea3, type: 2}
+  - {fileID: 11400000, guid: f33d20959e19d4baf9b6e22fa7019667, type: 2}
+  - {fileID: 11400000, guid: cec7ab1f7332245eeae5d45748e5e83e, type: 2}
+  - {fileID: 11400000, guid: d67564a5ed29e44e79599238fe73f0bc, type: 2}
+  - {fileID: 11400000, guid: 8592502d8e8b548fc8743ba413a70587, type: 2}
+  - {fileID: 11400000, guid: 412b9036cf4114f1eb16dd81d32c11d4, type: 2}
+  - {fileID: 11400000, guid: 5de3f0782295a498280917b5b92f782c, type: 2}
+  - {fileID: 11400000, guid: 18d3663230a324288932f6ccbe4c29b4, type: 2}
+  - {fileID: 11400000, guid: 027734a96c56040f8b2c9e8530ec4dfe, type: 2}
   unitPrefabs:
   - {fileID: 4940244618192904066, guid: b5a2d3764a5b44af3a365a9efe98860c, type: 3}
   - {fileID: 2237022567534356654, guid: 907cf19efa3c841f19a0d2e5f2e4089e, type: 3}

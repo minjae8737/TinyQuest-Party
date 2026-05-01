@@ -9,6 +9,8 @@ public class StageManager : MonoBehaviour
 
     [SerializeField] private List<Stage> stages;
     [SerializeField] private List<StageData> stageDatas;
+
+    private const float ScalingRate = 1.15f;
     
     #region Runtime
 
@@ -129,6 +131,11 @@ public class StageManager : MonoBehaviour
         RewardData rewardData = CurStageData.RewardData;
 
         GameManager.Instance.DropReward(rewardData, unitPos);
+    }
+
+    public float GetStageScaling()
+    {
+        return Mathf.Pow(ScalingRate, curStageLevel); 
     }
 
     #region SaveData

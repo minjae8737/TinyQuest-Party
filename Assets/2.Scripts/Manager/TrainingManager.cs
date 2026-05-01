@@ -102,6 +102,7 @@ public class TrainingManager : MonoBehaviour
 
     public void Init(TrainingSaveData saveData = null)
     {
+        TotalStat = new();
         Stats = new();
 
         foreach (TrainingData data in datas)
@@ -110,6 +111,7 @@ public class TrainingManager : MonoBehaviour
         }
         
         ApplySaveData(saveData);
+        InitTotalStat();
         
         // 업데이트 후 데이터가 늘어났을시 자동으로 레벨업
         TryLevelUpTrainingLevel();
@@ -117,8 +119,6 @@ public class TrainingManager : MonoBehaviour
         OnAttackLevelChanged += _ => TryLevelUpTrainingLevel();
         OnDefenceLevelChanged += _ => TryLevelUpTrainingLevel();
         OnHealthLevelChanged += _ => TryLevelUpTrainingLevel();
-
-        OnChangedTrainingStat += UnitManager.Instance.ApplyTrainingStat;
     }
 
     #region LevelUp
@@ -227,16 +227,30 @@ public class TrainingManager : MonoBehaviour
                 break;
         }
 
-        RefreshTotalStat();
+        RefreshTotalStat(type, statValue);
     }
-
-    public void RefreshTotalStat()
+    
+    private void InitTotalStat()
     {
-        TotalStat = new();
-        
         foreach (Stat stat in Stats)
         {
             TotalStat += stat;
+        }
+    }
+
+    private void RefreshTotalStat(TrainingType type, int statValue)
+    {
+        switch (type)
+        {
+            case TrainingType.Attack:
+                Stats[TrainingLevel].Atk += statValue;
+                break;
+            case TrainingType.Defence:
+                Stats[TrainingLevel].Atk += statValue;
+                break;
+            case TrainingType.Health:
+                Stats[TrainingLevel].Atk += statValue;
+                break;
         }
         
         OnChangedTrainingStat?.Invoke();
@@ -337,6 +351,18 @@ public class TrainingManager : MonoBehaviour
             AttackLevel = saveData.AttackLevel;
             DefenceLevel = saveData.DefenceLevel;
             HealthLevel = saveData.HealthLevel;
+            
+            // Stats 갱신
+            for (int i = 0; i < TrainingLevel - 1; i++)
+            {
+                Stats[i].Atk = GetIncrease(TrainingType.Attack, i, datas[i].MaxLevel);
+                Stats[i].Def = GetIncrease(TrainingType.Defence, i, datas[i].MaxLevel);
+                Stats[i].MaxHp = GetIncrease(TrainingType.Health, i, datas[i].MaxLevel);
+            }
+            
+            Stats[TrainingLevel].Atk = GetIncrease(TrainingType.Attack, TrainingLevel, AttackLevel);
+            Stats[TrainingLevel].Def = GetIncrease(TrainingType.Defence, TrainingLevel, DefenceLevel);
+            Stats[TrainingLevel].MaxHp = GetIncrease(TrainingType.Health, TrainingLevel, HealthLevel);
         }
     }
     

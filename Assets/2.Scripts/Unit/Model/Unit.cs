@@ -42,8 +42,17 @@ public class Unit
     
     #endregion
 
-    public int StarGrade;
     public UnitGrade UnitGrade;
+    private int starGrade;
+    public int StarGrade
+    {
+        get => starGrade;
+        set
+        {
+            starGrade = value;
+            Math.Clamp(starGrade, 1, 5);
+        }
+    }
     
     public bool IsDeath => Status.IsDeath;
     
@@ -52,13 +61,19 @@ public class Unit
     public void Init(UnitSaveData saveData)
     {
         Level.Init();
-        Stat.SetBaseStat(Data.BaseStat.Clone());
+
+        StarGrade = TeamType == TeamType.Player ? (Data as PlayerUnitData).StartStarGrade : 1;
+        // TODO UnitGrade 나중에 로직 추가
+        UnitGrade = UnitGrade.Normal;
         
         if (saveData != null)
         {
             ApplySaveData(saveData);
         }
 
+        Stat.SetBaseStat(UnitStatCalculator.GetBaseStat(Data, StarGrade, StarGrade));
+        Stat.SetTrainingStat(UnitStatCalculator.GetTrainingStat(Data));
+        
         Stat.RefreshStat();
         Status.Init(Stat.MaxHp, Stat.MaxHp);
     }
@@ -69,6 +84,7 @@ public class Unit
         // UnitLevel
         Level.Level = saveData.Level;
         Level.Exp = saveData.Exp;
+        
         // Equipment
         foreach (KeyValuePair<EquipPart, string> equipment in saveData.Equipments)
         {
@@ -80,8 +96,8 @@ public class Unit
     public void ApplyTariningStat(Stat stat)
     {
         Stat.SetTrainingStat(stat);
-        int roseHp = Status.MaxHp - Status.Hp;
-
+        long roseHp = Status.MaxHp - Status.Hp;
+        Debug.Log($"{Data.UnitName} Apply");
         Status.Init(Stat.MaxHp - roseHp, Stat.MaxHp);
     }
     
@@ -129,7 +145,7 @@ public class Unit
 
     #region Combat
 
-    public float TakeDamage(int damage)
+    public float TakeDamage(long damage)
     {
         if (damage - Stat.Def < 0) return 0;
         damage -= Stat.Def;
@@ -138,7 +154,7 @@ public class Unit
         return damage;
     }
 
-    public void TakeHeal(int healAmount)
+    public void TakeHeal(long healAmount)
     {
         Status.TakeHeal(healAmount);
     }
@@ -163,7 +179,7 @@ public class Unit
         remove => Level.OnLevelChanged -= value;
     }
 
-    public event Action<int, int> OnHpChanged
+    public event Action<long, long> OnHpChanged
     {
         add => Status.OnHpChanged += value;
         remove => Status.OnHpChanged -= value;

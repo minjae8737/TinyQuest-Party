@@ -4,32 +4,32 @@ using UnityEngine;
 [Serializable]
 public class Stat
 {
-    [SerializeField] private int maxHp;
-    [SerializeField] private int atk;
-    [SerializeField] private int def;
-    [SerializeField] private int speed;
+    [SerializeField] private long maxHp;
+    [SerializeField] private long atk;
+    [SerializeField] private long def;
+    [SerializeField] private long speed;
 
     #region Property
     
-    public int MaxHp
+    public long MaxHp
     {
         get => maxHp;
         set => maxHp = Math.Max(0, value);
     }
 
-    public int Atk
+    public long Atk
     {
         get => atk;
         set => atk = Math.Max(0, value);
     }
 
-    public int Def
+    public long Def
     {
         get => def;
         set => def = Math.Max(0, value);
     }
 
-    public int Speed
+    public long Speed
     {
         get => speed;
         set => speed = Math.Max(0, value);
@@ -56,6 +56,17 @@ public class Stat
             atk = a.Atk - b.Atk,
             def = a.Def - b.Def,
             speed = a.Speed - b.Speed
+        };
+    }
+
+    public static Stat operator *(Stat a, float b)
+    {
+        return new Stat
+        {
+            maxHp = (long)(a.MaxHp * b),
+            atk = (long)(a.Atk * b),
+            def = (long)(a.Def * b),
+            speed = a.Speed
         };
     }
 

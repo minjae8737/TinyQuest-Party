@@ -15,7 +15,7 @@ MonoBehaviour:
   Icon: {fileID: 4401974842081874036, guid: 9b35648f3b62f4344bf840a96de5f41a, type: 3}
   UnitName: 2
   BaseStat:
-    maxHp: 0
-    atk: 0
-    def: 0
-    speed: 0
+    maxHp: 100
+    atk: 15
+    def: 8
+    speed: 5

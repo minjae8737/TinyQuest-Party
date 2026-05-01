@@ -297,17 +297,6 @@ public class UnitManager : MonoBehaviour
         return unitDatas;
     }
 
-    public void ApplyTrainingStat()
-    {
-        Stat trainingStat = TrainingManager.Instance.TotalStat;
-        List<UnitController> playerTeam = TeamUnitDic[TeamType.Player];
-
-        foreach (UnitController controller in playerTeam)
-        {
-            controller.Model.ApplyTariningStat(trainingStat);
-        }
-    }
-
     #endregion
 
     #region SkillEffect

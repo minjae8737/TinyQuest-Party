@@ -20,8 +20,8 @@ public class UnitController : MonoBehaviour
     public Unit Model => model;
     public TeamType TeamType => Model.TeamType;
     public Vector2 Forward => isForwardLeft ? Vector2.left : Vector2.right;
-    public int CurrentHp => model.Status.Hp;
-    public int MaxHp => model.Status.MaxHp;
+    public long CurrentHp => model.Status.Hp;
+    public long MaxHp => model.Status.MaxHp;
     public float HpPercent => (float)model.Status.Hp / model.Status.MaxHp * 100;
     
     #endregion
@@ -29,12 +29,6 @@ public class UnitController : MonoBehaviour
     public event Action<float> OnDamage;
     
     #region Init
-    
-    private void Start()
-    {
-        // 임시 초기화 위치
-        Init();
-    }
 
     public void Init(UnitSaveData saveData = null)
     {
@@ -172,7 +166,7 @@ public class UnitController : MonoBehaviour
         canMove = true;
     }
     
-    public void TakeDamage(int damage)
+    public void TakeDamage(long damage)
     {
         float calDamage = model.TakeDamage(damage);
         
@@ -182,7 +176,7 @@ public class UnitController : MonoBehaviour
         } 
     }
 
-    public void TakeHeal(int healAmount)
+    public void TakeHeal(long healAmount)
     {
         model.TakeHeal(healAmount);
         
@@ -192,7 +186,7 @@ public class UnitController : MonoBehaviour
 
     #region Event Handler
     
-    public void OnHpChanged(int maxHp, int hp)
+    public void OnHpChanged(long maxHp, long hp)
     {
         if (model.IsDeath) return;
         
