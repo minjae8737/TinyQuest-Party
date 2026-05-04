@@ -42,6 +42,7 @@ public class Unit
     
     #endregion
 
+    private const float ConstantDef = 200f;
     public UnitGrade UnitGrade;
     private int starGrade;
     public int StarGrade
@@ -71,7 +72,7 @@ public class Unit
             ApplySaveData(saveData);
         }
 
-        Stat.SetBaseStat(UnitStatCalculator.GetBaseStat(Data, StarGrade, StarGrade));
+        Stat.SetBaseStat(UnitStatCalculator.GetBaseStat(Data, Level.Level, StarGrade));
         Stat.SetTrainingStat(UnitStatCalculator.GetTrainingStat(Data));
         
         Stat.RefreshStat();
@@ -145,11 +146,12 @@ public class Unit
 
     #region Combat
 
+    // 방어율 = Def / (Def + 200f) 
+    // 데미지 = Atk * (1f - 방어율)
     public float TakeDamage(long damage)
     {
-        if (damage - Stat.Def < 0) return 0;
-        damage -= Stat.Def;
-        Status.TakeDamage(damage);
+        long calcedDamage = (long)(damage * (1f - (Stat.Def / (Stat.Def + ConstantDef))));
+        Status.TakeDamage(calcedDamage);
         
         return damage;
     }

@@ -431,7 +431,6 @@ MonoBehaviour:
   trainingPanel: {fileID: 1120472925}
   mainQuestPanel: {fileID: 1829953777}
   DragItemUIPrefab: {fileID: 5557379188472952224, guid: d6de7baacc598414aa62bfbb4a583cd9, type: 3}
-  backIcon: {fileID: 0}
 --- !u!1 &66538938
 GameObject:
   m_ObjectHideFlags: 0
@@ -4754,7 +4753,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1176185064}
+  m_Father: {fileID: 1819438512}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -6914,7 +6913,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 302788619}
-  - {fileID: 791733593}
   m_Father: {fileID: 1145508584}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -49441,6 +49439,7 @@ RectTransform:
   m_Children:
   - {fileID: 542121311}
   - {fileID: 1829953776}
+  - {fileID: 791733593}
   - {fileID: 66538939}
   - {fileID: 1120472924}
   m_Father: {fileID: 1145508584}

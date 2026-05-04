@@ -16,8 +16,8 @@ MonoBehaviour:
   UnitName: 8
   BaseStat:
     maxHp: 100
-    atk: 20
-    def: 10
+    atk: 25
+    def: 6
     speed: 5
   UnitClass: 3
   StartStarGrade: 3

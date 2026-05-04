@@ -20,4 +20,4 @@ MonoBehaviour:
     def: 10
     speed: 5
   UnitClass: 2
-  StartStarGrade: 1
+  StartStarGrade: 2

@@ -18,4 +18,4 @@ MonoBehaviour:
     maxHp: 100
     atk: 15
     def: 8
-    speed: 5
+    speed: 3
