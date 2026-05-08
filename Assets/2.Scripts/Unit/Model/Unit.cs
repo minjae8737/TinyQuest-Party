@@ -75,6 +75,11 @@ public class Unit
         Stat.SetTrainingStat(UnitStatCalculator.GetTrainingStat(Data));
         
         Stat.RefreshStat();
+        ResetStats();
+    }
+
+    public void ResetStats()
+    {
         Status.Init(Stat.MaxHp, Stat.MaxHp);
     }
 

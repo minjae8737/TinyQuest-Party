@@ -12,6 +12,4 @@ public class PartyUnitDTO
         unitLevel = 1;
         starGrade = 1;
     }
-    
-    
 }

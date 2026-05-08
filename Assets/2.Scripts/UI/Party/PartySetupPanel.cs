@@ -80,7 +80,7 @@ public class PartySetupPanel : UIPage
     public void RefreshPartyPanel()
     {
         List<PartyUnitDTO> partyUnitDtos = UnitManager.Instance.GetPartyData();
-
+        
         for (int i = 0; i < partyUnitDtos.Count; i++)
         {
             PartyUnitDTO partyUnitDto = partyUnitDtos[i];

@@ -112,8 +112,7 @@ public class UnitManager : MonoBehaviour
             UnitDataDic.Add(unitData.UnitName, unitData);
             if (unitData.TeamType == TeamType.Player)
             {
-                UnitController unitController = CreateUnit(unitData.UnitName);
-                unitController.Init();
+                CreateUnit(unitData.UnitName);
             }
         }
 
@@ -150,6 +149,7 @@ public class UnitManager : MonoBehaviour
             }
         }
 
+        unitController.Init();
         pool.Add(unitController);
         TeamUnitDic[unitController.TeamType].Add(unitController);
         Units.Add(unitController);
@@ -182,7 +182,7 @@ public class UnitManager : MonoBehaviour
         }
         
         // Unit 세팅
-        unitController.Init();
+        unitController.Spawn();
         unitController.transform.position = spawnPos;
         unitController.gameObject.SetActive(true);
         TeamAliveCount[unitController.TeamType]++;

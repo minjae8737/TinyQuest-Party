@@ -27,13 +27,13 @@ public class PartySlotUI : DragSlotUI, IDropHandler
         bool hasUnit = data.UnitName != UnitName.None;
 
         Blank.SetActive(!hasUnit);
+        slotIdx = idx;
         
         if (!hasUnit) return;
         
         unitImage.sprite = data.Data.Icon;
         unitNameText.text = data.Data.UnitName+"";
         unitLevelText.text = $"Lv.{data.unitLevel}";
-        slotIdx = idx;
         
         // 별 세팅
         int starsCount = stars.Count;
@@ -67,6 +67,8 @@ public class PartySlotUI : DragSlotUI, IDropHandler
 
     protected override bool CanDrag()
     {
+        if (data == null) return false;
+        if (data.Data == null) return false;
         return data.Data.UnitName != UnitName.None;
     }
     
@@ -86,7 +88,7 @@ public class PartySlotUI : DragSlotUI, IDropHandler
         Debug.Log("OnDrop");
 
         UnitDragContext dragContext = (UnitDragContext)UIManager.Instance.DragContext;
-
+        
         if (dragContext.source is PartySlotUI || dragContext.source is UnitListSlotUI)
         {
             UnitManager.Instance.AssignUnitToSlot(slotIdx, dragContext.UnitName);

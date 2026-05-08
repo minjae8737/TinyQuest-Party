@@ -32,10 +32,26 @@ public class UnitController : MonoBehaviour
 
     public void Init(UnitSaveData saveData = null)
     {
-        view.Init();
         model.Init(saveData);
-        canMove = true;
+        col.enabled = false;
+        canMove = false;
+    }
+    
+    public void Spawn()
+    {
+        model.ResetStats();
+        view.Init();
         col.enabled = true;
+        canMove = true;
+    }
+
+    public void Despawn(bool isDeath = false)
+    {
+        col.enabled = false;
+        canMove = false;
+        nextPos = null;
+        view.ReleaseHpbar();
+        UnitManager.Instance.Despawn(this, isDeath);
     }
     
     private void OnEnable()
@@ -208,11 +224,5 @@ public class UnitController : MonoBehaviour
     }
     
     #endregion
-
-    public void Despawn(bool isDeath = false)
-    {
-        nextPos = null;
-        view.ReleaseHpbar();
-        UnitManager.Instance.Despawn(this, isDeath);
-    }
+    
 }
