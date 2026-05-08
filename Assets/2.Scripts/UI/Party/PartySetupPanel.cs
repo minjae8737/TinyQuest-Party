@@ -14,6 +14,7 @@ public class PartySetupPanel : UIPage
 
     [Header("=== Resources ===")] 
     [SerializeField] private Sprite emptyPartySlotSprite;
+    [SerializeField] private Sprite[] starGradeSprites;
 
     [Header("=== Caching ===")]
     private Vector2 panelGroupOriginPos;
@@ -34,15 +35,12 @@ public class PartySetupPanel : UIPage
         RefreshPartyPanel();
         
         // UnitListPanel
-        Dictionary<UnitName, UnitData> unitDatas = UnitManager.Instance.UnitDataDic;
+        List<UnitController> unitDatas = UnitManager.Instance.TeamUnitDic[TeamType.Player];
         unitListSlotUis = new();
         
-        foreach (KeyValuePair<UnitName, UnitData> unitData in unitDatas)
+        foreach (UnitController unitController in unitDatas)
         {
-            if (unitData.Value.TeamType == TeamType.Player)
-            {
-                CreateUnitListItem(unitData.Value);
-            }
+            CreateUnitListItem(unitController);
         }
 
         panelGroupOriginPos = panelGroup.anchoredPosition;
@@ -81,13 +79,13 @@ public class PartySetupPanel : UIPage
     
     public void RefreshPartyPanel()
     {
-        List<UnitData> partyData = UnitManager.Instance.GetPartyData();
+        List<PartyUnitDTO> partyUnitDtos = UnitManager.Instance.GetPartyData();
 
-        for (int i = 0; i < partyData.Count; i++)
+        for (int i = 0; i < partyUnitDtos.Count; i++)
         {
-            Sprite unitSprite = partyData[i] == null ? emptyPartySlotSprite : partyData[i].Icon;
-            UnitName unitName = partyData[i] == null ? UnitName.None : partyData[i].UnitName;
-            partySlotUis[i].SetSlot(unitSprite, unitName, i);
+            PartyUnitDTO partyUnitDto = partyUnitDtos[i];
+            
+            partySlotUis[i].SetSlot(partyUnitDto, starGradeSprites[partyUnitDto.starGrade], i);
         }
     }
 
@@ -95,23 +93,30 @@ public class PartySetupPanel : UIPage
 
     #region UnitListPanel
 
-    public void CreateUnitListItem(UnitData unitData)
+    public void CreateUnitListItem(UnitController unitController)
     {
         GameObject unitListSlotObj = Instantiate(unitListSlotPrefab, unitListSlotParent);
 
         if (!unitListSlotObj.TryGetComponent<UnitListSlotUI>(out var unitListSlot))
         {
-            Debug.LogError("CreateUnitListItemUI Fail. unitName : " + unitData.UnitName);
+            Debug.LogError("CreateUnitListItemUI Fail. unitName : " + unitController.Model.Data.UnitName);
             return;
         }
 
         unitListSlotUis.Add(unitListSlot);
-        unitListSlot.SetSlot(unitData.Icon, unitData.UnitName);
+        unitListSlot.SetSlot(unitController.Model, starGradeSprites[unitController.Model.StarGrade]);
     }
 
     public void RefreshUnitListPanel()
     {
-        
+        List<UnitController> unitDatas = UnitManager.Instance.TeamUnitDic[TeamType.Player];
+        int count = Mathf.Min(unitListSlotUis.Count, unitDatas.Count);
+
+        for (int i = 0; i < count; i++)
+        {
+            Unit model = unitDatas[i].Model;
+            unitListSlotUis[i].SetSlot(model, starGradeSprites[model.StarGrade]);
+        }
     }
 
     #endregion

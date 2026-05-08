@@ -1,23 +1,45 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UnitListSlotUI : DragSlotUI
 {
+    [Header("=== Reference ===")]
     [SerializeField] private Image unitImage;
-    [SerializeField] private Text unitNameText;
+    [SerializeField] private TMP_Text unitNameText;
+    [SerializeField] private TMP_Text unitLevelText;
+    [SerializeField] private RectTransform starParent;
+    
+    [Header("=== Resource ===")]
+    [SerializeField] private GameObject starPrefab;
+    
+    private Unit unit;
+    private List<GameObject> stars = new();
+    
 
-    private UnitName unitName;
-    
-    public void SetSlot(Sprite unitSptrite, UnitName unitName)
+    public void SetSlot(Unit unit, Sprite starSprite)
     {
-        unitImage.sprite = unitSptrite;
-        unitNameText.text = unitName+"";
-        this.unitName = unitName;
-    }
-    
-    public UnitName GetUnitName()
-    {
-        return unitName;
+        this.unit = unit;
+        
+        unitImage.sprite = unit.Data.Icon;
+        unitNameText.text = unit.Data.UnitName+"";
+        unitLevelText.text = $"Lv.{unit.Level.Level}";
+        
+        // 별 세팅
+        int starsCount = stars.Count;
+        for (int i = 0; i < unit.StarGrade - starsCount; i++)
+        {
+            GameObject star = Instantiate(starPrefab, starParent);
+            stars.Add(star);
+        }
+
+        for (int i = 0; i < stars.Count; i++)
+        {
+            Image starImg = stars[i].GetComponent<Image>();
+            starImg.sprite = starSprite;
+            stars[i].SetActive(i < unit.StarGrade);
+        }
     }
     
     #region DragEvent
@@ -29,7 +51,7 @@ public class UnitListSlotUI : DragSlotUI
 
     protected override bool CanDrag()
     {
-        return unitName != UnitName.None;
+        return unit.Data.UnitName != UnitName.None;
     }
     
     #endregion
@@ -38,7 +60,7 @@ public class UnitListSlotUI : DragSlotUI
     {
         UnitDragContext dragContext = new UnitDragContext();
         dragContext.source = this;
-        dragContext.UnitName = unitName;
+        dragContext.UnitName = unit.Data.UnitName;
         
         UIManager.Instance.DragContext = dragContext;
     }

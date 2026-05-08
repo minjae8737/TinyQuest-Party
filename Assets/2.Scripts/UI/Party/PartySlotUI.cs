@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -6,22 +8,54 @@ public class PartySlotUI : DragSlotUI, IDropHandler
 {
     [Header("=== Reference ===")]
     [SerializeField] private Image unitImage;
-    [SerializeField] private Text unitNameText;
+    [SerializeField] private TMP_Text unitNameText;
+    [SerializeField] private TMP_Text unitLevelText;
+    [SerializeField] private RectTransform starParent;
 
-    private UnitName unitName;
+    [SerializeField] private GameObject Blank;
+
+    [Header("=== Resource ===")]
+    [SerializeField] private GameObject starPrefab;
+
+    private PartyUnitDTO data;
     private int slotIdx;
+    private List<GameObject> stars = new();
     
-    public void SetSlot(Sprite unitSptrite, UnitName unitName, int idx)
+    public void SetSlot(PartyUnitDTO partyUnitDto, Sprite starSprite, int idx)
     {
-        unitImage.sprite = unitSptrite;
-        unitNameText.text = unitName+"";
-        this.unitName = unitName;
-        slotIdx = idx;
-    }
+        data = partyUnitDto;
+        bool hasUnit = data.UnitName != UnitName.None;
 
-    public UnitName GetUnitName()
-    {
-        return unitName;
+        Blank.SetActive(!hasUnit);
+        
+        if (!hasUnit) return;
+        
+        unitImage.sprite = data.Data.Icon;
+        unitNameText.text = data.Data.UnitName+"";
+        unitLevelText.text = $"Lv.{data.unitLevel}";
+        slotIdx = idx;
+        
+        // 별 세팅
+        int starsCount = stars.Count;
+        for (int i = 0; i < data.starGrade - starsCount; i++)
+        {
+            GameObject star = Instantiate(starPrefab, starParent);
+            stars.Add(star);
+        }
+        
+        for (int i = 0; i < stars.Count; i++)
+        {
+            if (i < data.starGrade)
+            {
+                Image starImg = stars[i].GetComponent<Image>();
+                starImg.sprite = starSprite;
+                stars[i].SetActive(true);
+            }
+            else
+            {
+                stars[i].SetActive(false);
+            }
+        }
     }
 
     #region DragEvent
@@ -33,7 +67,7 @@ public class PartySlotUI : DragSlotUI, IDropHandler
 
     protected override bool CanDrag()
     {
-        return unitName != UnitName.None;
+        return data.Data.UnitName != UnitName.None;
     }
     
     #endregion
@@ -42,14 +76,14 @@ public class PartySlotUI : DragSlotUI, IDropHandler
     {
         UnitDragContext dragContext = new UnitDragContext();
         dragContext.source = this;
-        dragContext.UnitName = unitName;
+        dragContext.UnitName = data.Data.UnitName;
         
         UIManager.Instance.DragContext = dragContext;
     }
 
     public void OnDrop(PointerEventData eventData)
     {
-        // Debug.Log("OnDrop");
+        Debug.Log("OnDrop");
 
         UnitDragContext dragContext = (UnitDragContext)UIManager.Instance.DragContext;
 

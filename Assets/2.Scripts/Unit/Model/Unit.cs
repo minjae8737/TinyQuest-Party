@@ -50,8 +50,7 @@ public class Unit
         get => starGrade;
         set
         {
-            starGrade = value;
-            Math.Clamp(starGrade, 1, 5);
+            starGrade = Math.Clamp(value, 1, 5);
         }
     }
     
@@ -86,12 +85,14 @@ public class Unit
         Level.Level = saveData.Level;
         Level.Exp = saveData.Exp;
         
-        // Equipment
-        foreach (KeyValuePair<EquipPart, string> equipment in saveData.Equipments)
-        {
-            string itemId = equipment.Value;
-            PutOnEquipment(itemId);
-        }
+        StarGrade = saveData.StarGrade;
+
+        // TODO Equipment 
+        // foreach (KeyValuePair<EquipPart, string> equipment in saveData.Equipments)
+        // {
+        //     string itemId = equipment.Value;
+        //     PutOnEquipment(itemId);
+        // }
     }
 
     public void ApplyTariningStat(Stat stat)
@@ -212,11 +213,14 @@ public class Unit
     public UnitSaveData GetSaveData()
     {
         UnitSaveData saveData = new UnitSaveData();
-        
+
+        saveData.UnitName = Data.UnitName;
         saveData.Level = Level.Level;
         saveData.Exp = Level.Exp;
-
-        saveData.Equipments = new Dictionary<EquipPart, string>(Equipment.Equipments);
+        saveData.StarGrade = StarGrade;
+        
+        // TODO 장비시스템 추가시 수정
+        // saveData.Equipments = new Dictionary<EquipPart, string>(Equipment.Equipments);
 
         return saveData;
     }

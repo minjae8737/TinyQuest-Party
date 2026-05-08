@@ -74,7 +74,7 @@ public class UnitManager : MonoBehaviour
         }
     }
 
-    public void Init(PartySaveData saveData = null)
+    public void Init(List<UnitSaveData> UnitSaveDatas = null, PartySaveData partySaveData = null)
     {
         UnitDataDic = new Dictionary<UnitName, UnitData>();
         unitPrefabDic = new Dictionary<UnitName, GameObject>();
@@ -92,12 +92,6 @@ public class UnitManager : MonoBehaviour
         UnitNamesByTeam.Add(TeamType.Player, new());
         UnitNamesByTeam.Add(TeamType.Enemy, new());
 
-        // UnitDataDic 초기화
-        foreach (UnitData unitData in datas)
-        {
-            UnitDataDic.Add(unitData.UnitName, unitData);
-        }
-        
         // Prefab 등록
         foreach (GameObject prefab in unitPrefabs)
         {
@@ -111,14 +105,26 @@ public class UnitManager : MonoBehaviour
             unitPrefabDic.Add(unitName, prefab);
             UnitNamesByTeam[unitController.TeamType].Add(unitName);
         }
-        
+
+        // UnitDataDic 초기화
+        foreach (UnitData unitData in datas)
+        {
+            UnitDataDic.Add(unitData.UnitName, unitData);
+            if (unitData.TeamType == TeamType.Player)
+            {
+                UnitController unitController = CreateUnit(unitData.UnitName);
+                unitController.Init();
+            }
+        }
+
         party = new();
         
         // 기본 유닛 세팅
         AssignUnitToSlot(0, UnitName.Archer);
-        
-        // 파티 세이브 데이터 적용
-        ApplySaveData(saveData);
+
+        // 세이브 데이터 적용
+        ApplyUnitSaveDatas(UnitSaveDatas);
+        ApplyPartySaveData(partySaveData);
     }
 
     #region Unit
@@ -284,17 +290,29 @@ public class UnitManager : MonoBehaviour
         OnPartyChanged?.Invoke();
     }
 
-    public List<UnitData> GetPartyData()
+    public List<PartyUnitDTO> GetPartyData()
     {
-        List<UnitData> unitDatas = new();
+        List<PartyUnitDTO> partyUnitDtos = new();
 
         foreach (PartySlot partySlot in party.Slots)
         {
-            UnitDataDic.TryGetValue(partySlot.UnitName, out var unitData);
-            unitDatas.Add(unitData);
+            PartyUnitDTO partyUnitDto = new();
+            
+            if (!partySlot.IsEmpty())
+            {
+                unitPoolsDic.TryGetValue(partySlot.UnitName, out var unitControllers);
+                UnitController unitController = unitControllers.ElementAt(0);
+                
+                partyUnitDto.UnitName = unitController.Model.Data.UnitName;
+                partyUnitDto.Data = unitController.Model.Data;
+                partyUnitDto.starGrade = unitController.Model.StarGrade;
+                partyUnitDto.unitLevel = unitController.Model.Level.Level;
+            }
+            
+            partyUnitDtos.Add(partyUnitDto);
         }
 
-        return unitDatas;
+        return partyUnitDtos;
     }
 
     #endregion
@@ -324,6 +342,34 @@ public class UnitManager : MonoBehaviour
 
     #region SaveData
 
+    public List<UnitSaveData> GetUnitSaveDatas()
+    {
+        List<UnitSaveData> UnitSaveDatas = new();
+        
+        foreach (UnitController unitController in TeamUnitDic[TeamType.Player])
+        {
+            UnitSaveData saveData = unitController.Model.GetSaveData();
+            UnitSaveDatas.Add(saveData);
+        }
+
+        return UnitSaveDatas;
+    }
+    
+    private void ApplyUnitSaveDatas(List<UnitSaveData> UnitSaveDatas)
+    {
+        if (UnitSaveDatas.Count > 0)
+        {
+            foreach (UnitSaveData saveData in UnitSaveDatas)
+            {
+                UnitController unitController = unitPoolsDic[saveData.UnitName].ElementAtOrDefault(0);
+                if (unitController != null)
+                {
+                    unitController.Init(saveData);
+                }
+            }
+        }
+    }
+
     public PartySaveData GetPartySaveData()
     {
         List<UnitName> UnitList = new List<UnitName>();
@@ -336,7 +382,7 @@ public class UnitManager : MonoBehaviour
         return new PartySaveData(UnitList);
     }
 
-    private void ApplySaveData(PartySaveData saveData)
+    private void ApplyPartySaveData(PartySaveData saveData)
     {
         if (saveData != null)
         {
