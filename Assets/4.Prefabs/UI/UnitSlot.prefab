@@ -162,6 +162,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6108834723145887985}
   - component: {fileID: 3106106213461206797}
+  - component: {fileID: 534662693252276733}
   m_Layer: 5
   m_Name: Star Group
   m_TagString: Untagged
@@ -214,6 +215,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &534662693252276733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4031161435189707713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee18d9631da5b4e9b86df4da7864d367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starPrefab: {fileID: 7451398543356637252, guid: 8073547887692415b992c4aec85cfa98, type: 3}
 --- !u!1 &4807470170870667088
 GameObject:
   m_ObjectHideFlags: 0
@@ -711,7 +725,7 @@ GameObject:
   - component: {fileID: 4010029625049434373}
   - component: {fileID: 4852800690694391581}
   m_Layer: 5
-  m_Name: UnitListSlot
+  m_Name: UnitSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -791,5 +805,4 @@ MonoBehaviour:
   unitImage: {fileID: 559408184240520741}
   unitNameText: {fileID: 6222942236396313972}
   unitLevelText: {fileID: 672544500356087944}
-  starParent: {fileID: 6108834723145887985}
-  starPrefab: {fileID: 7451398543356637252, guid: 8073547887692415b992c4aec85cfa98, type: 3}
+  StarGradeUI: {fileID: 534662693252276733}

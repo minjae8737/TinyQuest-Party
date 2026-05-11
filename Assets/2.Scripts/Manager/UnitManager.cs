@@ -290,29 +290,48 @@ public class UnitManager : MonoBehaviour
         OnPartyChanged?.Invoke();
     }
 
-    public List<PartyUnitDTO> GetPartyData()
+    public List<UnitSlotDTO> GetPartyData()
     {
-        List<PartyUnitDTO> partyUnitDtos = new();
+        List<UnitSlotDTO> unitSlotDtos = new();
 
         foreach (PartySlot partySlot in party.Slots)
         {
-            PartyUnitDTO partyUnitDto = new();
+            UnitSlotDTO unitSlotDto = new();
             
             if (!partySlot.IsEmpty())
             {
                 unitPoolsDic.TryGetValue(partySlot.UnitName, out var unitControllers);
                 UnitController unitController = unitControllers.ElementAt(0);
                 
-                partyUnitDto.UnitName = unitController.Model.Data.UnitName;
-                partyUnitDto.Data = unitController.Model.Data;
-                partyUnitDto.starGrade = unitController.Model.StarGrade;
-                partyUnitDto.unitLevel = unitController.Model.Level.Level;
+                unitSlotDto.UnitName = unitController.Model.Data.UnitName;
+                unitSlotDto.Data = unitController.Model.Data;
+                unitSlotDto.StarGrade = unitController.Model.StarGrade;
+                unitSlotDto.UnitLevel = unitController.Model.Level.Level;
             }
             
-            partyUnitDtos.Add(partyUnitDto);
+            unitSlotDtos.Add(unitSlotDto);
         }
 
-        return partyUnitDtos;
+        return unitSlotDtos;
+    }
+    
+    public List<UnitSlotDTO> GetPlayerUnitSlotDTO()
+    {
+        List<UnitSlotDTO> unitSlotDtos = new();
+
+        foreach (UnitController unitController in TeamUnitDic[TeamType.Player])
+        {
+            UnitSlotDTO unitSlotDto = new();
+
+            unitSlotDto.UnitName = unitController.Model.Data.UnitName;
+            unitSlotDto.Data = unitController.Model.Data;
+            unitSlotDto.StarGrade = unitController.Model.StarGrade;
+            unitSlotDto.UnitLevel = unitController.Model.Level.Level;
+            
+            unitSlotDtos.Add(unitSlotDto);
+        }
+        
+        return unitSlotDtos;
     }
 
     #endregion

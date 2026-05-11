@@ -647,6 +647,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8210083808063633131}
   - component: {fileID: 1628434645171326137}
+  - component: {fileID: 415620291986107882}
   m_Layer: 5
   m_Name: Star Group
   m_TagString: Untagged
@@ -699,6 +700,19 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!114 &415620291986107882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6369981582240585788}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee18d9631da5b4e9b86df4da7864d367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  starPrefab: {fileID: 7451398543356637252, guid: 8073547887692415b992c4aec85cfa98, type: 3}
 --- !u!1 &6459743751657330752
 GameObject:
   m_ObjectHideFlags: 0
@@ -792,9 +806,8 @@ MonoBehaviour:
   unitImage: {fileID: 6539299481429547310}
   unitNameText: {fileID: 3661285940785953987}
   unitLevelText: {fileID: 8046607195769648554}
-  starParent: {fileID: 8210083808063633131}
+  StarGradeUI: {fileID: 415620291986107882}
   Blank: {fileID: 9055774716509645324}
-  starPrefab: {fileID: 7451398543356637252, guid: 8073547887692415b992c4aec85cfa98, type: 3}
 --- !u!1 &9055774716509645324
 GameObject:
   m_ObjectHideFlags: 0

@@ -6,11 +6,11 @@ public class PartySetupPanel : UIPage
     [Header("=== References ===")]
     [SerializeField] private RectTransform panelGroup;
     [SerializeField] private RectTransform partySlotParent;
-    [SerializeField] private RectTransform unitListSlotParent;
+    [SerializeField] private RectTransform unitSlotParent;
     
     [Header("=== Prefabs ===")]
     [SerializeField] private GameObject partySlotPrefab;
-    [SerializeField] private GameObject unitListSlotPrefab;
+    [SerializeField] private GameObject unitSlotPrefab;
 
     [Header("=== Resources ===")] 
     [SerializeField] private Sprite emptyPartySlotSprite;
@@ -20,7 +20,7 @@ public class PartySetupPanel : UIPage
     private Vector2 panelGroupOriginPos;
     
     private List<PartySlotUI> partySlotUis;
-    private List<UnitListSlotUI> unitListSlotUis;
+    private List<UnitSlotUI> unitListSlotUis;
 
     public void Init()
     {
@@ -35,18 +35,13 @@ public class PartySetupPanel : UIPage
         RefreshPartyPanel();
         
         // UnitListPanel
-        List<UnitController> unitDatas = UnitManager.Instance.TeamUnitDic[TeamType.Player];
         unitListSlotUis = new();
-        
-        foreach (UnitController unitController in unitDatas)
-        {
-            CreateUnitListItem(unitController);
-        }
+        CreateUnitSlot();
 
         panelGroupOriginPos = panelGroup.anchoredPosition;
         
         UnitManager.Instance.OnPartyChanged += RefreshPartyPanel;
-        UnitManager.Instance.OnPartyChanged += RefreshUnitListPanel;
+        // UnitManager.Instance.OnPartyChanged += RefreshUnitListPanel;
     }
     
     public override void Show()
@@ -79,13 +74,13 @@ public class PartySetupPanel : UIPage
     
     public void RefreshPartyPanel()
     {
-        List<PartyUnitDTO> partyUnitDtos = UnitManager.Instance.GetPartyData();
+        List<UnitSlotDTO> unitSlotDtos = UnitManager.Instance.GetPartyData();
         
-        for (int i = 0; i < partyUnitDtos.Count; i++)
+        for (int i = 0; i < unitSlotDtos.Count; i++)
         {
-            PartyUnitDTO partyUnitDto = partyUnitDtos[i];
+            UnitSlotDTO unitSlotDto = unitSlotDtos[i];
             
-            partySlotUis[i].SetSlot(partyUnitDto, starGradeSprites[partyUnitDto.starGrade], i);
+            partySlotUis[i].SetSlot(unitSlotDto, starGradeSprites[unitSlotDto.StarGrade], i);
         }
     }
 
@@ -93,30 +88,28 @@ public class PartySetupPanel : UIPage
 
     #region UnitListPanel
 
-    public void CreateUnitListItem(UnitController unitController)
+    public void CreateUnitSlot()
     {
-        GameObject unitListSlotObj = Instantiate(unitListSlotPrefab, unitListSlotParent);
+        List<UnitSlotDTO> unitSlotDtos = UnitManager.Instance.GetPlayerUnitSlotDTO();
 
-        if (!unitListSlotObj.TryGetComponent<UnitListSlotUI>(out var unitListSlot))
+        foreach (UnitSlotDTO unitSlotDto in unitSlotDtos)
         {
-            Debug.LogError("CreateUnitListItemUI Fail. unitName : " + unitController.Model.Data.UnitName);
-            return;
-        }
+            GameObject unitSlotObj = Instantiate(unitSlotPrefab, unitSlotParent);
 
-        unitListSlotUis.Add(unitListSlot);
-        unitListSlot.SetSlot(unitController.Model, starGradeSprites[unitController.Model.StarGrade]);
+            if (!unitSlotObj.TryGetComponent<UnitSlotUI>(out var unitSlot))
+            {
+                Debug.LogError($"CreateUnitListItemUI Fail. Unitname : {unitSlotDto.UnitName}");
+                return;
+            }
+
+            unitListSlotUis.Add(unitSlot);
+            unitSlot.SetSlot(unitSlotDto, starGradeSprites[unitSlotDto.StarGrade]);
+        }
     }
 
     public void RefreshUnitListPanel()
     {
-        List<UnitController> unitDatas = UnitManager.Instance.TeamUnitDic[TeamType.Player];
-        int count = Mathf.Min(unitListSlotUis.Count, unitDatas.Count);
 
-        for (int i = 0; i < count; i++)
-        {
-            Unit model = unitDatas[i].Model;
-            unitListSlotUis[i].SetSlot(model, starGradeSprites[model.StarGrade]);
-        }
     }
 
     #endregion
