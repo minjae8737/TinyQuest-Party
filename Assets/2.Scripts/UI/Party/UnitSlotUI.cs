@@ -11,6 +11,8 @@ public class UnitSlotUI : DragSlotUI
     [SerializeField] protected StarGradeUI StarGradeUI;
     
     protected UnitSlotDTO dto;
+    public UnitName UnitName => dto.UnitName;
+    public UnitClass UnitClass => dto.UnitClass;
     
     public virtual void SetSlot(UnitSlotDTO unitSlotDto, Sprite starSprite)
     {
@@ -45,5 +47,5 @@ public class UnitSlotUI : DragSlotUI
         
         UIManager.Instance.DragContext = dragContext;
     }
-    
+
 }

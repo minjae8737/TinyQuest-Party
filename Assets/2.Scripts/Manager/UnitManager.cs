@@ -302,11 +302,7 @@ public class UnitManager : MonoBehaviour
             {
                 unitPoolsDic.TryGetValue(partySlot.UnitName, out var unitControllers);
                 UnitController unitController = unitControllers.ElementAt(0);
-                
-                unitSlotDto.UnitName = unitController.Model.Data.UnitName;
-                unitSlotDto.Data = unitController.Model.Data;
-                unitSlotDto.StarGrade = unitController.Model.StarGrade;
-                unitSlotDto.UnitLevel = unitController.Model.Level.Level;
+                unitSlotDto.SetValue(unitController);
             }
             
             unitSlotDtos.Add(unitSlotDto);
@@ -322,11 +318,7 @@ public class UnitManager : MonoBehaviour
         foreach (UnitController unitController in TeamUnitDic[TeamType.Player])
         {
             UnitSlotDTO unitSlotDto = new();
-
-            unitSlotDto.UnitName = unitController.Model.Data.UnitName;
-            unitSlotDto.Data = unitController.Model.Data;
-            unitSlotDto.StarGrade = unitController.Model.StarGrade;
-            unitSlotDto.UnitLevel = unitController.Model.Level.Level;
+            unitSlotDto.SetValue(unitController);
             
             unitSlotDtos.Add(unitSlotDto);
         }
