@@ -3,14 +3,15 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TrainingPanel : MonoBehaviour
+public class TrainingPanel : UIPage
 {
     [Header("=== Training Level Group ===")] 
     [SerializeField] private Button minusBtn;
-    [SerializeField] private TextMeshProUGUI trainingLevelText;
-    [SerializeField] private Button plusBtn; 
-    
-    [Header("=== Top ===")]
+    [SerializeField] private TMP_Text trainingLevelText;
+    [SerializeField] private Button plusBtn;
+
+    [Header("=== Top ===")] 
+    [SerializeField] private RectTransform TopRect;
     [SerializeField] private Toggle x1Toggle;
     [SerializeField] private Toggle x10Toggle;
     [SerializeField] private Toggle x100Toggle;
@@ -19,25 +20,30 @@ public class TrainingPanel : MonoBehaviour
     private RectTransform x100Highlight;
 
     [Header("=== Bottom ===")]
+    [SerializeField] private RectTransform BottomRect;
     [SerializeField] private Button attackUpgradeBtn;   // Atk
     [SerializeField] private Button defenceUpgradeBtn;  // Def
     [SerializeField] private Button healthUpgradeBtn;   // Hp
-    [SerializeField] private TextMeshProUGUI atkLevelText;
-    [SerializeField] private TextMeshProUGUI defLevelText;
-    [SerializeField] private TextMeshProUGUI hpLevelText;
-    [SerializeField] private TextMeshProUGUI attackIncreaseText;
-    [SerializeField] private TextMeshProUGUI defenceIncreaseText;
-    [SerializeField] private TextMeshProUGUI healthIncreaseText;
-    [SerializeField] private TextMeshProUGUI atkGoldCostText;
-    [SerializeField] private TextMeshProUGUI defGoldCostText;
-    [SerializeField] private TextMeshProUGUI hpGoldCostText;
+    [SerializeField] private TMP_Text atkLevelText;
+    [SerializeField] private TMP_Text defLevelText;
+    [SerializeField] private TMP_Text hpLevelText;
+    [SerializeField] private TMP_Text attackIncreaseText;
+    [SerializeField] private TMP_Text defenceIncreaseText;
+    [SerializeField] private TMP_Text healthIncreaseText;
+    [SerializeField] private TMP_Text atkGoldCostText;
+    [SerializeField] private TMP_Text defGoldCostText;
+    [SerializeField] private TMP_Text hpGoldCostText;
+
+    [Header("=== Caching ===")] 
+    private Vector2 topOriginPos;
+    private Vector2 bottomOriginPos;
 
     private int upgradeMultiplier => GetMultiplier();
     private int viewTrainingLevel; // 1부터 시작
 
     public void Init()
     {
-        viewTrainingLevel = TrainingManaer.Instance.TrainingLevel;
+        viewTrainingLevel = TrainingManager.Instance.TrainingLevel;
         
         // Training Level
         minusBtn.onClick.AddListener(OnClickMinus);
@@ -62,13 +68,32 @@ public class TrainingPanel : MonoBehaviour
         defenceUpgradeBtn.onClick.AddListener(OnClickDefenceLevelUp);
         healthUpgradeBtn.onClick.AddListener(OnClickHealthLevelUp);
         
-        TrainingManaer.Instance.OnTrainingLevelChanged += HandleLevelUpTrainingLevel;
-        TrainingManaer.Instance.OnAttackLevelChanged += _ => RefreshBtn();
-        TrainingManaer.Instance.OnDefenceLevelChanged += _ => RefreshBtn();
-        TrainingManaer.Instance.OnHealthLevelChanged += _ => RefreshBtn();
+        // Caching
+        topOriginPos = TopRect.anchoredPosition;
+        bottomOriginPos = BottomRect.anchoredPosition;
+        
+        TrainingManager.Instance.OnTrainingLevelChanged += HandleLevelUpTrainingLevel;
+        TrainingManager.Instance.OnAttackLevelChanged += _ => RefreshBtn();
+        TrainingManager.Instance.OnDefenceLevelChanged += _ => RefreshBtn();
+        TrainingManager.Instance.OnHealthLevelChanged += _ => RefreshBtn();
+        
         
         SetTrainingLevelText();
         OnChangedToggle(false);
+    }
+
+    public override void Show()
+    {
+        gameObject.SetActive(true);
+        AudioManager.Instance.PlaySfx(Sfx.UIOpen);
+        UIEffect.SlideUp(TopRect, topOriginPos, 50f, 0.7f);
+        UIEffect.SlideUp(BottomRect, bottomOriginPos, 50f, 0.7f);
+    }
+
+    public override void Hide()
+    {
+        gameObject.SetActive(false);
+        AudioManager.Instance.PlaySfx(Sfx.UIClose);
     }
 
     #region Training Level
@@ -84,7 +109,7 @@ public class TrainingPanel : MonoBehaviour
 
     private void OnClickPlus()
     {
-        if (viewTrainingLevel == TrainingManaer.Instance.TrainingLevel) return;
+        if (viewTrainingLevel == TrainingManager.Instance.TrainingLevel) return;
 
         viewTrainingLevel++;
         SetTrainingLevelText();
@@ -93,14 +118,14 @@ public class TrainingPanel : MonoBehaviour
 
     private void SetTrainingLevelText()
     {
-        int maxTrainingLevel = TrainingManaer.Instance.MaxTrainingLevel;
+        int maxTrainingLevel = TrainingManager.Instance.MaxTrainingLevel;
 
         trainingLevelText.text = $"{viewTrainingLevel + 1}/{maxTrainingLevel}";
     }
 
     private void HandleLevelUpTrainingLevel()
     {
-        viewTrainingLevel = TrainingManaer.Instance.TrainingLevel;
+        viewTrainingLevel = TrainingManager.Instance.TrainingLevel;
         SetTrainingLevelText();
         RefreshBtn();
     }
@@ -155,29 +180,29 @@ public class TrainingPanel : MonoBehaviour
 
     private void OnClickAttackLevelUp()
     {
-        TrainingManaer.Instance.LevelUpStat(TrainingType.Attack, upgradeMultiplier);
+        TrainingManager.Instance.LevelUpStat(TrainingType.Attack, upgradeMultiplier);
     }
     
     private void OnClickDefenceLevelUp()
     {
-        TrainingManaer.Instance.LevelUpStat(TrainingType.Defence, upgradeMultiplier);
+        TrainingManager.Instance.LevelUpStat(TrainingType.Defence, upgradeMultiplier);
     }
     
     private void OnClickHealthLevelUp()
     {
-        TrainingManaer.Instance.LevelUpStat(TrainingType.Health, upgradeMultiplier);
+        TrainingManager.Instance.LevelUpStat(TrainingType.Health, upgradeMultiplier);
     }
 
     private void RefreshBtn()
     {
         //viewTrainingLevel
-        bool lessViewTrainingLevel = viewTrainingLevel < TrainingManaer.Instance.TrainingLevel;
-        int maxLevel = TrainingManaer.Instance.GetMaxLevel(viewTrainingLevel);
+        bool lessViewTrainingLevel = viewTrainingLevel < TrainingManager.Instance.TrainingLevel;
+        int maxLevel = TrainingManager.Instance.GetMaxLevel(viewTrainingLevel);
 
         // Attack
-        int attackLevel = lessViewTrainingLevel ? maxLevel : TrainingManaer.Instance.AttackLevel;
-        int attackIncrease = TrainingManaer.Instance.GetIncrease(TrainingType.Attack, viewTrainingLevel, attackLevel);
-        long attackUpgradeCost = TrainingManaer.Instance.GetUpgradeCost(TrainingType.Attack, viewTrainingLevel, upgradeMultiplier);
+        int attackLevel = lessViewTrainingLevel ? maxLevel : TrainingManager.Instance.AttackLevel;
+        int attackIncrease = TrainingManager.Instance.GetIncrease(TrainingType.Attack, viewTrainingLevel, attackLevel);
+        long attackUpgradeCost = TrainingManager.Instance.GetUpgradeCost(TrainingType.Attack, viewTrainingLevel, upgradeMultiplier);
         string attackUpgradeCostStr = UIManager.Instance.NumberFormatter(attackUpgradeCost);
 
         atkLevelText.text = $"Lv.{attackLevel:000}";
@@ -186,9 +211,9 @@ public class TrainingPanel : MonoBehaviour
         attackUpgradeBtn.interactable = attackUpgradeCost != 0L; 
 
         // Defence
-        int defenceLevel = lessViewTrainingLevel ? maxLevel : TrainingManaer.Instance.DefenceLevel;
-        int defenceIncrease = TrainingManaer.Instance.GetIncrease(TrainingType.Defence, viewTrainingLevel, defenceLevel);
-        long defenceUpgradeCost = TrainingManaer.Instance.GetUpgradeCost(TrainingType.Defence, viewTrainingLevel, upgradeMultiplier);
+        int defenceLevel = lessViewTrainingLevel ? maxLevel : TrainingManager.Instance.DefenceLevel;
+        int defenceIncrease = TrainingManager.Instance.GetIncrease(TrainingType.Defence, viewTrainingLevel, defenceLevel);
+        long defenceUpgradeCost = TrainingManager.Instance.GetUpgradeCost(TrainingType.Defence, viewTrainingLevel, upgradeMultiplier);
         string defenceUpgradeCostStr = UIManager.Instance.NumberFormatter(defenceUpgradeCost);
 
         defLevelText.text = $"Lv.{defenceLevel:000}";
@@ -197,9 +222,9 @@ public class TrainingPanel : MonoBehaviour
         defenceUpgradeBtn.interactable = defenceUpgradeCost != 0L;
 
         // Health
-        int healthLevel = lessViewTrainingLevel ? maxLevel : TrainingManaer.Instance.HealthLevel;
-        int healthIncrease = TrainingManaer.Instance.GetIncrease(TrainingType.Health, viewTrainingLevel, healthLevel);
-        long healthUpgradeCost = TrainingManaer.Instance.GetUpgradeCost(TrainingType.Health, viewTrainingLevel, upgradeMultiplier);
+        int healthLevel = lessViewTrainingLevel ? maxLevel : TrainingManager.Instance.HealthLevel;
+        int healthIncrease = TrainingManager.Instance.GetIncrease(TrainingType.Health, viewTrainingLevel, healthLevel);
+        long healthUpgradeCost = TrainingManager.Instance.GetUpgradeCost(TrainingType.Health, viewTrainingLevel, upgradeMultiplier);
         string healthUpgradeCostStr = UIManager.Instance.NumberFormatter(healthUpgradeCost);
 
         hpLevelText.text = $"Lv.{healthLevel:000}";

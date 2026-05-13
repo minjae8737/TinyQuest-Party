@@ -15,14 +15,16 @@ public class CurrencyManager : MonoBehaviour
     [SerializeField] private List<CurrencyData> Datas;
     private Dictionary<CurrencyType, CurrencyData> dataDic;
     public IReadOnlyDictionary<CurrencyType, CurrencyData> DataDic => dataDic;
-    
+
     private const long MaxValue = 9999999999999999L;
     public long Gold { get; private set; }
     public long Exp { get; private set; }
 
-    public event Action OnGoldChanged;
-    public event Action OnExpChanged;
-    
+    public event Action<long> OnGoldChanged;
+    public event Action<long> OnExpChanged;
+    public event Action<string, long> OnAddGold;
+    public event Action<string, long> OnAddExp;
+
     private void Awake()
     {
         if (Instance == null)
@@ -43,10 +45,11 @@ public class CurrencyManager : MonoBehaviour
         OnExpChanged -= UIManager.Instance.RefreshExpPanel;
     }
 
-    public void Init()
+    public void Init(CurrencySaveData saveData = null)
     {
         Gold = 0L;
         Exp = 0L;
+        ApplySaveData(saveData);
         dataDic = new();
 
         foreach (CurrencyData data in Datas)
@@ -64,24 +67,25 @@ public class CurrencyManager : MonoBehaviour
     {
         return Gold >= amount;
     }
-    
+
     public void AddGold(long amount)
     {
         Gold += amount;
         Gold = Gold >= MaxValue ? MaxValue : Gold;
-        OnGoldChanged?.Invoke();
+        OnGoldChanged?.Invoke(amount);
+        OnAddGold?.Invoke("AddGold", amount);
     }
 
     public bool SpendGold(long amount)
     {
         if (!HasEnoughGold(amount)) return false;
-        
+
         Gold -= amount;
-        OnGoldChanged?.Invoke();
+        OnGoldChanged?.Invoke(-amount);
 
         return true;
     }
-    
+
     #endregion
 
     #region Exp
@@ -95,18 +99,38 @@ public class CurrencyManager : MonoBehaviour
     {
         Exp += amount;
         Exp = Exp >= MaxValue ? MaxValue : Exp;
-        OnExpChanged?.Invoke();
+        OnExpChanged?.Invoke(amount);
+        OnAddExp?.Invoke("AddExp", amount);
     }
 
     public bool SpendExp(long amount)
     {
         if (!HasEnoughExp(amount)) return false;
-        
+
         Exp -= amount;
-        OnExpChanged?.Invoke();
+        OnExpChanged?.Invoke(-amount);
 
         return true;
     }
 
     #endregion
+
+    #region SaveData
+
+    public CurrencySaveData GetCurrencySaveData()
+    {
+        return new CurrencySaveData(Gold, Exp);
+    }
+
+    private void ApplySaveData(CurrencySaveData saveData)
+    {
+        if (saveData != null)
+        {
+            Gold = saveData.Gold;
+            Exp = saveData.Exp;
+        }
+    }
+
+    #endregion
+    
 }

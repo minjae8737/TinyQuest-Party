@@ -14,19 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   IslandDatas:
   - Waves:
-    - UnitName: 1
+    - UnitName: 2
       SpawnCount: 2
-    - UnitName: 11
+    - UnitName: 12
       SpawnCount: 2
   - Waves:
-    - UnitName: 11
+    - UnitName: 12
       SpawnCount: 1
-    - UnitName: 16
+    - UnitName: 17
       SpawnCount: 2
   - Waves:
-    - UnitName: 16
+    - UnitName: 17
       SpawnCount: 3
-    - UnitName: 18
+    - UnitName: 19
       SpawnCount: 1
   RewardData:
     Gold: 1000

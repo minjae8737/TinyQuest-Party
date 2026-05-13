@@ -4,13 +4,13 @@ using UnityEngine;
 [Serializable]
 public class UnitStatus
 {
-    [SerializeField, ReadOnly] private int maxHp;
-    [SerializeField, ReadOnly] private int hp;
+    [SerializeField, ReadOnly] private long maxHp;
+    [SerializeField, ReadOnly] private long hp;
     [SerializeField, ReadOnly] private bool isDeath;
 
     #region Property
 
-    public int MaxHp
+    public long MaxHp
     {
         get => maxHp;
         set
@@ -21,13 +21,13 @@ public class UnitStatus
         }
     }
     
-    public int Hp
+    public long Hp
     {
         get => hp;
         set
         {
             if (hp == value) return;
-            int newValue = Math.Clamp(value, 0, maxHp);
+            long newValue = Math.Clamp(value, 0, maxHp);
 
             hp = newValue;
             OnHpChanged?.Invoke(maxHp, hp);
@@ -40,21 +40,21 @@ public class UnitStatus
     
     #endregion
     
-    public event Action<int, int> OnHpChanged;
+    public event Action<long, long> OnHpChanged;
 
-    public void Init(int maxHp, int hp)
+    public void Init(long maxHp, long hp)
     {
         MaxHp = maxHp;
         Hp = hp;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(long damage)
     {
         if (damage < 0) return;
         Hp -= damage;
     }
 
-    public void TakeHeal(int healAmount)
+    public void TakeHeal(long healAmount)
     {
         Hp += healAmount;
     }
