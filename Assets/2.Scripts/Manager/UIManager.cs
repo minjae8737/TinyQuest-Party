@@ -46,9 +46,6 @@ public class UIManager : MonoBehaviour
     [Header("=== Prefab ===")] 
     [SerializeField] private GameObject DragItemUIPrefab;
 
-    [Header("=== Resource ===")] 
-    [SerializeField] private Sprite backIcon;
-
     private DragItemUI DragItemUI;
     [HideInInspector] public DragContext DragContext;
     private bool isDragged;

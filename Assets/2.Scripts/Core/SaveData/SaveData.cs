@@ -1,10 +1,12 @@
+using System.Collections.Generic;
+
 public class SaveData
 {
     // 유저 데이터
     public CurrencySaveData CurrencySaveData; 
     
     // Unit 데이터
-    public UnitSaveData UnitSaveData;
+    public List<UnitSaveData> UnitSaveDatas = new();
     
     // 파티 데이터
     public PartySaveData PartySaveData;

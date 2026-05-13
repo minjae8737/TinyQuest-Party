@@ -29,4 +29,21 @@ public static class UIEffect
             text.text = UIManager.Instance.NumberFormatter(x);
         }, end, duration);
     }
+    
+    public static void PunchLoop(RectTransform rect)
+    {
+        rect.DOKill();
+        
+        Vector2 endValue = rect.sizeDelta + new Vector2(10f, 10f);
+
+        rect.DOSizeDelta(endValue, 0.5f)
+            .SetLoops(-1, LoopType.Yoyo)
+            .SetEase(Ease.InOutSine);
+    }
+
+    public static void Scrolling(RectTransform rect, Vector2 endValue)
+    {
+        rect.DOKill();
+        rect.DOAnchorPos(endValue, 0.7f).SetEase(Ease.OutQuint);
+    }
 }

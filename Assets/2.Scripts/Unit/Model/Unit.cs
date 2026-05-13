@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 public enum TeamType
 {
@@ -7,12 +8,30 @@ public enum TeamType
     Enemy
 }
 
+public enum UnitClass
+{
+    Tank,
+    Warrior,
+    Archer,
+    Mage,
+    Healer,
+}
+
+public enum UnitGrade
+{
+    Normal,     // 흰,회
+    Rare,       // 하늘
+    Epic,       // 보라
+    Legendary,  // 노랑,주황, 금
+    Mythic      // 무지개
+}
+
 [Serializable]
 public class Unit
 {
     #region Components
-
-    public TeamType TeamType;
+    
+    public TeamType TeamType => Data.TeamType;
     public UnitData Data;
     public UnitLevel Level;
     public UnitStat Stat;
@@ -22,6 +41,18 @@ public class Unit
     public List<Skill> Skills;
     
     #endregion
+
+    private const float ConstantDef = 200f;
+    public UnitGrade UnitGrade;
+    private int starGrade;
+    public int StarGrade
+    {
+        get => starGrade;
+        set
+        {
+            starGrade = Math.Clamp(value, 1, 5);
+        }
+    }
     
     public bool IsDeath => Status.IsDeath;
     
@@ -30,14 +61,25 @@ public class Unit
     public void Init(UnitSaveData saveData)
     {
         Level.Init();
-        Stat.SetBaseStat(Data.BaseStat.Clone());
+
+        StarGrade = TeamType == TeamType.Player ? (Data as PlayerUnitData).StartStarGrade : 1;
+        // TODO UnitGrade 나중에 로직 추가
+        UnitGrade = UnitGrade.Normal;
         
         if (saveData != null)
         {
             ApplySaveData(saveData);
         }
 
+        Stat.SetBaseStat(UnitStatCalculator.GetBaseStat(Data, Level.Level, StarGrade));
+        Stat.SetTrainingStat(UnitStatCalculator.GetTrainingStat(Data));
+        
         Stat.RefreshStat();
+        ResetStats();
+    }
+
+    public void ResetStats()
+    {
         Status.Init(Stat.MaxHp, Stat.MaxHp);
     }
 
@@ -47,19 +89,22 @@ public class Unit
         // UnitLevel
         Level.Level = saveData.Level;
         Level.Exp = saveData.Exp;
-        // Equipment
-        foreach (KeyValuePair<EquipPart, string> equipment in saveData.Equipments)
-        {
-            string itemId = equipment.Value;
-            PutOnEquipment(itemId);
-        }
+        
+        StarGrade = saveData.StarGrade;
+
+        // TODO Equipment 
+        // foreach (KeyValuePair<EquipPart, string> equipment in saveData.Equipments)
+        // {
+        //     string itemId = equipment.Value;
+        //     PutOnEquipment(itemId);
+        // }
     }
 
     public void ApplyTariningStat(Stat stat)
     {
         Stat.SetTrainingStat(stat);
-        int roseHp = Status.MaxHp - Status.Hp;
-
+        long roseHp = Status.MaxHp - Status.Hp;
+        Debug.Log($"{Data.UnitName} Apply");
         Status.Init(Stat.MaxHp - roseHp, Stat.MaxHp);
     }
     
@@ -107,16 +152,17 @@ public class Unit
 
     #region Combat
 
-    public float TakeDamage(int damage)
+    // 방어율 = Def / (Def + 200f) 
+    // 데미지 = Atk * (1f - 방어율)
+    public float TakeDamage(long damage)
     {
-        if (damage - Stat.Def < 0) return 0;
-        damage -= Stat.Def;
-        Status.TakeDamage(damage);
+        long calcedDamage = (long)(damage * (1f - (Stat.Def / (Stat.Def + ConstantDef))));
+        Status.TakeDamage(calcedDamage);
         
         return damage;
     }
 
-    public void TakeHeal(int healAmount)
+    public void TakeHeal(long healAmount)
     {
         Status.TakeHeal(healAmount);
     }
@@ -141,7 +187,7 @@ public class Unit
         remove => Level.OnLevelChanged -= value;
     }
 
-    public event Action<int, int> OnHpChanged
+    public event Action<long, long> OnHpChanged
     {
         add => Status.OnHpChanged += value;
         remove => Status.OnHpChanged -= value;
@@ -172,11 +218,14 @@ public class Unit
     public UnitSaveData GetSaveData()
     {
         UnitSaveData saveData = new UnitSaveData();
-        
+
+        saveData.UnitName = Data.UnitName;
         saveData.Level = Level.Level;
         saveData.Exp = Level.Exp;
-
-        saveData.Equipments = new Dictionary<EquipPart, string>(Equipment.Equipments);
+        saveData.StarGrade = StarGrade;
+        
+        // TODO 장비시스템 추가시 수정
+        // saveData.Equipments = new Dictionary<EquipPart, string>(Equipment.Equipments);
 
         return saveData;
     }

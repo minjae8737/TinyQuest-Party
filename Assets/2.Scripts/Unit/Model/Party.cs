@@ -31,7 +31,7 @@ public class Party
     {
         if (IsInvalidSlotIndex(slotIdx)) return false;
         
-        return slots[slotIdx].UnitName == UnitName.None;
+        return slots[slotIdx].IsEmpty();
     }
 
     private bool IsInvalidSlotIndex(int slotIdx)

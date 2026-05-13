@@ -74,7 +74,7 @@ public class UnitManager : MonoBehaviour
         }
     }
 
-    public void Init(PartySaveData saveData = null)
+    public void Init(List<UnitSaveData> UnitSaveDatas = null, PartySaveData partySaveData = null)
     {
         UnitDataDic = new Dictionary<UnitName, UnitData>();
         unitPrefabDic = new Dictionary<UnitName, GameObject>();
@@ -92,12 +92,6 @@ public class UnitManager : MonoBehaviour
         UnitNamesByTeam.Add(TeamType.Player, new());
         UnitNamesByTeam.Add(TeamType.Enemy, new());
 
-        // UnitDataDic 초기화
-        foreach (UnitData unitData in datas)
-        {
-            UnitDataDic.Add(unitData.UnitName, unitData);
-        }
-        
         // Prefab 등록
         foreach (GameObject prefab in unitPrefabs)
         {
@@ -111,14 +105,25 @@ public class UnitManager : MonoBehaviour
             unitPrefabDic.Add(unitName, prefab);
             UnitNamesByTeam[unitController.TeamType].Add(unitName);
         }
-        
+
+        // UnitDataDic 초기화
+        foreach (UnitData unitData in datas)
+        {
+            UnitDataDic.Add(unitData.UnitName, unitData);
+            if (unitData.TeamType == TeamType.Player)
+            {
+                CreateUnit(unitData.UnitName);
+            }
+        }
+
         party = new();
         
         // 기본 유닛 세팅
         AssignUnitToSlot(0, UnitName.Archer);
-        
-        // 파티 세이브 데이터 적용
-        ApplySaveData(saveData);
+
+        // 세이브 데이터 적용
+        ApplyUnitSaveDatas(UnitSaveDatas);
+        ApplyPartySaveData(partySaveData);
     }
 
     #region Unit
@@ -144,6 +149,7 @@ public class UnitManager : MonoBehaviour
             }
         }
 
+        unitController.Init();
         pool.Add(unitController);
         TeamUnitDic[unitController.TeamType].Add(unitController);
         Units.Add(unitController);
@@ -176,7 +182,7 @@ public class UnitManager : MonoBehaviour
         }
         
         // Unit 세팅
-        unitController.Init();
+        unitController.Spawn();
         unitController.transform.position = spawnPos;
         unitController.gameObject.SetActive(true);
         TeamAliveCount[unitController.TeamType]++;
@@ -284,28 +290,40 @@ public class UnitManager : MonoBehaviour
         OnPartyChanged?.Invoke();
     }
 
-    public List<UnitData> GetPartyData()
+    public List<UnitSlotDTO> GetPartyData()
     {
-        List<UnitData> unitDatas = new();
+        List<UnitSlotDTO> unitSlotDtos = new();
 
         foreach (PartySlot partySlot in party.Slots)
         {
-            UnitDataDic.TryGetValue(partySlot.UnitName, out var unitData);
-            unitDatas.Add(unitData);
+            UnitSlotDTO unitSlotDto = new();
+            
+            if (!partySlot.IsEmpty())
+            {
+                unitPoolsDic.TryGetValue(partySlot.UnitName, out var unitControllers);
+                UnitController unitController = unitControllers.ElementAt(0);
+                unitSlotDto.SetValue(unitController);
+            }
+            
+            unitSlotDtos.Add(unitSlotDto);
         }
 
-        return unitDatas;
+        return unitSlotDtos;
     }
-
-    public void ApplyTrainingStat()
+    
+    public List<UnitSlotDTO> GetPlayerUnitSlotDTO()
     {
-        Stat trainingStat = TrainingManager.Instance.TotalStat;
-        List<UnitController> playerTeam = TeamUnitDic[TeamType.Player];
+        List<UnitSlotDTO> unitSlotDtos = new();
 
-        foreach (UnitController controller in playerTeam)
+        foreach (UnitController unitController in TeamUnitDic[TeamType.Player])
         {
-            controller.Model.ApplyTariningStat(trainingStat);
+            UnitSlotDTO unitSlotDto = new();
+            unitSlotDto.SetValue(unitController);
+            
+            unitSlotDtos.Add(unitSlotDto);
         }
+        
+        return unitSlotDtos;
     }
 
     #endregion
@@ -335,6 +353,34 @@ public class UnitManager : MonoBehaviour
 
     #region SaveData
 
+    public List<UnitSaveData> GetUnitSaveDatas()
+    {
+        List<UnitSaveData> UnitSaveDatas = new();
+        
+        foreach (UnitController unitController in TeamUnitDic[TeamType.Player])
+        {
+            UnitSaveData saveData = unitController.Model.GetSaveData();
+            UnitSaveDatas.Add(saveData);
+        }
+
+        return UnitSaveDatas;
+    }
+    
+    private void ApplyUnitSaveDatas(List<UnitSaveData> UnitSaveDatas)
+    {
+        if (UnitSaveDatas.Count > 0)
+        {
+            foreach (UnitSaveData saveData in UnitSaveDatas)
+            {
+                UnitController unitController = unitPoolsDic[saveData.UnitName].ElementAtOrDefault(0);
+                if (unitController != null)
+                {
+                    unitController.Init(saveData);
+                }
+            }
+        }
+    }
+
     public PartySaveData GetPartySaveData()
     {
         List<UnitName> UnitList = new List<UnitName>();
@@ -347,7 +393,7 @@ public class UnitManager : MonoBehaviour
         return new PartySaveData(UnitList);
     }
 
-    private void ApplySaveData(PartySaveData saveData)
+    private void ApplyPartySaveData(PartySaveData saveData)
     {
         if (saveData != null)
         {

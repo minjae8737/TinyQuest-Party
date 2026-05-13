@@ -34,7 +34,7 @@ public class GameManager : MonoBehaviour
         MapManager.Instance.Init();
         PoolManager.Instance.Init();
         TrainingManager.Instance.Init(saveData.TrainingSaveData);
-        UnitManager.Instance.Init(saveData.PartySaveData);
+        UnitManager.Instance.Init(saveData.UnitSaveDatas, saveData.PartySaveData);
         StageManager.Instance.Init(saveData.StageSaveData);
         CurrencyManager.Instance.Init(saveData.CurrencySaveData);
         QuestManager.Instance.Init();
@@ -56,6 +56,7 @@ public class GameManager : MonoBehaviour
         SaveData saveData = new SaveData();
 
         saveData.CurrencySaveData = CurrencyManager.Instance.GetCurrencySaveData();
+        saveData.UnitSaveDatas = UnitManager.Instance.GetUnitSaveDatas();
         saveData.PartySaveData = UnitManager.Instance.GetPartySaveData();
         saveData.StageSaveData = StageManager.Instance.GetPartySaveData();
         saveData.TrainingSaveData = TrainingManager.Instance.GetSaveData();

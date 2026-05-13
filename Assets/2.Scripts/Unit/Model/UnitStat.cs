@@ -10,10 +10,10 @@ public class UnitStat
 
     #region Property
     
-    public int MaxHp => TotalStat.MaxHp;
-    public int Atk => TotalStat.Atk;
-    public int Def => TotalStat.Def;
-    public int Speed => TotalStat.Speed;
+    public long MaxHp => TotalStat.MaxHp;
+    public long Atk => TotalStat.Atk;
+    public long Def => TotalStat.Def;
+    public long Speed => TotalStat.Speed;
     
     #endregion
 

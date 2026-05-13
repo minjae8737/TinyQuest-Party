@@ -1,17 +1,14 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Unit_",menuName = "Unit/UnitData")]
-public class UnitData : ScriptableObject
+public abstract class UnitData : ScriptableObject
 {
-    [Header("Identity")]
-    public UnitName UnitName;
-    public TeamType TeamType;
-    
     [Header("Visual")]
     public Sprite Icon;
     
+    [Header("Identity")]
+    public UnitName UnitName;
+    public abstract TeamType TeamType { get; }
+    
     [Header("Stats")]
     public Stat BaseStat;
-    
-    
 }

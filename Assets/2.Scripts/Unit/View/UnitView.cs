@@ -76,7 +76,7 @@ public class UnitView : MonoBehaviour
         anim.SetTrigger(AnimName.Death.ToString());
     }
 
-    public void RefreshHp(int maxHp, int hp)
+    public void RefreshHp(long maxHp, long hp)
     {
         hpBar.SetHp(maxHp, hp);
     }
