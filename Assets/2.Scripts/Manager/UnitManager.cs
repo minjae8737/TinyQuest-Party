@@ -213,6 +213,19 @@ public class UnitManager : MonoBehaviour
         }
     }
     
+    public void DespawnEnemyParty()
+    {
+        List<UnitController> enemyTeam = TeamUnitDic[TeamType.Enemy];
+
+        foreach (UnitController controller in enemyTeam)
+        {
+            if (controller.gameObject.activeSelf)
+            {
+                controller.Despawn();
+            }
+        }
+    }
+    
     public UnitHpBar GetUnitHpBar()
     {
         UnitHpBar hpBar = PoolManager.Instance.Get<UnitHpBar>();

@@ -19,17 +19,6 @@ public class BattleManager : MonoBehaviour
         isBattle = false;
     }
 
-    private void FixedUpdate()
-    {
-        if (!isBattle) return;
-        
-        if (Time.time - lastTime >= delay)
-        {
-            CheckBattleEnd();
-            lastTime = Time.time;
-        }
-    }
-
     public void  BattleStart()
     {
         UnitManager.Instance.CombatEnabled(true);
@@ -42,22 +31,23 @@ public class BattleManager : MonoBehaviour
         isBattle = false;
     }
 
-    public void CheckBattleEnd()
+    public bool IsBattleEnd()
     {
-        if (IsBattleOngoing()) return;
-
-        BattleEnd();
+        return !IsBattleOngoing();
     }
 
     public void BattleEnd()
     {
         BattlePause();
-        
-        UnitManager.Instance.DespawnPlayerParty();
-        StageManager.Instance.OnIslandClear();
-        // StageManager.Instance.OnIslandFail(); // 성공여부에따른 분기
+
+        UnitManager.Instance.DespawnEnemyParty();
     }
-    
+
+    public bool IsWaveClear()
+    {
+        return UnitManager.Instance.TeamAliveCount[TeamType.Player] > 0;
+    }
+
     public bool IsBattleOngoing()
     {
         return UnitManager.Instance.TeamAliveCount[TeamType.Player] > 0 && UnitManager.Instance.TeamAliveCount[TeamType.Enemy] > 0;

@@ -3,6 +3,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum BattleState
+{
+    None,
+    Loading,
+    Intro,
+    SpawnPlayer,
+    WaveStart,
+    Battle,
+    WaveClear,
+    IslandClear,
+    StageClear,
+    Fail,
+}
+
 public class StageManager : MonoBehaviour
 {
     public static StageManager Instance { get; private set; }
@@ -16,6 +30,7 @@ public class StageManager : MonoBehaviour
 
     private int curStageLevel;
     private int curIslandIdx;
+    private BattleState curState;
     
     private StageData CurStageData => stageDatas[curStageLevel];
     private IslandData CurIslandData => CurStageData.IslandDatas[curIslandIdx];
@@ -36,92 +51,157 @@ public class StageManager : MonoBehaviour
         curIslandIdx = saveData != null ? saveData.CurIslandIdx : 0;
     }
 
+    private void SetState(BattleState state)
+    {
+        curState = state;
+        Debug.Log($"State Changed : {state}");
+    }
+
     #region Stage Cycle
     
     public void StartStage()
     {
-        // 맵 로드
-        MapManager.Instance.LoadIsland(CurStageData);
-        
-        StartIsland();
+        StartCoroutine(StageRoutine());
+    }
+
+    private IEnumerator StageRoutine()
+    {
+        while (true)
+        {
+            SetState(BattleState.Loading);
+            MapManager.Instance.LoadIsland(CurStageData);
+
+            yield return IslandLoopRoutine();
+            
+        }
     }
     
-    private void StartIsland()
+    private IEnumerator IslandLoopRoutine()
     {
-        // 다음 Island가 없다면 다음 Stage로
-        if (IsLastIsland())
+        while (true)
         {
-            curIslandIdx = 0;
-            NextStage();
-            return;
-        }
+            yield return IslandRoutine();
         
-        Vector2 playerSpawnPos = MapManager.Instance.GetPlayerSpawnPos(curIslandIdx);
-        
-        // 카메라 타겟 변경
-        CameraManager.Instance.SetTarget(MapManager.Instance.GetCurIsland(curIslandIdx));
-        
-        // 유닛 생성
-        UnitManager.Instance.SpawnParty(playerSpawnPos);
-        SpawnEnemy(CurStageData);
-
-        // 전투 시작
-        BattleManager.Instance.BattleStart();
-    }
-
-    private void SpawnEnemy(StageData stageData)
-    {
-        // TODO 나중에 Wave 별로 시간차로 스폰될수 있게 변경
-        // 지금은 한꺼번에 스폰
-        List<EnemyWave> enemyWaves = CurIslandData.Waves;
-        Vector2 enemySpawnPos = MapManager.Instance.GetEnemySpawnPos(curIslandIdx);
-
-        for (int i = 0; i < enemyWaves.Count; i++)
-        {
-            for (int j = 0; j < enemyWaves[i].SpawnCount; j++)
+            if (curState == BattleState.Fail)
             {
-                EnemySpawner.Instance.Spawn(enemyWaves[i].UnitName, enemySpawnPos);
+                yield return FailIslandRoutine();
+                continue;
+            }
+
+            if (curState == BattleState.IslandClear)
+            {
+                yield return ClearIslandRoutine();
+            }
+
+            if (curState == BattleState.StageClear)
+            {
+                yield break;
             }
         }
     }
-
-    public void OnIslandClear()
+    
+    private IEnumerator IslandRoutine()
     {
-        curIslandIdx++;
-        StartCoroutine(NextIslnad());
+        yield return IntroRoutine();       // 시작전 연출
+        yield return SpawnPlayerRoutine(); // 플레이어 유닛 스폰
+        yield return WaveLoopRoutine();    // 웨이브 시작
     }
 
-    public void OnIslandFail()
+    private IEnumerator IntroRoutine()
     {
-        StartCoroutine(NextIslnad());
+        SetState(BattleState.Intro);
+        CameraManager.Instance.SetTarget(MapManager.Instance.GetCurIsland(curIslandIdx)); // 카메라 타겟 변경
+        
+        yield return null;
     }
     
-    private IEnumerator NextIslnad()
+    private IEnumerator SpawnPlayerRoutine()
     {
-        yield return new WaitForSeconds(2f);
-        StartIsland();
+        SetState(BattleState.SpawnPlayer);
+        Vector2 playerSpawnPos = MapManager.Instance.GetPlayerSpawnPos(curIslandIdx);
+        UnitManager.Instance.SpawnParty(playerSpawnPos); // 플레이어 유닛 스폰
+
+        yield return null;
     }
 
-    private void NextStage()
+    private IEnumerator WaveLoopRoutine()
     {
-        curStageLevel++;
+        List<EnemyWave> enemyWaves = CurIslandData.Waves;
         
-        if (IsLastStage())
+        for (int i = 0; i < enemyWaves.Count; i++)
         {
-            curStageLevel = stageDatas.Count - 1;
+            yield return WaveRoutine(enemyWaves[i]);  // 한 웨이브씩 출현
+
+            if (curState == BattleState.Fail)
+            {
+                yield break;
+            }
+        }
+        
+        SetState(BattleState.IslandClear);
+    }
+
+    private IEnumerator WaveRoutine(EnemyWave wave)
+    {
+        SetState(BattleState.WaveStart);
+
+        Vector2 enemySpawnPos = MapManager.Instance.GetEnemySpawnPos(curIslandIdx);
+        
+        for (int j = 0; j < wave.SpawnCount; j++)
+        {
+            EnemySpawner.Instance.Spawn(wave.UnitName, enemySpawnPos);
         }
 
-        StartStage();
+        SetState(BattleState.Battle);
+        BattleManager.Instance.BattleStart();
+        
+        yield return new WaitUntil(() =>
+            BattleManager.Instance.IsBattleEnd()
+        );
+        
+        bool isWaveClear = BattleManager.Instance.IsWaveClear();
+        BattleManager.Instance.BattleEnd();
+
+        if (!isWaveClear)
+        {
+            SetState(BattleState.Fail);
+            yield break;
+        }
+        
+        SetState(BattleState.WaveClear);
+        yield return ClearWaveRoutine();
+    }
+    
+    private IEnumerator ClearWaveRoutine()
+    {
+        yield return new WaitForSeconds(1f);
+    }
+
+    private IEnumerator FailIslandRoutine()
+    {
+        UnitManager.Instance.DespawnPlayerParty();
+        yield return new WaitForSeconds(2f);
+    }
+    
+    private IEnumerator ClearIslandRoutine()
+    {
+        curIslandIdx++;
+        UnitManager.Instance.DespawnPlayerParty();
+        
+        if (IsLastIsland())
+        {
+            SetState(BattleState.StageClear);
+            curIslandIdx = 0;
+            curStageLevel++;
+            curStageLevel = Math.Clamp(curStageLevel, 0, stageDatas.Count - 1);
+        }
+        
+        yield return new WaitForSeconds(2f);
     }
 
     private bool IsLastIsland()
     {
         return curIslandIdx >= CurStageData.IslandDatas.Count;
-    }
-
-    private bool IsLastStage()
-    {
-        return curStageLevel >= stageDatas.Count - 1;
     }
     
     #endregion
