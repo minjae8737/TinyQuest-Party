@@ -1,5 +1,22 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+
+public enum BattleState
+{
+    Idle,
+    Spawning,
+    Fighting,
+}
+
+public enum BattleResult
+{
+    None,
+    WaveClear,
+    AllWaveClear,
+    Defeat
+}
 
 public class BattleManager : MonoBehaviour
 {
@@ -7,48 +24,137 @@ public class BattleManager : MonoBehaviour
 
     [Range(0.2f, 0.5f)] [SerializeField] private float delay;
     private float lastTime;
-    private bool isBattle;
-
+    private BattleState curState;
+    private BattleResult result;
+    
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
         }
-
-        isBattle = false;
+    }
+    
+    private void SetBattleState(BattleState state)
+    {
+        curState = state;
+        // Debug.Log($"State Changed : {state}");
+    }
+    
+    private void SetResultState(BattleResult state)
+    {
+        result = state;
+        // Debug.Log($"State Changed : {state}");
     }
 
-    public void  BattleStart()
+    #region BattleCycle
+    
+    private void  BattleStart()
     {
         UnitManager.Instance.CombatEnabled(true);
-        isBattle = true;
     }
 
-    public void BattlePause()
+    public IEnumerator WaveLoopRoutine(List<EnemyWave> enemyWaves, int curIslandIdx, Action<bool> onComplete)
+    {
+        SetBattleState(BattleState.Spawning);
+        Vector2 playerSpawnPos = MapManager.Instance.GetPlayerSpawnPos(curIslandIdx);
+        SpawnPlayer(playerSpawnPos);
+        
+        for (int i = 0; i < enemyWaves.Count; i++)
+        {
+            yield return WaveRoutine(enemyWaves[i], curIslandIdx);  // 한 웨이브씩 출현
+
+            if (result == BattleResult.Defeat)
+            {
+                DespawnEnemy();
+                onComplete?.Invoke(false);
+                yield break;
+            }
+        }
+        
+        SetResultState(BattleResult.AllWaveClear);
+        DespawnPlayer();
+        onComplete?.Invoke(true);
+    }
+
+    private IEnumerator WaveRoutine(EnemyWave wave, int curIslandIdx)
+    {
+        Vector2 enemySpawnPos = MapManager.Instance.GetEnemySpawnPos(curIslandIdx);
+        
+        for (int j = 0; j < wave.SpawnCount; j++)
+        {
+            SpawnEnemy(wave, enemySpawnPos);
+        }
+
+        SetBattleState(BattleState.Fighting);
+        Instance.BattleStart();
+        
+        yield return new WaitUntil(() =>
+            Instance.IsBattleEnd()
+        );
+        
+        bool isWaveClear = Instance.IsWaveClear();
+        Instance.BattleEnd();
+
+        if (!isWaveClear)
+        {
+            SetResultState(BattleResult.Defeat);
+            yield break;
+        }
+        
+        SetResultState(BattleResult.WaveClear);
+        yield return ClearWaveRoutine();
+    }
+
+    private IEnumerator ClearWaveRoutine()
+    {
+        UnitManager.Instance.DespawnEnemyParty();
+        yield return new WaitForSeconds(1f);
+    }
+
+    private void BattlePause()
     {
         UnitManager.Instance.CombatEnabled(false);
-        isBattle = false;
     }
 
-    public bool IsBattleEnd()
+    private bool IsBattleEnd()
     {
         return !IsBattleOngoing();
     }
 
-    public void BattleEnd()
+    private void BattleEnd()
     {
         BattlePause();
-
-        UnitManager.Instance.DespawnEnemyParty();
     }
 
-    public bool IsWaveClear()
+    #endregion
+
+    private static void SpawnPlayer(Vector2 playerSpawnPos)
+    {
+        UnitManager.Instance.SpawnParty(playerSpawnPos);
+    }
+
+    private static void DespawnPlayer()
+    {
+        UnitManager.Instance.DespawnPlayerParty(); 
+    }
+
+    private static void SpawnEnemy(EnemyWave wave, Vector2 enemySpawnPos)
+    {
+        EnemySpawner.Instance.Spawn(wave.UnitName, enemySpawnPos);
+    }
+
+    private static void DespawnEnemy()
+    {
+        UnitManager.Instance.DespawnPlayerParty(); 
+    }
+
+    private bool IsWaveClear()
     {
         return UnitManager.Instance.TeamAliveCount[TeamType.Player] > 0;
     }
 
-    public bool IsBattleOngoing()
+    private bool IsBattleOngoing()
     {
         return UnitManager.Instance.TeamAliveCount[TeamType.Player] > 0 && UnitManager.Instance.TeamAliveCount[TeamType.Enemy] > 0;
     }
