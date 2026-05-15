@@ -24,6 +24,6 @@ public class EnemySpawner : MonoBehaviour
 
         Vector2 randPos = new Vector2(randRangeX, 0f) + spawnPos;
         
-        UnitManager.Instance.Spawn(spawnUnitName, spawnPos);
+        UnitManager.Instance.Spawn(spawnUnitName, randPos);
     }
 }
