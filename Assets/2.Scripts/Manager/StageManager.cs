@@ -24,14 +24,29 @@ public class StageManager : MonoBehaviour
     
     #region Runtime
 
+    private float stageProgress;
+    
     private int curStageLevel;
     private int curIslandIdx;
     private StageState curState;
     
     private StageData CurStageData => stageDatas[curStageLevel];
     private IslandData CurIslandData => CurStageData.IslandDatas[curIslandIdx];
+    
+    public int CurStageLevel => curStageLevel;
+    public int CurIslandIdx => curIslandIdx;
+    public int CurIslandCount => CurStageData.IslandDatas.Count;
 
     #endregion
+
+    public event Action OnStageChanged;
+    public event Action OnChangedIsland;
+
+    public event Action OnChangedProgress
+    {
+        add => BattleManager.Instance.OnWaveChanged += value;
+        remove => BattleManager.Instance.OnWaveChanged -= value;
+    }
 
     private void Awake()
     {
@@ -106,6 +121,9 @@ public class StageManager : MonoBehaviour
         SetState(StageState.Intro);
         CameraManager.Instance.SetTarget(MapManager.Instance.GetCurIsland(curIslandIdx)); // 카메라 타겟 변경
 
+        OnStageChanged?.Invoke();
+        OnChangedIsland?.Invoke();
+        
         yield return null;
     }
 
@@ -146,6 +164,14 @@ public class StageManager : MonoBehaviour
     }
     
     #endregion
+
+    public float GetStageProgress()
+    {
+        float stagestep = 1f / CurIslandCount;
+        float progress = stagestep * CurIslandIdx + (stagestep * BattleManager.Instance.Progress); // 스테이지 진행도 + 웨이브 진행도
+        
+        return progress;
+    }
 
     public void RequestStageReward(Vector3 unitPos)
     {
