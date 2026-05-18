@@ -26,7 +26,21 @@ public class BattleManager : MonoBehaviour
     private float lastTime;
     private BattleState curState;
     private BattleResult result;
-    
+
+    private float progress;
+
+    public float Progress
+    {
+        get => progress;
+        private set
+        {
+            progress = value;
+            OnWaveChanged?.Invoke();
+        }
+    }
+
+    public event Action OnWaveChanged;
+
     private void Awake()
     {
         if (Instance == null)
@@ -59,17 +73,21 @@ public class BattleManager : MonoBehaviour
         SetBattleState(BattleState.Spawning);
         Vector2 playerSpawnPos = MapManager.Instance.GetPlayerSpawnPos(curIslandIdx);
         SpawnPlayer(playerSpawnPos);
+
+        Progress = 0f;
         
         for (int i = 0; i < enemyWaves.Count; i++)
         {
             yield return WaveRoutine(enemyWaves[i], curIslandIdx);  // 한 웨이브씩 출현
-
+            
             if (result == BattleResult.Defeat)
             {
                 DespawnEnemy();
                 onComplete?.Invoke(false);
                 yield break;
             }
+
+            Progress = (float)(i + 1) / enemyWaves.Count;
         }
         
         SetResultState(BattleResult.AllWaveClear);

@@ -18,16 +18,22 @@ MonoBehaviour:
       SpawnCount: 2
     - UnitName: 12
       SpawnCount: 2
+    - UnitName: 14
+      SpawnCount: 2
   - Waves:
     - UnitName: 12
       SpawnCount: 1
     - UnitName: 17
       SpawnCount: 2
+    - UnitName: 18
+      SpawnCount: 3
   - Waves:
     - UnitName: 17
       SpawnCount: 3
     - UnitName: 19
       SpawnCount: 1
+    - UnitName: 11
+      SpawnCount: 4
   RewardData:
     Gold: 1000
     Exp: 1000
