@@ -68,7 +68,7 @@ public class BattleManager : MonoBehaviour
         UnitManager.Instance.CombatEnabled(true);
     }
 
-    public IEnumerator WaveLoopRoutine(List<EnemyWave> enemyWaves, int curIslandIdx, Action<bool> onComplete)
+    public IEnumerator WaveLoopRoutine(List<WavePattern> patterns, int curIslandIdx, Action<bool> onComplete)
     {
         SetBattleState(BattleState.Spawning);
         Vector2 playerSpawnPos = MapManager.Instance.GetPlayerSpawnPos(curIslandIdx);
@@ -76,9 +76,9 @@ public class BattleManager : MonoBehaviour
 
         Progress = 0f;
         
-        for (int i = 0; i < enemyWaves.Count; i++)
+        for (int i = 0; i < patterns.Count; i++)
         {
-            yield return WaveRoutine(enemyWaves[i], curIslandIdx);  // 한 웨이브씩 출현
+            yield return WaveRoutine(patterns[i], curIslandIdx);  // 한 웨이브씩 출현
             
             if (result == BattleResult.Defeat)
             {
@@ -87,7 +87,7 @@ public class BattleManager : MonoBehaviour
                 yield break;
             }
 
-            Progress = (float)(i + 1) / enemyWaves.Count;
+            Progress = (float)(i + 1) / patterns.Count;
         }
         
         SetResultState(BattleResult.AllWaveClear);
@@ -95,14 +95,11 @@ public class BattleManager : MonoBehaviour
         onComplete?.Invoke(true);
     }
 
-    private IEnumerator WaveRoutine(EnemyWave wave, int curIslandIdx)
+    private IEnumerator WaveRoutine(WavePattern pattern, int curIslandIdx)
     {
         Vector2 enemySpawnPos = MapManager.Instance.GetEnemySpawnPos(curIslandIdx);
         
-        for (int j = 0; j < wave.SpawnCount; j++)
-        {
-            SpawnEnemy(wave, enemySpawnPos);
-        }
+        SpawnEnemy(pattern, enemySpawnPos);
 
         SetBattleState(BattleState.Fighting);
         Instance.BattleStart();
@@ -157,9 +154,9 @@ public class BattleManager : MonoBehaviour
         UnitManager.Instance.DespawnPlayerParty(); 
     }
 
-    private static void SpawnEnemy(EnemyWave wave, Vector2 enemySpawnPos)
+    private static void SpawnEnemy(WavePattern pattern, Vector2 enemySpawnPos)
     {
-        EnemySpawner.Instance.Spawn(wave.UnitName, enemySpawnPos);
+        EnemySpawner.Instance.Spawn(pattern, enemySpawnPos);
     }
 
     private static void DespawnEnemy()

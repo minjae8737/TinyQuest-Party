@@ -26,4 +26,17 @@ public class EnemySpawner : MonoBehaviour
         
         UnitManager.Instance.Spawn(spawnUnitName, randPos);
     }
+
+    public void Spawn(WavePattern pattern, Vector2 spawnPos)
+    {
+        foreach (EnemyWave wave in pattern.waves)
+        {
+            for (int i = 0; i < wave.SpawnCount; i++)
+            {
+                float randRangeX = Random.Range(-0.5f, 0.5f);
+                Vector2 randPos = new Vector2(randRangeX, 0f) + spawnPos;
+                UnitManager.Instance.Spawn(wave.UnitName, randPos);
+            }
+        }
+    }
 }
