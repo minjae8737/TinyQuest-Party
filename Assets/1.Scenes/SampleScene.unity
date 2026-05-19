@@ -595,7 +595,6 @@ MonoBehaviour:
   trainingPanel: {fileID: 1120472925}
   mainQuestPanel: {fileID: 1829953777}
   DragItemUIPrefab: {fileID: 5557379188472952224, guid: d6de7baacc598414aa62bfbb4a583cd9, type: 3}
-  icon: {fileID: 2103264288}
 --- !u!1 &66007613
 GameObject:
   m_ObjectHideFlags: 0
@@ -49892,7 +49891,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b546b37e71ca443eebc1e1bc313a7e58, type: 2}
   - {fileID: 11400000, guid: fa9ae4052f8904bf98fde8e029e1e13c, type: 2}
   - {fileID: 11400000, guid: aed10e30180884fc59cdf45fca81ab9e, type: 2}
-  - {fileID: 11400000, guid: 8449b0f710b10468ba797521776abe06, type: 2}
 --- !u!1 &1531364173
 GameObject:
   m_ObjectHideFlags: 0

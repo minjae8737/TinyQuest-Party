@@ -30,7 +30,7 @@ public class StageManager : MonoBehaviour
     private int curIslandIdx;
     private StageState curState;
     
-    private StageData CurStageData => stageDatas[curStageLevel];
+    private StageData CurStageData => GetCurStageData();
     private IslandData CurIslandData => CurStageData.IslandDatas[curIslandIdx];
     
     public int CurStageLevel => curStageLevel;
@@ -66,6 +66,34 @@ public class StageManager : MonoBehaviour
     {
         curState = state;
         // Debug.Log($"State Changed : {state}");
+    }
+
+    private StageData GetCurStageData()
+    {
+        foreach (StageData data in stageDatas)
+        {
+            if (data.ContainsLevel(curStageLevel))
+            {
+                return data;
+            }
+        }
+
+        return stageDatas[stageDatas.Count - 1];
+    }
+
+    private int GetMaxStageLevel()
+    {
+        int maxLevel = 0;
+        
+        foreach (StageData data in stageDatas)
+        {
+            if (data.endStage > maxLevel)
+            {
+                maxLevel = data.endStage;
+            }
+        }
+
+        return maxLevel;
     }
 
     #region Stage Cycle
@@ -129,10 +157,22 @@ public class StageManager : MonoBehaviour
 
     private IEnumerator WaveLoopRoutine()
     {
-        List<EnemyWave> enemyWaves = CurIslandData.Waves;
+        StageData stageData = CurStageData;
+
         bool isVictory = false;
+
+        List<WavePattern> patterns = new();
         
-        yield return BattleManager.Instance.WaveLoopRoutine(enemyWaves, curIslandIdx, result => isVictory = result);
+        for (int i = 0; i < stageData.WaveCount; i++)
+        {
+            WaveType type = stageData.DecideWaveType(curIslandIdx, i);
+            WavePattern pattern = stageData.PickUpPattern(type);
+            
+            patterns.Add(pattern);
+        }
+        
+        yield return BattleManager.Instance.WaveLoopRoutine(patterns, curIslandIdx, result => isVictory = result);
+        
 
         if (isVictory) yield return ClearIslandRoutine();
         else yield return FailIslandRoutine();
@@ -152,7 +192,7 @@ public class StageManager : MonoBehaviour
             SetState(StageState.StageClear);
             curIslandIdx = 0;
             curStageLevel++;
-            curStageLevel = Math.Clamp(curStageLevel, 0, stageDatas.Count - 1);
+            curStageLevel = Math.Clamp(curStageLevel, 0, GetMaxStageLevel());
         }
         
         yield return new WaitForSeconds(2f);
@@ -160,7 +200,7 @@ public class StageManager : MonoBehaviour
 
     private bool IsLastIsland()
     {
-        return curIslandIdx >= CurStageData.IslandDatas.Count;
+        return curIslandIdx >= CurStageData.islandCount;
     }
     
     #endregion

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fb4b66c79763424480545717822b1bb, type: 3}
+  m_Name: Stage_1-50
+  m_EditorClassIdentifier: 
+  IslandDatas:
+  - Waves:
+    - UnitName: 13
+      SpawnCount: 3
+  - Waves:
+    - UnitName: 13
+      SpawnCount: 3
+  - Waves:
+    - UnitName: 13
+      SpawnCount: 3
+  startStage: 1
+  endStage: 50
+  islandCount: 3
+  WaveCount: 3
+  Patterns:
+  - {fileID: 11400000, guid: 68527f4097f7841b89680a5340a9ba2e, type: 2}
+  - {fileID: 11400000, guid: 7d38766e6a4f748b194a296aa2ccb8db, type: 2}
+  - {fileID: 11400000, guid: ee6987bed48e043008186b1136bf4854, type: 2}
+  - {fileID: 11400000, guid: 4dcd2de8f13fe4e54933728d03893769, type: 2}
+  - {fileID: 11400000, guid: b2c9156a499da4bd5a6e20a9c5b45f88, type: 2}
+  - {fileID: 11400000, guid: 2a52801f0cf5a48b8932c00475a01712, type: 2}
+  - {fileID: 11400000, guid: bc8a8bc6ab4054dae84cb787b74b182a, type: 2}
+  - {fileID: 11400000, guid: feff5b721b50a430ca743a46aec94891, type: 2}
+  - {fileID: 11400000, guid: 624ed6ccdd2d94a16aca8fe5468e5803, type: 2}
+  - {fileID: 11400000, guid: 9ed77e45138304624a0e89f609f443ca, type: 2}
+  - {fileID: 11400000, guid: 9d14355b9db744034af8ea338cf33984, type: 2}
+  - {fileID: 11400000, guid: c1b136afffbcf4daab027738c3c832e5, type: 2}
+  RewardData:
+    Gold: 100
+    Exp: 100
+    Items: []
