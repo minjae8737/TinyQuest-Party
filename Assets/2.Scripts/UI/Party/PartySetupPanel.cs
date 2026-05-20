@@ -39,7 +39,6 @@ public class PartySetupPanel : UIPage
 
     public void Init()
     {
-        Debug.Log("PartySetupPanel Init");
         // PartyPanel
         partySlotUis = new();
         
@@ -74,7 +73,6 @@ public class PartySetupPanel : UIPage
         toggleHighlightOriginSize = toggleHighlight.rectTransform.sizeDelta;
         
         UnitManager.Instance.OnPartyChanged += RefreshPartyPanel;
-        // UnitManager.Instance.OnPartyChanged += RefreshUnitListPanel;
     }
     
     public override void Show()

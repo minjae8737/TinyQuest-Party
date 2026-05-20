@@ -16,7 +16,7 @@ public class CurrencyManager : MonoBehaviour
     private Dictionary<CurrencyType, CurrencyData> dataDic;
     public IReadOnlyDictionary<CurrencyType, CurrencyData> DataDic => dataDic;
 
-    private const long MaxValue = 9999999999999999L;
+    private const long MaxValue = long.MaxValue;
     public long Gold { get; private set; }
     public long Exp { get; private set; }
 
@@ -74,6 +74,7 @@ public class CurrencyManager : MonoBehaviour
         Gold = Gold >= MaxValue ? MaxValue : Gold;
         OnGoldChanged?.Invoke(amount);
         OnAddGold?.Invoke("AddGold", amount);
+        Debug.Log($"Add Gold {amount}");
     }
 
     public bool SpendGold(long amount)
@@ -101,6 +102,7 @@ public class CurrencyManager : MonoBehaviour
         Exp = Exp >= MaxValue ? MaxValue : Exp;
         OnExpChanged?.Invoke(amount);
         OnAddExp?.Invoke("AddExp", amount);
+        Debug.Log($"Add Exp {amount}");
     }
 
     public bool SpendExp(long amount)
