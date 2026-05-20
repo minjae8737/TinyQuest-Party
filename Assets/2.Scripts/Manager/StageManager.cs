@@ -20,7 +20,11 @@ public class StageManager : MonoBehaviour
     [SerializeField] private List<Stage> stages;
     [SerializeField] private List<StageData> stageDatas;
 
-    private const float ScalingRate = 1.15f;
+    private const float ScalingRate = 1.05f;
+    private const float GoldRate = 1.05f;
+    private const float ExpRate = 1.06f;
+    private const int BaseGold = 100;
+    private const int BaseExp = 100;
     
     #region Runtime
 
@@ -216,6 +220,9 @@ public class StageManager : MonoBehaviour
     public void RequestStageReward(Vector3 unitPos)
     {
         RewardData rewardData = CurStageData.RewardData;
+        
+        rewardData.Gold = (long)Math.Round(BaseGold * GetGoldScaling());
+        rewardData.Exp = (long)Math.Round(BaseExp * GetExpScaling());
 
         GameManager.Instance.DropReward(rewardData, unitPos);
     }
@@ -223,6 +230,16 @@ public class StageManager : MonoBehaviour
     public float GetStageScaling()
     {
         return Mathf.Pow(ScalingRate, curStageLevel); 
+    }
+
+    public float GetGoldScaling()
+    {
+        return Mathf.Pow(GoldRate, curStageLevel); 
+    }
+    
+    public float GetExpScaling()
+    {
+        return Mathf.Pow(ExpRate, curStageLevel); 
     }
 
     #region SaveData

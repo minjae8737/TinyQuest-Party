@@ -24,7 +24,7 @@ public class ExpCalculator : MonoBehaviour
         {
             Debug.LogError(level + " level ExpData is null");
         }
-
+        
         long maxExp = (long)Math.Ceiling(expData.BaseExp * Math.Pow(level, expData.Power));
 
         return maxExp;
