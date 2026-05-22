@@ -16,16 +16,12 @@ MonoBehaviour:
   - MinLevel: 1
     MaxLevel: 10
     BaseExp: 10
-    Power: 1.5
+    Power: 1.4
   - MinLevel: 11
     MaxLevel: 50
     BaseExp: 10
-    Power: 1.5
+    Power: 1.55
   - MinLevel: 51
     MaxLevel: 100
     BaseExp: 10
-    Power: 1.6
-  - MinLevel: 101
-    MaxLevel: 150
-    BaseExp: 10
-    Power: 1.6
+    Power: 1.7

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class ExpCalculator : MonoBehaviour
@@ -6,7 +7,7 @@ public class ExpCalculator : MonoBehaviour
     public static ExpCalculator Instance;
 
     public ExpTable ExpTable;
-
+    
     private void Awake()
     {
         if (Instance == null)
@@ -26,7 +27,14 @@ public class ExpCalculator : MonoBehaviour
         }
         
         long maxExp = (long)Math.Ceiling(expData.BaseExp * Math.Pow(level, expData.Power));
-
+        
         return maxExp;
     }
+
+    public int GetMaxLevel()
+    {
+        return ExpTable.ExpDatas.Max(data => { return data.MaxLevel; });
+    }
+    
+    
 }

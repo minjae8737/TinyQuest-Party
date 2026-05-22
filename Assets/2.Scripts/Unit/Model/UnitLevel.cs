@@ -7,7 +7,7 @@ public class UnitLevel
     [SerializeField, ReadOnly] private int level;
     [SerializeField, ReadOnly] private long exp;
     private long maxExp => ExpCalculator.Instance.GetMaxExp(level);
-
+    
     #region Property
 
     public int Level
@@ -26,7 +26,8 @@ public class UnitLevel
     }
 
     public long MaxExp => maxExp;
-    
+    public int MaxLevel => ExpCalculator.Instance.GetMaxLevel();
+
     #endregion
 
     public void Init()
