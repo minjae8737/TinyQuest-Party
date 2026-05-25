@@ -28,6 +28,11 @@ public class CardUI : ClickSlotUI
         StarGradeUI.SetStars(dto.StarGrade, starSprite);
     }
 
+    public void SetLevel(int level)
+    {
+        unitLevelText.text = $"Lv.{level}";
+    }
+
     protected override void OnClickCard()
     {
         OnClicked?.Invoke(UnitName);

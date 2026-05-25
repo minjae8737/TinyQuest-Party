@@ -121,8 +121,13 @@ public class UnitManagementPanel : UIPage
 
     private void OnClickLevelUpButton()
     {
-        bool didLevelUp = curUnitInfoDTO.Unit.LevelUp();
-        
-        if (didLevelUp) UpdateUnitInfo(curUnitInfoDTO.UnitName);
+        (bool didLevelUp, int level) = curUnitInfoDTO.Unit.LevelUp();
+
+        if (didLevelUp)
+        {
+            UpdateUnitInfo(curUnitInfoDTO.UnitName);
+            CardUI cardUI = unitCards.Find(card => { return card.UnitName == curUnitInfoDTO.UnitName; });
+            cardUI?.SetLevel(level);
+        }
     }
 }

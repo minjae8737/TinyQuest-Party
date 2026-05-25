@@ -171,9 +171,9 @@ public class Unit
         Status.Init(Stat.MaxHp, Stat.MaxHp);
     }
 
-    public bool LevelUp()
+    public (bool,int) LevelUp()
     {
-        bool didLevelUp = Level.LevelUp();
+        (bool didLevelUp, int level) = Level.LevelUp();
         if (didLevelUp)
         {
             Stat.SetBaseStat(UnitStatCalculator.GetBaseStat(Data, Level.Level, StarGrade));
@@ -181,7 +181,7 @@ public class Unit
             Status.Init(Stat.MaxHp, Status.Hp);
         }
 
-        return didLevelUp;
+        return (didLevelUp, level);
     }
 
     #endregion

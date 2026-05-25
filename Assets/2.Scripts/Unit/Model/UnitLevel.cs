@@ -38,18 +38,18 @@ public class UnitLevel
         exp = 0;
     }
 
-    public bool LevelUp()
+    public (bool,int) LevelUp()
     {
-        if (level == MaxLevel) return false;
+        if (level == MaxLevel) return (false, Level);
         
         long curExp = CurrencyManager.Instance.Exp;
 
-        if (curExp < MaxExp) return false;
+        if (curExp < MaxExp) return (false, Level);
 
         level++;
         CurrencyManager.Instance.SpendExp(MaxExp);
         OnLevelChanged?.Invoke(level);
-        return true;
+        return (true, Level);
     }
 
 }
