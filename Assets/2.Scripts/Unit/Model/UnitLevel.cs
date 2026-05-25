@@ -29,6 +29,8 @@ public class UnitLevel
     public int MaxLevel => ExpCalculator.Instance.GetMaxLevel();
 
     #endregion
+    
+    public event Action<int> OnLevelChanged;
 
     public void Init()
     {
@@ -36,20 +38,18 @@ public class UnitLevel
         exp = 0;
     }
 
-    public void AddExp(long gainedExp)
+    public bool LevelUp()
     {
-        long remainedExp = 0L;
-        long calMaxExp = maxExp;
-        exp += gainedExp;
+        if (level == MaxLevel) return false;
+        
+        long curExp = CurrencyManager.Instance.Exp;
 
-        if (exp >= calMaxExp)
-        {
-            remainedExp = exp - calMaxExp;
-            exp = remainedExp;
-            level++;
-            OnLevelChanged?.Invoke(level);
-        }
+        if (curExp < MaxExp) return false;
+
+        level++;
+        CurrencyManager.Instance.SpendExp(MaxExp);
+        OnLevelChanged?.Invoke(level);
+        return true;
     }
 
-    public event Action<int> OnLevelChanged;
 }

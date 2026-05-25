@@ -27,7 +27,13 @@ public class UnitManagementPanel : UIPage
     [SerializeField] private GameObject CardUIPrefab;
     [SerializeField] private Sprite[] starGradeSprites;
 
-    private List<CardUI> unitCards; 
+    private List<CardUI> unitCards;
+
+    #region RunTime
+
+    private UnitInfoDTO curUnitInfoDTO;
+
+    #endregion
 
     public void Init()
     {
@@ -36,10 +42,10 @@ public class UnitManagementPanel : UIPage
         InitUnitListPanel();
 
         levelUpgradeBtn.onClick.AddListener(() => UIEffect.Punch(levelUpgradeBtn.transform as RectTransform));
+        levelUpgradeBtn.onClick.AddListener(OnClickLevelUpButton);
         // starUpgradeBtn.onClick.AddListener(() => UIEffect.Punch(starUpgradeBtn.transform as RectTransform));
         starUpgradeBtn.enabled = false; //TODO 승급시스템 개발중
 
-        InitUnitListPanel();
         UpdateUnitInfo(unitCards.First().UnitName);
     }
     
@@ -57,25 +63,25 @@ public class UnitManagementPanel : UIPage
 
     private void UpdateUnitInfo(UnitName unitName)
     {
-        UnitInfoDTO dto = UnitManager.Instance.GetUnitInfoDTO(unitName);
+        curUnitInfoDTO = UnitManager.Instance.GetUnitInfoDTO(unitName);
 
-        if (dto == null)
+        if (curUnitInfoDTO == null)
         {
             Debug.LogError($"Failed UpdateUnitInfo. : {unitName}");
             return;
         }
         
-        UnitNameText.text = dto.UnitName.ToString();
-        StarGradeUI.SetStars(dto.StarGrade, starGradeSprites[dto.StarGrade]);
-        LevelText.text = $"Lv.{dto.UnitLevel} / {dto.UnitMaxLevel}";
-        unitSprite.sprite = dto.Data.Icon;
+        UnitNameText.text = curUnitInfoDTO.UnitName.ToString();
+        StarGradeUI.SetStars(curUnitInfoDTO.StarGrade, starGradeSprites[curUnitInfoDTO.StarGrade]);
+        LevelText.text = $"Lv.{curUnitInfoDTO.UnitLevel} / {curUnitInfoDTO.UnitMaxLevel}";
+        unitSprite.sprite = curUnitInfoDTO.UnitSprite;
 
-        atkStatText.text = $"{dto.Stat.Atk}";
-        defStatText.text = $"{dto.Stat.Def}";
-        hpStatText.text = $"{dto.Stat.MaxHp}";
+        atkStatText.text = $"{curUnitInfoDTO.Stat.Atk}";
+        defStatText.text = $"{curUnitInfoDTO.Stat.Def}";
+        hpStatText.text = $"{curUnitInfoDTO.Stat.MaxHp}";
 
 
-        long maxExp = ExpCalculator.Instance.GetMaxExp(dto.UnitLevel);
+        long maxExp = ExpCalculator.Instance.GetMaxExp(curUnitInfoDTO.UnitLevel);
         string curExpStr = UIManager.Instance.NumberFormatter(CurrencyManager.Instance.Exp);
         string requiredExpStr = UIManager.Instance.NumberFormatter(maxExp);
         
@@ -91,7 +97,8 @@ public class UnitManagementPanel : UIPage
 
         foreach (var dto in unitSlotDtos)
         {
-            CreateUnitCard(dto);
+            CardUI card = CreateUnitCard(dto);
+            card.OnClicked += UpdateUnitInfo;
         }
     }
     
@@ -101,7 +108,7 @@ public class UnitManagementPanel : UIPage
 
         if (!unitSlotObj.TryGetComponent<CardUI>(out var card))
         {
-            Debug.LogError($"Create card Fail. Unitname : {unitSlotDto.UnitName}");
+            Debug.LogError($"Create card Fail. UnitName : {unitSlotDto.UnitName}");
             return null;
         }
 
@@ -110,5 +117,12 @@ public class UnitManagementPanel : UIPage
         unitCards.Add(card);
 
         return card;
+    }
+
+    private void OnClickLevelUpButton()
+    {
+        bool didLevelUp = curUnitInfoDTO.Unit.LevelUp();
+        
+        if (didLevelUp) UpdateUnitInfo(curUnitInfoDTO.UnitName);
     }
 }

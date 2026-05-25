@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +14,8 @@ public class CardUI : ClickSlotUI
     protected UnitSlotDTO dto;
     public UnitName UnitName => dto.UnitName;
     public UnitClass UnitClass => dto.UnitClass;
+
+    public event Action<UnitName> OnClicked; 
     
     public virtual void SetSlot(UnitSlotDTO unitSlotDto, Sprite starSprite)
     {
@@ -27,7 +30,6 @@ public class CardUI : ClickSlotUI
 
     protected override void OnClickCard()
     {
-        Debug.Log("OnClickCard");
-        base.OnClickCard();
+        OnClicked?.Invoke(UnitName);
     }
 }

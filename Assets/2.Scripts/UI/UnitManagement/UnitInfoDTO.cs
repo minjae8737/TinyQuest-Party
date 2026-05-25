@@ -1,8 +1,11 @@
+using UnityEngine;
+
 public class UnitInfoDTO
 {
+    public Unit Unit { get; set; }
     public UnitName UnitName { get; set; }
     public UnitClass UnitClass { get; set; }
-    public UnitData Data { get; set; }
+    public Sprite UnitSprite { get; set; }
     public UnitStat Stat { get; set; }
     public int UnitLevel { get; set; }
     public int UnitMaxLevel { get; set; }
@@ -18,13 +21,15 @@ public class UnitInfoDTO
     public void SetValue(UnitController unitController)
     {
         PlayerUnitData data = unitController.Model.Data as PlayerUnitData;
+
+        Unit = unitController.Model;
         
         UnitName = data.UnitName;
         UnitClass = data.UnitClass;
-        Data = data;
-        Stat = unitController.Model.Stat;
-        StarGrade = unitController.Model.StarGrade;
-        UnitLevel = unitController.Model.Level.Level;
-        UnitMaxLevel = unitController.Model.Level.MaxLevel;
+        UnitSprite = data.Icon;
+        Stat = Unit.Stat;
+        StarGrade = Unit.StarGrade;
+        UnitLevel = Unit.Level.Level;
+        UnitMaxLevel = Unit.Level.MaxLevel;
     }
 }
