@@ -1,29 +1,18 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ClickSlotUI : MonoBehaviour, IPointerDownHandler, IPointerUpHandler
+public class ClickSlotUI : MonoBehaviour, IPointerClickHandler
 {
-    private float dragThreshold = 15f;
+    private int dragThreshold = 30;
 
-    private Vector2 downPos;
-    protected bool isScrolling;
-
-    public void OnPointerDown(PointerEventData eventData)
+    void Start()
     {
-        downPos = eventData.position;
+        EventSystem.current.pixelDragThreshold = dragThreshold;
     }
-    
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData eventData)
     {
-        float distance = Vector2.Distance(downPos, eventData.position);
-
-        isScrolling = distance > dragThreshold;
-        
-        if (!isScrolling)
-        {
-            OnClickCard();
-        }
+        OnClickCard();
     }
 
     protected virtual void OnClickCard()

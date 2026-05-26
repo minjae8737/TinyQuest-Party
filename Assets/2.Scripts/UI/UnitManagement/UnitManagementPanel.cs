@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -13,6 +14,7 @@ public class UnitManagementPanel : UIPage
     [SerializeField] private Image unitSprite;
 
     [Header("=== Info ===")] 
+    [SerializeField] private Image tapToggleHighlight;
     [SerializeField] private TMP_Text atkStatText;
     [SerializeField] private TMP_Text defStatText;
     [SerializeField] private TMP_Text hpStatText;
@@ -22,11 +24,17 @@ public class UnitManagementPanel : UIPage
     [SerializeField] private TMP_Text levelBtnText;
     [SerializeField] private Button starUpgradeBtn;
 
-    [Header("===  ===")] 
+    [Header("=== UnitCardList ===")] 
     [SerializeField] private RectTransform UnitCardParent;
     [SerializeField] private GameObject CardUIPrefab;
+    
+    [SerializeField] private Image classToggleHighlight;
+    [SerializeField] private List<Toggle> classToggleGroup;
+    
     [SerializeField] private Sprite[] starGradeSprites;
-
+    
+    // Cacing
+    private Vector2 toggleHighlightOriginSize;
     private List<CardUI> unitCards;
 
     #region RunTime
@@ -39,12 +47,24 @@ public class UnitManagementPanel : UIPage
     {
         unitCards = new();
         
+        // Cacing
+        toggleHighlightOriginSize = classToggleHighlight.rectTransform.sizeDelta;
+        
         InitUnitListPanel();
 
         levelUpgradeBtn.onClick.AddListener(() => UIEffect.Punch(levelUpgradeBtn.transform as RectTransform));
         levelUpgradeBtn.onClick.AddListener(OnClickLevelUpButton);
         // starUpgradeBtn.onClick.AddListener(() => UIEffect.Punch(starUpgradeBtn.transform as RectTransform));
         starUpgradeBtn.enabled = false; //TODO 승급시스템 개발중
+        UIEffect.PunchLoop(tapToggleHighlight.rectTransform);
+        
+        // Card - ClassToggle
+        foreach (Toggle toggle in classToggleGroup)
+        {
+            toggle.onValueChanged.AddListener(OnChangedClassToggle);
+        }
+        classToggleGroup[0].isOn = true;
+        UIEffect.PunchLoop(classToggleHighlight.rectTransform);
 
         UpdateUnitInfo(unitCards.First().UnitName);
     }
@@ -128,6 +148,38 @@ public class UnitManagementPanel : UIPage
             UpdateUnitInfo(curUnitInfoDTO.UnitName);
             CardUI cardUI = unitCards.Find(card => { return card.UnitName == curUnitInfoDTO.UnitName; });
             cardUI?.SetLevel(level);
+        }
+    }
+    
+    private void OnChangedClassToggle(bool isOn)
+    {
+        int isOnIndex = 0;
+
+        for (int i = 0; i < classToggleGroup.Count; i++)
+        {
+            if (classToggleGroup[i].isOn)
+            {
+                classToggleHighlight.rectTransform.parent = classToggleGroup[i].transform;
+                classToggleHighlight.rectTransform.anchoredPosition = Vector2.zero;
+                classToggleHighlight.rectTransform.sizeDelta = toggleHighlightOriginSize;
+                isOnIndex = i;
+                break;
+            }
+        }
+        
+        // unit 클래스 정렬
+        RefreshUnitList(isOnIndex - 1);
+    }
+    
+    private void RefreshUnitList(int selectedClass)
+    {
+        foreach (var card in unitCards)
+        {
+            bool isMatch = card.UnitClass == (UnitClass)selectedClass 
+                           || !Enum.IsDefined(typeof(UnitClass),selectedClass); // -1 == AllClass
+            
+            card.gameObject.SetActive(isMatch);
+
         }
     }
 }
