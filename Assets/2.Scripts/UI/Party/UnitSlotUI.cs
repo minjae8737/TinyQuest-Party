@@ -2,20 +2,28 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitSlotUI : DragSlotUI
+public class UnitSlotUI : ClickSlotUI
 {
     [Header("=== Reference ===")]
+    public PartySetupPanel partySetupPanel;
+
     [SerializeField] protected Image unitImage;
     [SerializeField] protected TMP_Text unitNameText;
     [SerializeField] protected TMP_Text unitLevelText;
     [SerializeField] protected StarGradeUI StarGradeUI;
     
+    [SerializeField] protected CanvasGroup group;
+    [SerializeField] private Button PartySetupButton;
+    
     protected UnitSlotDTO dto;
     public UnitName UnitName => dto.UnitName;
     public UnitClass UnitClass => dto.UnitClass;
     
-    public virtual void SetSlot(UnitSlotDTO unitSlotDto, Sprite starSprite)
+    public void SetSlot(UnitSlotDTO unitSlotDto, Sprite starSprite)
     {
+        PartySetupButton?.onClick.RemoveAllListeners();
+        PartySetupButton?.onClick.AddListener(OnClickPartySetupButton);
+        
         dto = unitSlotDto;
         
         unitImage.sprite = dto.Data.Icon;
@@ -24,28 +32,24 @@ public class UnitSlotUI : DragSlotUI
 
         StarGradeUI.SetStars(dto.StarGrade, starSprite);
     }
-    
-    #region DragEvent
-    
-    protected override Image GetDragImage()
+
+    protected override void OnClickCard()
     {
-        return unitImage;
+        partySetupPanel.SelectUnitSlot(this);
+    }
+    
+    public virtual void Select()
+    {
+        UIEffect.FadeIn(group);
+    }
+    
+    public virtual void UnSelect()
+    {
+        UIEffect.FadeOut(group);
     }
 
-    protected override bool CanDrag()
+    private void OnClickPartySetupButton()
     {
-        return dto?.HasUnit ?? false;
+        partySetupPanel.EnterPartySetupMode();
     }
-    
-    #endregion
-    
-    public override void SetDragContext()
-    {
-        UnitDragContext dragContext = new();
-        dragContext.source = this;
-        dragContext.UnitName = dto.Data.UnitName;
-        
-        UIManager.Instance.DragContext = dragContext;
-    }
-
 }

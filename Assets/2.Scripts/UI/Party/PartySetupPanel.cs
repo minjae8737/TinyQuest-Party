@@ -13,12 +13,8 @@ public class PartySetupPanel : UIPage
     [SerializeField] private Image toggleHighlight;
     [SerializeField] private List<Toggle> classToggleGroup;
     
-    [SerializeField] private Button leftButton;
-    [SerializeField] private Button rightButton;
-    
     [Header("=== Prefabs ===")]
     [SerializeField] private GameObject partySlotPrefab;
-    [SerializeField] private GameObject pagePrefab;
     [SerializeField] private GameObject unitSlotPrefab;
 
     [Header("=== Resources ===")] 
@@ -30,12 +26,13 @@ public class PartySetupPanel : UIPage
     private Vector2 toggleHighlightOriginSize;
     
     private List<PartySlotUI> partySlotUis;
-    private List<UnitSlotPage> unitSlotPages;
     private List<UnitSlotUI> unitSlotUis;
+
+    private PartySlotUI curPartySlot;
+    private UnitSlotUI curUnitSlot;
     
-    private UnitSlotPage currentPage;
     private int currentPageIdx;
-    private float PageWidth = 990f;
+    public static bool IsSetUpMode = false;
 
     public void Init()
     {
@@ -50,7 +47,6 @@ public class PartySetupPanel : UIPage
         RefreshPartyPanel();
         
         // UnitListPanel
-        unitSlotPages = new();
         unitSlotUis = new();
         InitUnitListPanel();
         
@@ -60,14 +56,7 @@ public class PartySetupPanel : UIPage
         }
         classToggleGroup[0].isOn = true;
         UIEffect.PunchLoop(toggleHighlight.rectTransform);
-        
-        leftButton.onClick.RemoveAllListeners();
-        rightButton.onClick.RemoveAllListeners();
-        leftButton.onClick.AddListener(() => UIEffect.Punch(leftButton.transform as RectTransform));
-        leftButton.onClick.AddListener(() => OnClickPageButton(false));
-        rightButton.onClick.AddListener(() => UIEffect.Punch(rightButton.transform as RectTransform));
-        rightButton.onClick.AddListener(() => OnClickPageButton(true));
-        
+
         // Caching
         panelGroupOriginPos = panelGroup.anchoredPosition;
         toggleHighlightOriginSize = toggleHighlight.rectTransform.sizeDelta;
@@ -98,8 +87,9 @@ public class PartySetupPanel : UIPage
         {
             Debug.LogError("CreatePartySlotUI Fail");
             return;
-        } 
-        
+        }
+
+        partySlot.partySetupPanel = this;
         partySlotUis.Add(partySlot);
     }
     
@@ -114,6 +104,28 @@ public class PartySetupPanel : UIPage
             partySlotUis[i].SetSlot(unitSlotDto, starGradeSprites[unitSlotDto.StarGrade], i);
         }
     }
+    
+    public void SelectPartySlot(PartySlotUI partySlot)
+    {
+        if (IsSetUpMode)
+        {
+            partySlot.ReplaceUnit(curUnitSlot.UnitName);
+            ExitPartySetupMode();
+        }
+        else
+        {
+            if (curPartySlot == partySlot)
+            {
+                curPartySlot.UnSelect();
+                curPartySlot = null;
+                return;
+            }
+            
+            curPartySlot?.UnSelect();
+            curPartySlot = partySlot;
+            curPartySlot.Select();
+        }
+    }
 
     #endregion
 
@@ -121,8 +133,6 @@ public class PartySetupPanel : UIPage
 
     private void InitUnitListPanel()
     {
-        currentPage = null;
-
         List<UnitSlotDTO> unitSlotDtos = UnitManager.Instance.GetPlayerUnitSlotDTO();
 
         foreach (var dto in unitSlotDtos)
@@ -130,39 +140,20 @@ public class PartySetupPanel : UIPage
             CreateUnitSlot(dto);
         }
     }
-    
-    private UnitSlotPage CreatePage()
-    {
-        GameObject pageObj = Instantiate(pagePrefab, unitSlotScrollRect);
-
-        if (!pageObj.TryGetComponent<UnitSlotPage>(out var page))
-        {
-            Debug.LogError($"Create UnitSlotPage Fail.");
-            return null;
-        }
-        
-        unitSlotPages.Add(page);
-        return page;
-    }
 
     private UnitSlotUI CreateUnitSlot(UnitSlotDTO unitSlotDto)
     {
-        if (currentPage == null || currentPage.IsFull)
-        {
-            currentPage = CreatePage();
-        }
-        
-        GameObject unitSlotObj = Instantiate(unitSlotPrefab, currentPage.transform);
+        GameObject unitSlotObj = Instantiate(unitSlotPrefab, unitSlotScrollRect);
 
-        if (!unitSlotObj.TryGetComponent<UnitSlotUI>(out var unitSlot))
+        if (!unitSlotObj.transform.GetChild(0).TryGetComponent<UnitSlotUI>(out var unitSlot))
         {
             Debug.LogError($"Create UnitListItemUI Fail. Unitname : {unitSlotDto.UnitName}");
             return null;
         }
 
+        unitSlot.partySetupPanel = this;
         unitSlot.SetSlot(unitSlotDto, starGradeSprites[unitSlotDto.StarGrade]);
 
-        currentPage.Add(unitSlot);
         unitSlotUis.Add(unitSlot);
 
         return unitSlot;
@@ -170,38 +161,12 @@ public class PartySetupPanel : UIPage
 
     private void RefreshUnitListPanel(int selectedClass)
     {
-        foreach (var page in unitSlotPages)
-        {
-            page.Clear();
-        }
-        
-        List<UnitSlotUI> filteredSlot = new();
-        
         foreach (var unitSlot in unitSlotUis)
         {
             bool isMatch = unitSlot.UnitClass == (UnitClass)selectedClass 
                            || !Enum.IsDefined(typeof(UnitClass),selectedClass); // -1 == AllClass
             
             unitSlot.gameObject.SetActive(isMatch);
-
-            if (isMatch) filteredSlot.Add(unitSlot);
-        }
-        
-        // UnitName 알파벳 순 정렬
-        filteredSlot.Sort((a, b) => string.Compare(a.UnitName.ToString(), b.UnitName.ToString()));
-
-        int pageIdx = 0;
-        
-        foreach (UnitSlotUI unitSlot in filteredSlot)
-        {
-            UnitSlotPage page = unitSlotPages[pageIdx];
-
-            if (page.IsFull)
-            {
-                page = unitSlotPages[++pageIdx];
-            }
-            
-            page.Add(unitSlot);
         }
     }
 
@@ -225,24 +190,35 @@ public class PartySetupPanel : UIPage
         RefreshUnitListPanel(isOnIndex - 1);
     }
 
-    private void OnClickPageButton(bool isNext)
+    public void SelectUnitSlot(UnitSlotUI unitSlot)
     {
-        int nextPageIdx = currentPageIdx + (isNext ? 1 : -1);
-        nextPageIdx = Mathf.Clamp(nextPageIdx, 0, unitSlotPages.Count - 1);
+        if (curUnitSlot == unitSlot)
+        {
+            curUnitSlot.UnSelect();
+            curUnitSlot = null;
+            return;
+        }
         
-        if (unitSlotPages[nextPageIdx].IsEmpty) return;
-        currentPageIdx = nextPageIdx;  
+        curUnitSlot?.UnSelect();
+        UIEffect.StopShakeLoop(curUnitSlot?.transform as RectTransform);
         
-        MovePage(currentPageIdx);
+        curUnitSlot = unitSlot;
+        curUnitSlot.Select();
     }
 
-    private void MovePage(int pageIdx)
+    public void EnterPartySetupMode()
     {
-        Vector2 position = unitSlotScrollRect.anchoredPosition;
-        float width = unitSlotScrollRect.sizeDelta.x;
-        position.x = width * -pageIdx;
-
-        UIEffect.Scrolling(unitSlotScrollRect, position);
+        curPartySlot?.UnSelect();
+        curUnitSlot?.UnSelect();
+        curPartySlot = null;
+        UIEffect.StartShakeLoop(curUnitSlot?.transform as RectTransform);
+        IsSetUpMode = true;
+    }
+    
+    public void ExitPartySetupMode()
+    {
+        UIEffect.StopShakeLoop(curUnitSlot?.transform as RectTransform);
+        IsSetUpMode = false;
     }
     
     #endregion

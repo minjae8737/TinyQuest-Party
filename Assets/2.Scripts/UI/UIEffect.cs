@@ -46,4 +46,52 @@ public static class UIEffect
         rect.DOKill();
         rect.DOAnchorPos(endValue, 0.7f).SetEase(Ease.OutQuint);
     }
+
+    public static void FadeIn(CanvasGroup group)
+    {
+        group.DOKill();
+        
+        group.gameObject.SetActive(true);
+        group.alpha = 0f;
+        group.interactable = true;
+        group.blocksRaycasts = true; 
+        
+        group.DOFade(1f, 0.5f).SetEase(Ease.OutQuad);
+    }
+
+    public static void FadeOut(CanvasGroup group)
+    {
+        group.DOKill();
+        
+        group.alpha = 1f;
+        group.interactable = false;
+        group.blocksRaycasts = false;
+
+        group.DOFade(0f, 0.5f)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                group.gameObject.SetActive(false);
+            });
+    }
+    
+    public static void StartShakeLoop(RectTransform rect)
+    {
+        rect.DOKill();
+
+        Vector2 originPos = rect.anchoredPosition;
+        
+        rect.DOShakeAnchorPos(0.06f, new Vector2(5f, 5f * 0.2f), 10, 45f)
+            .SetEase(Ease.Linear)
+            .SetLoops(-1, LoopType.Restart)
+            .OnKill(() =>
+            {
+                rect.anchoredPosition = originPos;
+            });
+    }
+
+    public static void StopShakeLoop(RectTransform rect)
+    {
+        rect?.DOKill();
+    }
 }
