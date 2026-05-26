@@ -2,24 +2,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitSlotUI : ClickSlotUI
+public class PartyCardUI : UnitCardUI
 {
-    [Header("=== Reference ===")]
     public PartySetupPanel partySetupPanel;
-
-    [SerializeField] protected Image unitImage;
-    [SerializeField] protected TMP_Text unitNameText;
-    [SerializeField] protected TMP_Text unitLevelText;
-    [SerializeField] protected StarGradeUI StarGradeUI;
     
     [SerializeField] protected CanvasGroup group;
     [SerializeField] private Button PartySetupButton;
     
-    protected UnitSlotDTO dto;
-    public UnitName UnitName => dto.UnitName;
-    public UnitClass UnitClass => dto.UnitClass;
-    
-    public void SetSlot(UnitSlotDTO unitSlotDto, Sprite starSprite)
+    public override void SetSlot(UnitSlotDTO unitSlotDto, Sprite starSprite)
     {
         PartySetupButton?.onClick.RemoveAllListeners();
         PartySetupButton?.onClick.AddListener(OnClickPartySetupButton);
@@ -38,12 +28,12 @@ public class UnitSlotUI : ClickSlotUI
         partySetupPanel.SelectUnitSlot(this);
     }
     
-    public virtual void Select()
+    public void Select()
     {
         UIEffect.FadeIn(group);
     }
     
-    public virtual void UnSelect()
+    public void UnSelect()
     {
         UIEffect.FadeOut(group);
     }

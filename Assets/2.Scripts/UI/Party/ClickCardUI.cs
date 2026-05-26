@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ClickSlotUI : MonoBehaviour, IPointerClickHandler
+public class ClickCardUI : MonoBehaviour, IPointerClickHandler
 {
     private int dragThreshold = 30;
 

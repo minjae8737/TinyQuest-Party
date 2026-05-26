@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1382975596809304862}
   - component: {fileID: 789195862419545771}
   m_Layer: 5
-  m_Name: CanvasGroup
+  m_Name: Focus
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 8542816636648925570}
   - component: {fileID: 897819910304740313}
   m_Layer: 5
-  m_Name: BackGround
+  m_Name: Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -681,7 +681,7 @@ GameObject:
   - component: {fileID: 661768813272437822}
   - component: {fileID: 5468851354105767934}
   m_Layer: 5
-  m_Name: Level & Star Panel
+  m_Name: Info Group
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1074,7 +1074,7 @@ GameObject:
   - component: {fileID: 3480578484805231664}
   - component: {fileID: 7933208422839635199}
   m_Layer: 5
-  m_Name: PartySlot
+  m_Name: PartySlotUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1150,14 +1150,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ac9b7fa5c78b4e328c90bc7ca84fb04, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  partySetupPanel: {fileID: 0}
   unitImage: {fileID: 6539299481429547310}
   unitNameText: {fileID: 3661285940785953987}
   unitLevelText: {fileID: 8046607195769648554}
   StarGradeUI: {fileID: 415620291986107882}
-  group: {fileID: 789195862419545771}
-  PartySetupButton: {fileID: 6402825797316433428}
+  partySetupPanel: {fileID: 0}
   Blank: {fileID: 9055774716509645324}
+  group: {fileID: 789195862419545771}
   LeavePartyButton: {fileID: 6402825797316433428}
 --- !u!1 &9055774716509645324
 GameObject:
@@ -1171,7 +1170,7 @@ GameObject:
   - component: {fileID: 675351176629619324}
   - component: {fileID: 4513137517907284353}
   m_Layer: 5
-  m_Name: Blank
+  m_Name: EmptyBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -2,9 +2,12 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class PartySlotUI : UnitSlotUI
+public class PartySlotUI : UnitCardUI
 {
+    public PartySetupPanel partySetupPanel;
+
     [SerializeField] private GameObject Blank;
+    [SerializeField] protected CanvasGroup group;
     [SerializeField] private Button LeavePartyButton;
 
     private int slotIdx;
@@ -30,6 +33,16 @@ public class PartySlotUI : UnitSlotUI
     protected override void OnClickCard()
     {
         partySetupPanel.SelectPartySlot(this);
+    }
+    
+    public void Select()
+    {
+        UIEffect.FadeIn(group);
+    }
+    
+    public void UnSelect()
+    {
+        UIEffect.FadeOut(group);
     }
 
     public void ReplaceUnit(UnitName unitName)

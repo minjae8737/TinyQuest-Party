@@ -26,10 +26,10 @@ public class PartySetupPanel : UIPage
     private Vector2 toggleHighlightOriginSize;
     
     private List<PartySlotUI> partySlotUis;
-    private List<UnitSlotUI> unitSlotUis;
+    private List<PartyCardUI> unitSlotUis;
 
     private PartySlotUI curPartySlot;
-    private UnitSlotUI curUnitSlot;
+    private PartyCardUI curPartyCard;
     
     private int currentPageIdx;
     public static bool IsSetUpMode = false;
@@ -109,7 +109,7 @@ public class PartySetupPanel : UIPage
     {
         if (IsSetUpMode)
         {
-            partySlot.ReplaceUnit(curUnitSlot.UnitName);
+            partySlot.ReplaceUnit(curPartyCard.UnitName);
             ExitPartySetupMode();
         }
         else
@@ -141,11 +141,11 @@ public class PartySetupPanel : UIPage
         }
     }
 
-    private UnitSlotUI CreateUnitSlot(UnitSlotDTO unitSlotDto)
+    private PartyCardUI CreateUnitSlot(UnitSlotDTO unitSlotDto)
     {
         GameObject unitSlotObj = Instantiate(unitSlotPrefab, unitSlotScrollRect);
 
-        if (!unitSlotObj.transform.GetChild(0).TryGetComponent<UnitSlotUI>(out var unitSlot))
+        if (!unitSlotObj.transform.GetChild(0).TryGetComponent<PartyCardUI>(out var unitSlot))
         {
             Debug.LogError($"Create UnitListItemUI Fail. Unitname : {unitSlotDto.UnitName}");
             return null;
@@ -190,34 +190,34 @@ public class PartySetupPanel : UIPage
         RefreshUnitListPanel(isOnIndex - 1);
     }
 
-    public void SelectUnitSlot(UnitSlotUI unitSlot)
+    public void SelectUnitSlot(PartyCardUI partyCard)
     {
-        if (curUnitSlot == unitSlot)
+        if (curPartyCard == partyCard)
         {
-            curUnitSlot.UnSelect();
-            curUnitSlot = null;
+            curPartyCard.UnSelect();
+            curPartyCard = null;
             return;
         }
         
-        curUnitSlot?.UnSelect();
-        UIEffect.StopShakeLoop(curUnitSlot?.transform as RectTransform);
+        curPartyCard?.UnSelect();
+        UIEffect.StopShakeLoop(curPartyCard?.transform as RectTransform);
         
-        curUnitSlot = unitSlot;
-        curUnitSlot.Select();
+        curPartyCard = partyCard;
+        curPartyCard.Select();
     }
 
     public void EnterPartySetupMode()
     {
         curPartySlot?.UnSelect();
-        curUnitSlot?.UnSelect();
+        curPartyCard?.UnSelect();
         curPartySlot = null;
-        UIEffect.StartShakeLoop(curUnitSlot?.transform as RectTransform);
+        UIEffect.StartShakeLoop(curPartyCard?.transform as RectTransform);
         IsSetUpMode = true;
     }
     
     public void ExitPartySetupMode()
     {
-        UIEffect.StopShakeLoop(curUnitSlot?.transform as RectTransform);
+        UIEffect.StopShakeLoop(curPartyCard?.transform as RectTransform);
         IsSetUpMode = false;
     }
     
