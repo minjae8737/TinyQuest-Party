@@ -338,6 +338,21 @@ public class UnitManager : MonoBehaviour
         
         return unitSlotDtos;
     }
+    
+    public UnitInfoDTO GetUnitInfoDTO(UnitName unitName)
+    {
+        UnitInfoDTO unitInfoDto = new();
+        UnitController unitController = unitPoolsDic[unitName].FirstOrDefault();
+
+        if (unitController == null)
+        {
+            Debug.LogError($"Not Found unitController : {unitName}");
+            return null;
+        }
+        unitInfoDto.SetValue(unitController);
+        
+        return unitInfoDto;
+    }
 
     #endregion
 

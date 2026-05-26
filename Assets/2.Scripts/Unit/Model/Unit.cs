@@ -78,11 +78,6 @@ public class Unit
         ResetStats();
     }
 
-    public void ResetStats()
-    {
-        Status.Init(Stat.MaxHp, Stat.MaxHp);
-    }
-
     public void ApplySaveData(UnitSaveData saveData)
     {
         // Load SaveData
@@ -165,6 +160,28 @@ public class Unit
     public void TakeHeal(long healAmount)
     {
         Status.TakeHeal(healAmount);
+    }
+
+    #endregion
+
+    #region Stat
+
+    public void ResetStats()
+    {
+        Status.Init(Stat.MaxHp, Stat.MaxHp);
+    }
+
+    public (bool,int) LevelUp()
+    {
+        (bool didLevelUp, int level) = Level.LevelUp();
+        if (didLevelUp)
+        {
+            Stat.SetBaseStat(UnitStatCalculator.GetBaseStat(Data, Level.Level, StarGrade));
+            Stat.RefreshStat();
+            Status.Init(Stat.MaxHp, Status.Hp);
+        }
+
+        return (didLevelUp, level);
     }
 
     #endregion

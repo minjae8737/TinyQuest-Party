@@ -74,7 +74,7 @@ public class CurrencyManager : MonoBehaviour
         Gold = Gold >= MaxValue ? MaxValue : Gold;
         OnGoldChanged?.Invoke(amount);
         OnAddGold?.Invoke("AddGold", amount);
-        Debug.Log($"Add Gold {amount}");
+        // Debug.Log($"Add Gold {amount}");
     }
 
     public bool SpendGold(long amount)
@@ -102,7 +102,7 @@ public class CurrencyManager : MonoBehaviour
         Exp = Exp >= MaxValue ? MaxValue : Exp;
         OnExpChanged?.Invoke(amount);
         OnAddExp?.Invoke("AddExp", amount);
-        Debug.Log($"Add Exp {amount}");
+        // Debug.Log($"Add Exp {amount}");
     }
 
     public bool SpendExp(long amount)
