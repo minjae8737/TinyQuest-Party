@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -93,5 +94,41 @@ public static class UIEffect
     public static void StopShakeLoop(RectTransform rect)
     {
         rect?.DOKill();
+    }
+    
+    public static void OpenPopup(RectTransform rect)
+    {
+        rect.DOKill();
+        
+        rect.localScale = new Vector3(0.0f, 0.0f, 1f);
+
+        Sequence seq = DOTween.Sequence();
+        
+        seq.Append(
+            rect.DOScale(new Vector3(1.05f, 1.08f, 1f), 0.28f)
+                .SetEase(Ease.OutBack)
+        );
+
+        seq.Append(
+            rect.DOScale(Vector3.one, 0.12f)
+                .SetEase(Ease.OutQuad)
+        );
+    }
+    
+    public static void ClosePopup(RectTransform rect, Action onComplete = null)
+    {
+        rect.DOKill();
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(
+            rect.DOScale(new Vector3(0.0f, 0.0f, 1f), 0.4f)
+                .SetEase(Ease.InBack)
+        );
+
+        seq.OnComplete(() =>
+        {
+            onComplete?.Invoke();
+        });
     }
 }

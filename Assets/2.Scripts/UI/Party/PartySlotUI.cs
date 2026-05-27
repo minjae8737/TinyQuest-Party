@@ -54,6 +54,13 @@ public class PartySlotUI : UnitCardUI
     
     private void OnClickLeavePartyButton()
     {
-        UnitManager.Instance.AssignUnitToSlot(slotIdx, UnitName.None);
+        bool result = UnitManager.Instance.AssignUnitToSlot(slotIdx, UnitName.None);
+        if (!result)
+        {
+            string title = "알림";
+            string message = "파티에서 나갈 수 없습니다.";
+            string confirm = "확인";
+            PopupManager.Instance.ShowConfirmPopup(title, message, confirm);
+        }
     }
 }

@@ -26,6 +26,21 @@ public class Party
         
         return false;
     }
+
+    public int GetUnitCount()
+    {
+        int count = 0;
+        
+        foreach (PartySlot partySlot in slots)
+        {
+            if (!partySlot.IsEmpty())
+            {
+                count++;
+            }
+        }
+
+        return count;
+    }
     
     public bool IsSlotEmpty(int slotIdx)
     {
