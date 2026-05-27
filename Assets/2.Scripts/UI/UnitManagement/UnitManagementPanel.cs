@@ -35,7 +35,7 @@ public class UnitManagementPanel : UIPage
     
     // Cacing
     private Vector2 toggleHighlightOriginSize;
-    private List<CardUI> unitCards;
+    private List<UnitInfoCardUI> unitCards;
 
     #region RunTime
 
@@ -117,16 +117,16 @@ public class UnitManagementPanel : UIPage
 
         foreach (var dto in unitSlotDtos)
         {
-            CardUI card = CreateUnitCard(dto);
-            card.OnClicked += UpdateUnitInfo;
+            UnitInfoCardUI unitInfoCard = CreateUnitCard(dto);
+            unitInfoCard.OnClicked += UpdateUnitInfo;
         }
     }
     
-    private CardUI CreateUnitCard(UnitSlotDTO unitSlotDto)
+    private UnitInfoCardUI CreateUnitCard(UnitSlotDTO unitSlotDto)
     {
         GameObject unitSlotObj = Instantiate(CardUIPrefab, UnitCardParent);
 
-        if (!unitSlotObj.TryGetComponent<CardUI>(out var card))
+        if (!unitSlotObj.TryGetComponent<UnitInfoCardUI>(out var card))
         {
             Debug.LogError($"Create card Fail. UnitName : {unitSlotDto.UnitName}");
             return null;
@@ -146,8 +146,8 @@ public class UnitManagementPanel : UIPage
         if (didLevelUp)
         {
             UpdateUnitInfo(curUnitInfoDTO.UnitName);
-            CardUI cardUI = unitCards.Find(card => { return card.UnitName == curUnitInfoDTO.UnitName; });
-            cardUI?.SetLevel(level);
+            UnitInfoCardUI unitInfoCardUI = unitCards.Find(card => { return card.UnitName == curUnitInfoDTO.UnitName; });
+            unitInfoCardUI?.SetLevel(level);
         }
     }
     

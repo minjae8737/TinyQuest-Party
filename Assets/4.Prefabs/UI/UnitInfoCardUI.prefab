@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 6726251801713855280}
   - component: {fileID: 238602174563538086}
   m_Layer: 5
-  m_Name: Level & Star Panel
+  m_Name: Info Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -269,7 +269,7 @@ GameObject:
   - component: {fileID: 3393491205573566906}
   - component: {fileID: 3089191563593637804}
   m_Layer: 5
-  m_Name: BackGround
+  m_Name: Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -440,7 +440,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25
+  m_fontSize: 15
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -573,7 +573,7 @@ GameObject:
   - component: {fileID: 8691727602871654101}
   - component: {fileID: 1891966658087766554}
   m_Layer: 5
-  m_Name: UnitCard
+  m_Name: UnitInfoCardUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -688,7 +688,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 62.502502, y: -15}
+  m_AnchoredPosition: {x: 10, y: -15}
   m_SizeDelta: {x: 55.01, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1024402772425078559

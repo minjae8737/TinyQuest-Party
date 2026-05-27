@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class UnitSlotPage : MonoBehaviour
 {
-    private List<UnitSlotUI> unitSlotUis = new();
+    private List<PartyCardUI> unitSlotUis = new();
     private const int PageSize = 10;
 
     public bool IsFull => unitSlotUis.Count >= PageSize;
     public bool IsEmpty => unitSlotUis.Count == 0;
 
-    public bool Add(UnitSlotUI unitSlot)
+    public bool Add(PartyCardUI partyCard)
     {
-        unitSlotUis.Add(unitSlot);
-        unitSlot.transform.parent = transform;
+        unitSlotUis.Add(partyCard);
+        partyCard.transform.parent = transform;
         
         return true;
     }

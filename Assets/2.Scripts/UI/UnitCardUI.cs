@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UnitSlotUI : DragSlotUI
+public class UnitCardUI : ClickCardUI
 {
     [Header("=== Reference ===")]
     [SerializeField] protected Image unitImage;
@@ -24,28 +24,9 @@ public class UnitSlotUI : DragSlotUI
 
         StarGradeUI.SetStars(dto.StarGrade, starSprite);
     }
-    
-    #region DragEvent
-    
-    protected override Image GetDragImage()
-    {
-        return unitImage;
-    }
 
-    protected override bool CanDrag()
+    public void SetLevel(int level)
     {
-        return dto?.HasUnit ?? false;
+        unitLevelText.text = $"Lv.{level}";
     }
-    
-    #endregion
-    
-    public override void SetDragContext()
-    {
-        UnitDragContext dragContext = new();
-        dragContext.source = this;
-        dragContext.UnitName = dto.Data.UnitName;
-        
-        UIManager.Instance.DragContext = dragContext;
-    }
-
 }
