@@ -18,7 +18,7 @@ public class Party
     {
         foreach (PartySlot partySlot in slots)
         {
-            if (partySlot.UnitName == unitName)
+            if (unitName != UnitName.None && partySlot.UnitName == unitName)
             {
                 return true;
             }
