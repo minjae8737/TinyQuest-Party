@@ -28,12 +28,17 @@ public class UIManager : MonoBehaviour
     private TextMeshProUGUI goldText;
     private TextMeshProUGUI expText;
     
+    [Header("=== StageHUD ===")]
+    [SerializeField] private StageHUD stageHUD;
     
     [Header("=== MainButtonGroup ===")] 
     [SerializeField] private GameObject mainButtonGroup;
     [SerializeField] private List<MainMenuButton> mainMenuButtons;
-    private MainMenuButton currentOnMenuButton; 
+    private MainMenuButton currentOnMenuButton;
 
+    [Header("=== UnitManagementPanel ===")] 
+    [SerializeField] private UnitManagementPanel unitManagementPanel;
+    
     [Header("=== PartySetup Panel ===")] 
     [SerializeField] private PartySetupPanel partySetupPanel;
     
@@ -83,6 +88,12 @@ public class UIManager : MonoBehaviour
         {
             button.Init();
         }
+        
+        // StageHUD
+        stageHUD.Init();
+        
+        //UnitManagementPanel
+        unitManagementPanel.Init();
 
         // PartySetupPanel
         partySetupPanel.Init();

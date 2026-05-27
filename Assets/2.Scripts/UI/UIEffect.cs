@@ -1,3 +1,4 @@
+using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
@@ -45,5 +46,89 @@ public static class UIEffect
     {
         rect.DOKill();
         rect.DOAnchorPos(endValue, 0.7f).SetEase(Ease.OutQuint);
+    }
+
+    public static void FadeIn(CanvasGroup group)
+    {
+        group.DOKill();
+        
+        group.gameObject.SetActive(true);
+        group.alpha = 0f;
+        group.interactable = true;
+        group.blocksRaycasts = true; 
+        
+        group.DOFade(1f, 0.5f).SetEase(Ease.OutQuad);
+    }
+
+    public static void FadeOut(CanvasGroup group)
+    {
+        group.DOKill();
+        
+        group.alpha = 1f;
+        group.interactable = false;
+        group.blocksRaycasts = false;
+
+        group.DOFade(0f, 0.5f)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                group.gameObject.SetActive(false);
+            });
+    }
+    
+    public static void StartShakeLoop(RectTransform rect)
+    {
+        rect.DOKill();
+
+        Vector2 originPos = rect.anchoredPosition;
+        
+        rect.DOShakeAnchorPos(0.06f, new Vector2(5f, 5f * 0.2f), 10, 45f)
+            .SetEase(Ease.Linear)
+            .SetLoops(-1, LoopType.Restart)
+            .OnKill(() =>
+            {
+                rect.anchoredPosition = originPos;
+            });
+    }
+
+    public static void StopShakeLoop(RectTransform rect)
+    {
+        rect?.DOKill();
+    }
+    
+    public static void OpenPopup(RectTransform rect)
+    {
+        rect.DOKill();
+        
+        rect.localScale = new Vector3(0.0f, 0.0f, 1f);
+
+        Sequence seq = DOTween.Sequence();
+        
+        seq.Append(
+            rect.DOScale(new Vector3(1.05f, 1.08f, 1f), 0.28f)
+                .SetEase(Ease.OutBack)
+        );
+
+        seq.Append(
+            rect.DOScale(Vector3.one, 0.12f)
+                .SetEase(Ease.OutQuad)
+        );
+    }
+    
+    public static void ClosePopup(RectTransform rect, Action onComplete = null)
+    {
+        rect.DOKill();
+
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(
+            rect.DOScale(new Vector3(0.0f, 0.0f, 1f), 0.4f)
+                .SetEase(Ease.InBack)
+        );
+
+        seq.OnComplete(() =>
+        {
+            onComplete?.Invoke();
+        });
     }
 }

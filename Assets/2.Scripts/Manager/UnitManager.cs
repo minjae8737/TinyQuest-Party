@@ -213,6 +213,19 @@ public class UnitManager : MonoBehaviour
         }
     }
     
+    public void DespawnEnemyParty()
+    {
+        List<UnitController> enemyTeam = TeamUnitDic[TeamType.Enemy];
+
+        foreach (UnitController controller in enemyTeam)
+        {
+            if (controller.gameObject.activeSelf)
+            {
+                controller.Despawn();
+            }
+        }
+    }
+    
     public UnitHpBar GetUnitHpBar()
     {
         UnitHpBar hpBar = PoolManager.Instance.Get<UnitHpBar>();
@@ -260,11 +273,13 @@ public class UnitManager : MonoBehaviour
         }
     }
     
-    public void AssignUnitToSlot(int slotIdx, UnitName unitName)
+    public bool AssignUnitToSlot(int slotIdx, UnitName unitName)
     {
+        if (unitName == UnitName.None && party.GetUnitCount() <= 1) return false; // 마지막 유닛일시 
+        
         int originIdx = party.FindUnitSlotIndex(unitName);
         
-        if (originIdx == slotIdx) return;
+        if (originIdx == slotIdx) return false;
 
         if (party.HasUnit(unitName))
         {
@@ -276,6 +291,7 @@ public class UnitManager : MonoBehaviour
         }
 
         OnPartyChanged?.Invoke();
+        return true;
     }
 
     public void RemoveUnit(UnitName unitName)
@@ -324,6 +340,21 @@ public class UnitManager : MonoBehaviour
         }
         
         return unitSlotDtos;
+    }
+    
+    public UnitInfoDTO GetUnitInfoDTO(UnitName unitName)
+    {
+        UnitInfoDTO unitInfoDto = new();
+        UnitController unitController = unitPoolsDic[unitName].FirstOrDefault();
+
+        if (unitController == null)
+        {
+            Debug.LogError($"Not Found unitController : {unitName}");
+            return null;
+        }
+        unitInfoDto.SetValue(unitController);
+        
+        return unitInfoDto;
     }
 
     #endregion

@@ -7,7 +7,7 @@ public class UnitLevel
     [SerializeField, ReadOnly] private int level;
     [SerializeField, ReadOnly] private long exp;
     private long maxExp => ExpCalculator.Instance.GetMaxExp(level);
-
+    
     #region Property
 
     public int Level
@@ -26,8 +26,11 @@ public class UnitLevel
     }
 
     public long MaxExp => maxExp;
-    
+    public int MaxLevel => ExpCalculator.Instance.GetMaxLevel();
+
     #endregion
+    
+    public event Action<int> OnLevelChanged;
 
     public void Init()
     {
@@ -35,20 +38,18 @@ public class UnitLevel
         exp = 0;
     }
 
-    public void AddExp(long gainedExp)
+    public (bool,int) LevelUp()
     {
-        long remainedExp = 0L;
-        long calMaxExp = maxExp;
-        exp += gainedExp;
+        if (level == MaxLevel) return (false, Level);
+        
+        long curExp = CurrencyManager.Instance.Exp;
 
-        if (exp >= calMaxExp)
-        {
-            remainedExp = exp - calMaxExp;
-            exp = remainedExp;
-            level++;
-            OnLevelChanged?.Invoke(level);
-        }
+        if (curExp < MaxExp) return (false, Level);
+
+        level++;
+        CurrencyManager.Instance.SpendExp(MaxExp);
+        OnLevelChanged?.Invoke(level);
+        return (true, Level);
     }
 
-    public event Action<int> OnLevelChanged;
 }

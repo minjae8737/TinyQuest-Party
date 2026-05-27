@@ -36,7 +36,7 @@ public class MapManager : MonoBehaviour
         SetIslandsActive(false);
         islands.Clear();
 
-        for (int i = 0; i < stageData.IslandDatas.Count; i++)
+        for (int i = 0; i < stageData.islandCount; i++)
         {
             int islandType = Random.Range(0, islandPrefabs.Count);
 
