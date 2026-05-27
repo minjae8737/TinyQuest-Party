@@ -30,7 +30,7 @@ public class PopupUI : Poolable
     {
         UIEffect.ClosePopup(
             transform as RectTransform,
-            () => PoolManager.Instance.Release(this)
+            () => PopupManager.Instance.HidePopup(this)
             );
     }
     

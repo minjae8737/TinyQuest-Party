@@ -37,6 +37,8 @@ public class PartySlotUI : UnitCardUI
     
     public void Select()
     {
+        if (Blank.activeSelf) return;
+        
         UIEffect.FadeIn(group);
     }
     
