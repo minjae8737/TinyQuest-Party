@@ -9,6 +9,7 @@ public class PartySetupPanel : UIPage
     [SerializeField] private RectTransform panelGroup;
     [SerializeField] private RectTransform partySlotParent;
     [SerializeField] private RectTransform unitSlotScrollRect;
+    [SerializeField] private GridLayoutGroup grid;
     
     [SerializeField] private Image toggleHighlight;
     [SerializeField] private List<Toggle> classToggleGroup;
@@ -133,6 +134,14 @@ public class PartySetupPanel : UIPage
 
     private void InitUnitListPanel()
     {
+        float cellSizeX = grid.cellSize.x;
+        float spacingX = grid.spacing.x;
+        int constrainCount = grid.constraintCount;
+        float width = (grid.transform as RectTransform).rect.width;
+
+        float sizeX = width - (cellSizeX * constrainCount) - (spacingX * constrainCount - 1);
+        grid.padding.left = grid.padding.right = (int)sizeX / 2;
+
         List<UnitSlotDTO> unitSlotDtos = UnitManager.Instance.GetPlayerUnitSlotDTO();
 
         foreach (var dto in unitSlotDtos)
@@ -166,7 +175,7 @@ public class PartySetupPanel : UIPage
             bool isMatch = unitSlot.UnitClass == (UnitClass)selectedClass 
                            || !Enum.IsDefined(typeof(UnitClass),selectedClass); // -1 == AllClass
             
-            unitSlot.gameObject.SetActive(isMatch);
+            unitSlot.transform.parent.gameObject.SetActive(isMatch);
         }
     }
 

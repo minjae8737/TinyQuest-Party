@@ -26,6 +26,7 @@ public class UnitManagementPanel : UIPage
 
     [Header("=== UnitCardList ===")] 
     [SerializeField] private RectTransform UnitCardParent;
+    [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private GameObject CardUIPrefab;
     
     [SerializeField] private Image classToggleHighlight;
@@ -113,6 +114,16 @@ public class UnitManagementPanel : UIPage
 
     private void InitUnitListPanel()
     {
+        float cellSizeX = grid.cellSize.x;
+        float spacingX = grid.spacing.x;
+        int constrainCount = grid.constraintCount;
+        float width = (grid.transform as RectTransform).rect.width;
+
+        float sizeX = width - (cellSizeX * constrainCount) - (spacingX * constrainCount - 1);
+        
+        grid.padding.left = grid.padding.right = (int)sizeX / 2;
+        
+        
         List<UnitSlotDTO> unitSlotDtos = UnitManager.Instance.GetPlayerUnitSlotDTO();
 
         foreach (var dto in unitSlotDtos)
