@@ -305,6 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 717b528fb5e1b4bc18bf73dc0c102f9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  contentRect: {fileID: 399082484}
   UnitNameText: {fileID: 1234534672}
   StarGradeUI: {fileID: 902366918}
   LevelText: {fileID: 2080298615}

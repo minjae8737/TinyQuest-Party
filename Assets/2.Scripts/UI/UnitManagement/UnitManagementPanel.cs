@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 public class UnitManagementPanel : UIPage
 {
+    [Header("=== Reference ===")] 
+    [SerializeField] private RectTransform contentRect;
+    
     [Header("=== Unit  ===")] 
     [SerializeField] private TMP_Text UnitNameText;
     [SerializeField] private StarGradeUI StarGradeUI;
@@ -41,6 +44,7 @@ public class UnitManagementPanel : UIPage
     #region RunTime
 
     private UnitInfoDTO curUnitInfoDTO;
+    private Vector2 contentRectOriginPos;
 
     #endregion
 
@@ -49,6 +53,7 @@ public class UnitManagementPanel : UIPage
         unitCards = new();
         
         // Cacing
+        contentRectOriginPos = contentRect.anchoredPosition;
         toggleHighlightOriginSize = classToggleHighlight.rectTransform.sizeDelta;
         
         InitUnitListPanel();
@@ -74,6 +79,7 @@ public class UnitManagementPanel : UIPage
     {
         gameObject.SetActive(true);
         AudioManager.Instance.PlaySfx(Sfx.UIOpen);
+        UIEffect.SlideUp(contentRect, contentRectOriginPos, 50f, 0.7f);
     }
 
     public override void Hide()
