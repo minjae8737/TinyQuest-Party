@@ -51,11 +51,12 @@ public class PartySetupPanel : UIPage
         unitSlotUis = new();
         InitUnitListPanel();
         
+        classToggleGroup[0].isOn = true;
         foreach (Toggle toggle in classToggleGroup)
         {
             toggle.onValueChanged.AddListener(OnChangedToggle);
+            toggle.onValueChanged.AddListener(_ => AudioManager.Instance.PlaySfx(Sfx.ChangeToggle));
         }
-        classToggleGroup[0].isOn = true;
         UIEffect.PunchLoop(toggleHighlight.rectTransform);
 
         // Caching
@@ -67,6 +68,8 @@ public class PartySetupPanel : UIPage
     
     public override void Show()
     {
+        RefreshPartyPanel();
+        
         gameObject.SetActive(true);
         AudioManager.Instance.PlaySfx(Sfx.UIOpen);
         UIEffect.SlideUp(panelGroup, panelGroupOriginPos, 50f, 0.7f);

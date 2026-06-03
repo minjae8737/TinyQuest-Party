@@ -60,19 +60,23 @@ public class UnitManagementPanel : UIPage
 
         levelUpgradeBtn.onClick.AddListener(() => UIEffect.Punch(levelUpgradeBtn.transform as RectTransform));
         levelUpgradeBtn.onClick.AddListener(OnClickLevelUpButton);
+        levelUpgradeBtn.onClick.AddListener(() => AudioManager.Instance.PlaySfx(Sfx.UIUpgrade));
         // starUpgradeBtn.onClick.AddListener(() => UIEffect.Punch(starUpgradeBtn.transform as RectTransform));
         starUpgradeBtn.enabled = false; //TODO 승급시스템 개발중
         UIEffect.PunchLoop(tapToggleHighlight.rectTransform);
         
         // Card - ClassToggle
+        classToggleGroup[0].isOn = true;
         foreach (Toggle toggle in classToggleGroup)
         {
             toggle.onValueChanged.AddListener(OnChangedClassToggle);
+            toggle.onValueChanged.AddListener(_ => AudioManager.Instance.PlaySfx(Sfx.ChangeToggle));
         }
-        classToggleGroup[0].isOn = true;
         UIEffect.PunchLoop(classToggleHighlight.rectTransform);
 
         UpdateUnitInfo(unitCards.First().UnitName);
+
+        CurrencyManager.Instance.OnExpChanged += _ => RefreshLevelUpButton();
     }
     
     public override void Show()
@@ -107,7 +111,11 @@ public class UnitManagementPanel : UIPage
         defStatText.text = $"{curUnitInfoDTO.Stat.Def}";
         hpStatText.text = $"{curUnitInfoDTO.Stat.MaxHp}";
 
+        RefreshLevelUpButton();
+    }
 
+    private void RefreshLevelUpButton()
+    {
         long maxExp = ExpCalculator.Instance.GetMaxExp(curUnitInfoDTO.UnitLevel);
         string curExpStr = UIManager.Instance.NumberFormatter(CurrencyManager.Instance.Exp);
         string requiredExpStr = UIManager.Instance.NumberFormatter(maxExp);
@@ -126,7 +134,6 @@ public class UnitManagementPanel : UIPage
         float width = (grid.transform as RectTransform).rect.width;
 
         float sizeX = width - (cellSizeX * constrainCount) - (spacingX * constrainCount - 1);
-        
         grid.padding.left = grid.padding.right = (int)sizeX / 2;
         
         

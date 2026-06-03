@@ -38,7 +38,7 @@ public class QuestManager : MonoBehaviour
     {
         UnitManager.Instance.OnEnemyDied -= HandleEvent;
         CurrencyManager.Instance.OnAddGold -= HandleEvent;
-        TrainingManager.Instance.OnStatLevelChanged -= CheckProgress;
+        TrainingManager.Instance.OnStatLevelChanged -= HandleEvent;
 
         if (curMainQuestIdx >= mainQuestDatas.Count)
         {
@@ -58,7 +58,7 @@ public class QuestManager : MonoBehaviour
                 CurrencyManager.Instance.OnAddGold += HandleEvent;
                 break;
             case TrainingLevelCondition:
-                TrainingManager.Instance.OnStatLevelChanged += CheckProgress;
+                TrainingManager.Instance.OnStatLevelChanged += HandleEvent;
                 break;
         }
         
