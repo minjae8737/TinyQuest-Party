@@ -37,6 +37,8 @@ public class PartySlotUI : UnitCardUI
     
     public void Select()
     {
+        if (Blank.activeSelf) return;
+        
         UIEffect.FadeIn(group);
     }
     
@@ -55,6 +57,7 @@ public class PartySlotUI : UnitCardUI
     private void OnClickLeavePartyButton()
     {
         bool result = UnitManager.Instance.AssignUnitToSlot(slotIdx, UnitName.None);
+        UnSelect();
         if (!result)
         {
             string title = "알림";
