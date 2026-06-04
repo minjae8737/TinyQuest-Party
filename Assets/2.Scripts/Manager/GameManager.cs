@@ -37,7 +37,7 @@ public class GameManager : MonoBehaviour
         UnitManager.Instance.Init(saveData.UnitSaveDatas, saveData.PartySaveData);
         StageManager.Instance.Init(saveData.StageSaveData);
         CurrencyManager.Instance.Init(saveData.CurrencySaveData);
-        QuestManager.Instance.Init();
+        QuestManager.Instance.Init(saveData.QuestSaveData);
 
         UIManager.Instance.Init();
 
@@ -60,6 +60,7 @@ public class GameManager : MonoBehaviour
         saveData.PartySaveData = UnitManager.Instance.GetPartySaveData();
         saveData.StageSaveData = StageManager.Instance.GetPartySaveData();
         saveData.TrainingSaveData = TrainingManager.Instance.GetSaveData();
+        saveData.QuestSaveData = QuestManager.Instance.GetQuestSaveData();
 
         string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
         string cipherText = Encrypt(json);
