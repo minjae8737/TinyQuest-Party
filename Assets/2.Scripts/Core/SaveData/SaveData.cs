@@ -16,4 +16,7 @@ public class SaveData
     
     // Training 데이터
     public TrainingSaveData TrainingSaveData;
+    
+    // 퀘스트 데이터
+    public QuestSaveData QuestSaveData;
 }
