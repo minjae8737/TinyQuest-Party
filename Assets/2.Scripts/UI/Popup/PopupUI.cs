@@ -1,24 +1,29 @@
+using System;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PopupUI : Poolable
 {
-    [SerializeField] protected GameObject background;
-    protected virtual bool HasBackground => false;
+    [SerializeField] private TMP_Text titleText;
+    [SerializeField] private TMP_Text messageText;
+    [SerializeField] private Button confirmBtn;
+    [SerializeField] private TMP_Text confirmBtnText;
 
-    public virtual void Show()
+    private void Awake()
     {
-        if (HasBackground && background != null)
-            background.SetActive(true);
+        confirmBtn.onClick.AddListener(OnClickConfirmButton);
+    }
+
+    public virtual void Show(string title, string message, string confirm)
+    {
+        titleText.text = title;
+        messageText.text = message;
+        confirmBtnText.text = confirm;
         
         Open();
     }
-
-    public virtual void OnHide()
-    {
-        if (HasBackground && background != null)
-            background.SetActive(false);
-    }
-
+    
     public virtual void Open() { UIEffect.OpenPopup(transform as RectTransform); }
 
     public virtual void Close()
@@ -28,4 +33,6 @@ public class PopupUI : Poolable
             () => PopupManager.Instance.HidePopup(this)
             );
     }
+    
+    public virtual void OnClickConfirmButton() { }
 }

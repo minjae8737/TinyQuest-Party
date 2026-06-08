@@ -1,26 +1,16 @@
 using System;
 using System.Collections.Generic;
-using Firebase.Firestore;
 
 [Serializable]
-[FirestoreData]
 public class UnitSaveData
 {
     // UnitLevel
-    [FirestoreProperty]
-    public UnitName UnitName { get; set; }
-    
-    [FirestoreProperty]
-    public int Level { get; set; }
-    
-    [FirestoreProperty]
-    public long Exp { get; set; }
+    public UnitName UnitName;
+    public int Level;
+    public long Exp;
 
-    [FirestoreProperty]
-    public int StarGrade { get; set; }
+    public int StarGrade;
     
     // UnitEquipment
     // public Dictionary<EquipPart, string> Equipments;
-
-    public UnitSaveData() { }
 }
