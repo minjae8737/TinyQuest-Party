@@ -28,9 +28,6 @@ public class QuestManager : MonoBehaviour
         progress = new();
         progress.Init();
         
-        // 초기화
-        curMainQuestIdx = 0;
-        
         // 세이브데이터 적용
         ApplySaveData(saveData);
         
