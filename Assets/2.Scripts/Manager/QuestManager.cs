@@ -2,10 +2,8 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestManager : MonoBehaviour
+public class QuestManager : Singleton<QuestManager>
 {
-    public static QuestManager Instance { get; private set; }
-
     [SerializeField] private List<QuestData> mainQuestDatas;
     private int curMainQuestIdx;
     private QuestData CurMainQuestData => mainQuestDatas[curMainQuestIdx];
@@ -14,14 +12,6 @@ public class QuestManager : MonoBehaviour
     public event Action OnMainQuestUpdated;
     public event Action OnMainQuestClear;
     public event Action OnMainQuestRewardProvided;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-    }
     
     public void Init(QuestSaveData saveData = null)
     {

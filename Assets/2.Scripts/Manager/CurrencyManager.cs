@@ -8,10 +8,8 @@ public enum CurrencyType
     Exp,
 }
 
-public class CurrencyManager : MonoBehaviour
+public class CurrencyManager : Singleton<CurrencyManager>
 {
-    public static CurrencyManager Instance;
-
     [SerializeField] private List<CurrencyData> Datas;
     private Dictionary<CurrencyType, CurrencyData> dataDic;
     public IReadOnlyDictionary<CurrencyType, CurrencyData> DataDic => dataDic;
@@ -24,14 +22,6 @@ public class CurrencyManager : MonoBehaviour
     public event Action<long> OnExpChanged;
     public event Action<string, long> OnAddGold;
     public event Action<string, long> OnAddExp;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-    }
 
     private void OnEnable()
     {

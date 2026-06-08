@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MapManager : MonoBehaviour
+public class MapManager : Singleton<MapManager>
 {
-    public static MapManager Instance { get; private set; }
-
     [Header("=== Reference ===")]
     [SerializeField] private Transform MapParent;
     
@@ -16,14 +14,6 @@ public class MapManager : MonoBehaviour
     
     private List<Island> islands;
     private Dictionary<int, List<Island>> islandPoolsDic;
-    
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-    }
 
     public void Init()
     {

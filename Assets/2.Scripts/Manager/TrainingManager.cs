@@ -9,10 +9,8 @@ public enum TrainingType
     Health
 }
 
-public class TrainingManager : MonoBehaviour
+public class TrainingManager : Singleton<TrainingManager>
 {
-    public static TrainingManager Instance { get; private set; }
-
     [SerializeField] private List<TrainingData> datas;
 
     private List<Stat> Stats;
@@ -91,14 +89,6 @@ public class TrainingManager : MonoBehaviour
     public event Action<int> OnAttackLevelChanged;
     public event Action<int> OnDefenceLevelChanged;
     public event Action<int> OnHealthLevelChanged;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-    }
 
     public void Init(TrainingSaveData saveData = null)
     {

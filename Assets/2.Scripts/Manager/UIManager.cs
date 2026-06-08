@@ -4,10 +4,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIManager : Singleton<UIManager>
 {
-    public static UIManager Instance { get; private set; }
-    
     private UIPage currentPage;
     
     [Header("=== Canvas References ===")]
@@ -56,14 +54,6 @@ public class UIManager : MonoBehaviour
     private bool isDragged;
 
     public event Action OnInitCompleted;
-    
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-    }
 
     public void Init()
     {
