@@ -23,17 +23,13 @@ public class QuestManager : MonoBehaviour
         }
     }
     
-    public void Init(QuestSaveData saveData = null)
+    public void Init()
     {
         progress = new();
         progress.Init();
         
-        // 세이브데이터 적용
-        ApplySaveData(saveData);
-        
+        curMainQuestIdx = 0;
         StartMainQuest();
-
-        UIManager.Instance.OnInitCompleted += CheckProgress;
     }
 
     #region MainQuest Cycle
@@ -42,7 +38,7 @@ public class QuestManager : MonoBehaviour
     {
         UnitManager.Instance.OnEnemyDied -= HandleEvent;
         CurrencyManager.Instance.OnAddGold -= HandleEvent;
-        TrainingManager.Instance.OnStatLevelChanged -= HandleEvent;
+        TrainingManager.Instance.OnStatLevelChanged -= CheckProgress;
 
         if (curMainQuestIdx >= mainQuestDatas.Count)
         {
@@ -62,7 +58,7 @@ public class QuestManager : MonoBehaviour
                 CurrencyManager.Instance.OnAddGold += HandleEvent;
                 break;
             case TrainingLevelCondition:
-                TrainingManager.Instance.OnStatLevelChanged += HandleEvent;
+                TrainingManager.Instance.OnStatLevelChanged += CheckProgress;
                 break;
         }
         
@@ -113,26 +109,7 @@ public class QuestManager : MonoBehaviour
     
     #region SaveData
 
-    public QuestSaveData GetQuestSaveData()
-    {
-        return new QuestSaveData(
-            curMainQuestIdx: curMainQuestIdx,
-            savedCounter: progress.GetCurProgressData()
-            );
-    }
-
-    private void ApplySaveData(QuestSaveData saveData)
-    {
-        if (saveData != null)
-        {
-            curMainQuestIdx = saveData.mainQuestIdx;
-
-            foreach (KeyValuePair<string, long> counterPair in saveData.counter)
-            {
-                progress.Add(counterPair.Key,counterPair.Value);
-            }
-        }
-    }
+    
 
     #endregion
 }

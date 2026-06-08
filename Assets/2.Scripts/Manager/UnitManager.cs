@@ -118,6 +118,9 @@ public class UnitManager : MonoBehaviour
 
         party = new();
         
+        // 기본 유닛 세팅
+        AssignUnitToSlot(0, UnitName.Archer);
+
         // 세이브 데이터 적용
         ApplyUnitSaveDatas(UnitSaveDatas);
         ApplyPartySaveData(partySaveData);
@@ -423,18 +426,13 @@ public class UnitManager : MonoBehaviour
 
     private void ApplyPartySaveData(PartySaveData saveData)
     {
-        if (saveData.UnitList.Count > 0)
+        if (saveData != null)
         {
             for (int i = 0; i < MaxPartySize; i++)
             {
                 UnitName unitName = saveData.UnitList.ElementAtOrDefault(i);
                 AssignUnitToSlot(i, unitName);
             }
-        }
-        else
-        {
-            // 기본 유닛 세팅
-            AssignUnitToSlot(0, UnitName.Archer);
         }
     }
 

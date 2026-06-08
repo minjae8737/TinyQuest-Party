@@ -17,7 +17,7 @@ public class TrainingLevelCondition: QuestCondition
     public override bool isSatisfied(QuestProgress progress)
     {
         int statLevel = GetStatLevel();
-
+        
         return statLevel >= RequiredTypeLevel;
     }
 
