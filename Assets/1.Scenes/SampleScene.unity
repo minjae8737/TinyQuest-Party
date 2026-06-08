@@ -741,6 +741,7 @@ MonoBehaviour:
   dragItemUIParent: {fileID: 1038014297}
   GoldPanel: {fileID: 761399715}
   ExpPanel: {fileID: 936853981}
+  SetupBtn: {fileID: 1946005585}
   stageHUD: {fileID: 811326657}
   mainButtonGroup: {fileID: 542121310}
   mainMenuButtons: []
@@ -61712,9 +61713,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -30, y: -30}
+  m_AnchoredPosition: {x: -79.99997, y: -79.99988}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 1, y: 1}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1946005585
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61758,19 +61759,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1946005586}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 874796778}
-        m_TargetAssemblyTypeName: PopupManager, Assembly-CSharp
-        m_MethodName: ShowSetup
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1946005586
 MonoBehaviour:
   m_ObjectHideFlags: 0

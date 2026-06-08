@@ -21,6 +21,7 @@ public class UIManager : Singleton<UIManager>
     [Header("=== Main Top Panel ===")]
     [SerializeField] private RectTransform GoldPanel;
     [SerializeField] private RectTransform ExpPanel;
+    [SerializeField] private Button SetupBtn;
     private RectTransform GoldPanelIcon;
     private RectTransform ExpPanelIcon;
     private TextMeshProUGUI goldText;
@@ -95,6 +96,8 @@ public class UIManager : Singleton<UIManager>
         ExpPanelIcon = ExpPanel.GetChild(0).GetComponent<RectTransform>();
         goldText = GoldPanel.GetChild(1).GetComponent<TextMeshProUGUI>();
         expText = ExpPanel.GetChild(1).GetComponent<TextMeshProUGUI>();
+        SetupBtn.onClick.AddListener(() => PopupManager.Instance.ShowSetup());
+        SetupBtn.onClick.AddListener(() => UIEffect.Punch(SetupBtn.transform as RectTransform));
         
         // Training Panel
         trainingPanel.Init();

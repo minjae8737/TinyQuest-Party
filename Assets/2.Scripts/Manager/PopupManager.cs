@@ -17,6 +17,7 @@ public class PopupManager : Singleton<PopupManager>
     {
         popupStack.Push(popup);
         popup.Show();
+        AudioManager.Instance.PlaySfx(Sfx.UIOpen);
     }
 
     public T ShowPooled<T>() where T : PooledPopupUI
@@ -56,7 +57,7 @@ public class PopupManager : Singleton<PopupManager>
         if (popupBackGround.activeSelf) 
             popupBackGround.SetActive(false);
         
-        // PoolManager.Instance.Release(popup);
+        AudioManager.Instance.PlaySfx(Sfx.UIClose);
     }
     
     private bool HasAnyPooledPopup()
