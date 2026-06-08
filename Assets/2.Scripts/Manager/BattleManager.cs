@@ -161,7 +161,7 @@ public class BattleManager : MonoBehaviour
 
     private static void DespawnEnemy()
     {
-        UnitManager.Instance.DespawnEnemyParty(); 
+        UnitManager.Instance.DespawnPlayerParty(); 
     }
 
     private bool IsWaveClear()

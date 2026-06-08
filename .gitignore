@@ -110,11 +110,3 @@ InitTestScene*.unity*
 
 #Audio
 /[Aa]ssets/7.Audio
-
-#Firebase
-/[Aa]ssets/google-services.json
-/[Aa]ssets/google-services.json.meta
-/[Aa]ssets/StreamingAssets/google-services-desktop.json
-/[Aa]ssets/StreamingAssets/google-services-desktop.json.meta
-/[Aa]ssets/Plugins/Android/FirebaseApp.androidlib/res/values/google-services.xml
-/[Aa]ssets/Plugins/Android/FirebaseApp.androidlib/res/values/google-services.xml.meta

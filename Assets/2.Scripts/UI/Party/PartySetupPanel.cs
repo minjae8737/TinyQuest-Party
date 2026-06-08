@@ -9,7 +9,6 @@ public class PartySetupPanel : UIPage
     [SerializeField] private RectTransform panelGroup;
     [SerializeField] private RectTransform partySlotParent;
     [SerializeField] private RectTransform unitSlotScrollRect;
-    [SerializeField] private GridLayoutGroup grid;
     
     [SerializeField] private Image toggleHighlight;
     [SerializeField] private List<Toggle> classToggleGroup;
@@ -51,12 +50,11 @@ public class PartySetupPanel : UIPage
         unitSlotUis = new();
         InitUnitListPanel();
         
-        classToggleGroup[0].isOn = true;
         foreach (Toggle toggle in classToggleGroup)
         {
             toggle.onValueChanged.AddListener(OnChangedToggle);
-            toggle.onValueChanged.AddListener(_ => AudioManager.Instance.PlaySfx(Sfx.ChangeToggle));
         }
+        classToggleGroup[0].isOn = true;
         UIEffect.PunchLoop(toggleHighlight.rectTransform);
 
         // Caching
@@ -68,8 +66,6 @@ public class PartySetupPanel : UIPage
     
     public override void Show()
     {
-        RefreshPartyPanel();
-        
         gameObject.SetActive(true);
         AudioManager.Instance.PlaySfx(Sfx.UIOpen);
         UIEffect.SlideUp(panelGroup, panelGroupOriginPos, 50f, 0.7f);
@@ -137,14 +133,6 @@ public class PartySetupPanel : UIPage
 
     private void InitUnitListPanel()
     {
-        float cellSizeX = grid.cellSize.x;
-        float spacingX = grid.spacing.x;
-        int constrainCount = grid.constraintCount;
-        float width = (grid.transform as RectTransform).rect.width;
-
-        float sizeX = width - (cellSizeX * constrainCount) - (spacingX * constrainCount - 1);
-        grid.padding.left = grid.padding.right = (int)sizeX / 2;
-
         List<UnitSlotDTO> unitSlotDtos = UnitManager.Instance.GetPlayerUnitSlotDTO();
 
         foreach (var dto in unitSlotDtos)
@@ -178,7 +166,7 @@ public class PartySetupPanel : UIPage
             bool isMatch = unitSlot.UnitClass == (UnitClass)selectedClass 
                            || !Enum.IsDefined(typeof(UnitClass),selectedClass); // -1 == AllClass
             
-            unitSlot.transform.parent.gameObject.SetActive(isMatch);
+            unitSlot.gameObject.SetActive(isMatch);
         }
     }
 
