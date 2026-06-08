@@ -7,6 +7,9 @@ using UnityEngine.UI;
 
 public class UnitManagementPanel : UIPage
 {
+    [Header("=== Reference ===")] 
+    [SerializeField] private RectTransform contentRect;
+    
     [Header("=== Unit  ===")] 
     [SerializeField] private TMP_Text UnitNameText;
     [SerializeField] private StarGradeUI StarGradeUI;
@@ -26,6 +29,7 @@ public class UnitManagementPanel : UIPage
 
     [Header("=== UnitCardList ===")] 
     [SerializeField] private RectTransform UnitCardParent;
+    [SerializeField] private GridLayoutGroup grid;
     [SerializeField] private GameObject CardUIPrefab;
     
     [SerializeField] private Image classToggleHighlight;
@@ -40,6 +44,7 @@ public class UnitManagementPanel : UIPage
     #region RunTime
 
     private UnitInfoDTO curUnitInfoDTO;
+    private Vector2 contentRectOriginPos;
 
     #endregion
 
@@ -48,31 +53,37 @@ public class UnitManagementPanel : UIPage
         unitCards = new();
         
         // Cacing
+        contentRectOriginPos = contentRect.anchoredPosition;
         toggleHighlightOriginSize = classToggleHighlight.rectTransform.sizeDelta;
         
         InitUnitListPanel();
 
         levelUpgradeBtn.onClick.AddListener(() => UIEffect.Punch(levelUpgradeBtn.transform as RectTransform));
         levelUpgradeBtn.onClick.AddListener(OnClickLevelUpButton);
+        levelUpgradeBtn.onClick.AddListener(() => AudioManager.Instance.PlaySfx(Sfx.UIUpgrade));
         // starUpgradeBtn.onClick.AddListener(() => UIEffect.Punch(starUpgradeBtn.transform as RectTransform));
         starUpgradeBtn.enabled = false; //TODO 승급시스템 개발중
         UIEffect.PunchLoop(tapToggleHighlight.rectTransform);
         
         // Card - ClassToggle
+        classToggleGroup[0].isOn = true;
         foreach (Toggle toggle in classToggleGroup)
         {
             toggle.onValueChanged.AddListener(OnChangedClassToggle);
+            toggle.onValueChanged.AddListener(_ => AudioManager.Instance.PlaySfx(Sfx.ChangeToggle));
         }
-        classToggleGroup[0].isOn = true;
         UIEffect.PunchLoop(classToggleHighlight.rectTransform);
 
         UpdateUnitInfo(unitCards.First().UnitName);
+
+        CurrencyManager.Instance.OnExpChanged += _ => RefreshLevelUpButton();
     }
     
     public override void Show()
     {
         gameObject.SetActive(true);
         AudioManager.Instance.PlaySfx(Sfx.UIOpen);
+        UIEffect.SlideUp(contentRect, contentRectOriginPos, 50f, 0.7f);
     }
 
     public override void Hide()
@@ -100,7 +111,11 @@ public class UnitManagementPanel : UIPage
         defStatText.text = $"{curUnitInfoDTO.Stat.Def}";
         hpStatText.text = $"{curUnitInfoDTO.Stat.MaxHp}";
 
+        RefreshLevelUpButton();
+    }
 
+    private void RefreshLevelUpButton()
+    {
         long maxExp = ExpCalculator.Instance.GetMaxExp(curUnitInfoDTO.UnitLevel);
         string curExpStr = UIManager.Instance.NumberFormatter(CurrencyManager.Instance.Exp);
         string requiredExpStr = UIManager.Instance.NumberFormatter(maxExp);
@@ -113,6 +128,15 @@ public class UnitManagementPanel : UIPage
 
     private void InitUnitListPanel()
     {
+        float cellSizeX = grid.cellSize.x;
+        float spacingX = grid.spacing.x;
+        int constrainCount = grid.constraintCount;
+        float width = (grid.transform as RectTransform).rect.width;
+
+        float sizeX = width - (cellSizeX * constrainCount) - (spacingX * constrainCount - 1);
+        grid.padding.left = grid.padding.right = (int)sizeX / 2;
+        
+        
         List<UnitSlotDTO> unitSlotDtos = UnitManager.Instance.GetPlayerUnitSlotDTO();
 
         foreach (var dto in unitSlotDtos)

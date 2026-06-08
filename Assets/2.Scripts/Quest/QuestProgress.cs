@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class QuestProgress
@@ -20,5 +21,10 @@ public class QuestProgress
     {
         counter.TryGetValue(key, out long count);
         return count;
+    }
+
+    public Dictionary<string, long> GetCurProgressData()
+    {
+        return counter;
     }
 }

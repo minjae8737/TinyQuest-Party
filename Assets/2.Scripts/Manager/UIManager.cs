@@ -54,6 +54,8 @@ public class UIManager : MonoBehaviour
     private DragItemUI DragItemUI;
     [HideInInspector] public DragContext DragContext;
     private bool isDragged;
+
+    public event Action OnInitCompleted;
     
     private void Awake()
     {
@@ -112,6 +114,8 @@ public class UIManager : MonoBehaviour
         
         RefreshGoldPanel(0);
         RefreshExpPanel(0);
+        
+        OnInitCompleted?.Invoke();
     }
 
     private void ShowPage(UIPage page)
