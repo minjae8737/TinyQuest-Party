@@ -63,7 +63,7 @@ public class PartySlotUI : UnitCardUI
             string title = "알림";
             string message = "파티에서 나갈 수 없습니다.";
             string confirm = "확인";
-            PopupManager.Instance.ShowConfirmPopup(title, message, confirm);
+            PopupManager.Instance.ShowConfirm(title, message, confirm);
         }
     }
 }
