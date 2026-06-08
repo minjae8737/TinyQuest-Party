@@ -1,49 +1,22 @@
 using System.Collections.Generic;
-using Firebase.Firestore;
 
-[FirestoreData]
 public class SaveData
 {
-    [FirestoreProperty] 
-    public string UserId { get; set; } // 유저 아이디
-    [FirestoreProperty] 
-    public string Nickname { get; set; } // 닉네임
-
     // 유저 데이터
-    [FirestoreProperty] 
-    public CurrencySaveData CurrencySaveData { get; set; }
-
+    public CurrencySaveData CurrencySaveData; 
+    
     // Unit 데이터
-    [FirestoreProperty] 
-    public List<UnitSaveData> UnitSaveDatas { get; set; }
-
+    public List<UnitSaveData> UnitSaveDatas = new();
+    
     // 파티 데이터
-    [FirestoreProperty] 
-    public PartySaveData PartySaveData { get; set; }
-
+    public PartySaveData PartySaveData;
+    
     // 스테이지 데이터
-    [FirestoreProperty] 
-    public StageSaveData StageSaveData { get; set; }
-
+    public StageSaveData StageSaveData;
+    
     // Training 데이터
-    [FirestoreProperty] 
-    public TrainingSaveData TrainingSaveData { get; set; }
-
+    public TrainingSaveData TrainingSaveData;
+    
     // 퀘스트 데이터
-    [FirestoreProperty] 
-    public QuestSaveData QuestSaveData { get; set; }
-
-    public SaveData() { }
-
-    public SaveData(string userId)
-    {
-        UserId = userId;
-
-        CurrencySaveData = CurrencySaveData.Create();
-        UnitSaveDatas = new();
-        PartySaveData = PartySaveData.Create();
-        StageSaveData = StageSaveData.Create();
-        TrainingSaveData = TrainingSaveData.Create();
-        QuestSaveData = QuestSaveData.Create();
-    }
+    public QuestSaveData QuestSaveData;
 }

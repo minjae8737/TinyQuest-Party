@@ -62,8 +62,8 @@ public class StageManager : MonoBehaviour
 
     public void Init(StageSaveData saveData = null)
     {
-        curStageLevel = saveData.CurStageLevel;
-        curIslandIdx = saveData.CurIslandIdx;
+        curStageLevel = saveData != null ? saveData.CurStageLevel : 0;
+        curIslandIdx = saveData != null ? saveData.CurIslandIdx : 0;
     }
 
     private void SetState(StageState state)
