@@ -12,7 +12,7 @@ PlayerSettings:
   targetDevice: 2
   useOnDemandResources: 0
   accelerometerFrequency: 60
-  companyName: DefaultCompany
+  companyName: AljaeCompany
   productName: TinyQuest Party
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
@@ -165,9 +165,10 @@ PlayerSettings:
   androidMaxAspectRatio: 2.4
   androidMinAspectRatio: 1
   applicationIdentifier:
-    Standalone: com.DefaultCompany.2D-URP
+    Android: com.AljaeCompany.TinyQuestParty
+    Standalone: com.AljaeCompany.TinyQuestParty
   buildNumber:
-    Standalone: 0
+    Standalone: 1.0
     VisionOS: 0
     iPhone: 0
     tvOS: 0
