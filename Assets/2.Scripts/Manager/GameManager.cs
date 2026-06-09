@@ -23,6 +23,8 @@ public class GameManager : Singleton<GameManager>
         await FirestoreManager.Instance.Init();
         saveData = await FirestoreManager.Instance.LoadPlayerData(uid);
         
+        GachaManager.Instance.Init();
+        
         AudioManager.Instance.Init();
 
         MapManager.Instance.Init();
