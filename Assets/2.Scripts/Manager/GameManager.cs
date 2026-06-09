@@ -19,7 +19,8 @@ public class GameManager : Singleton<GameManager>
         }
         
         string uid = FirebaseAuthManager.Instance.CurrentUser?.UserId;
-
+        
+        await FirestoreManager.Instance.Init();
         saveData = await FirestoreManager.Instance.LoadPlayerData(uid);
         
         AudioManager.Instance.Init();
