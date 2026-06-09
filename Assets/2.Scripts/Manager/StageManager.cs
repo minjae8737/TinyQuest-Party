@@ -13,10 +13,8 @@ public enum StageState
     Fail,
 }
 
-public class StageManager : MonoBehaviour
+public class StageManager : Singleton<StageManager>
 {
-    public static StageManager Instance { get; private set; }
-
     [SerializeField] private List<Stage> stages;
     [SerializeField] private List<StageData> stageDatas;
 
@@ -50,14 +48,6 @@ public class StageManager : MonoBehaviour
     {
         add => BattleManager.Instance.OnWaveChanged += value;
         remove => BattleManager.Instance.OnWaveChanged -= value;
-    }
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
     }
 
     public void Init(StageSaveData saveData = null)

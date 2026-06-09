@@ -7,7 +7,7 @@ public class FirestoreManager : Singleton<FirestoreManager>
 {
     private FirebaseFirestore db;
 
-    private void Start()
+    public async Task Init()
     {
         db = FirebaseFirestore.DefaultInstance;
     }

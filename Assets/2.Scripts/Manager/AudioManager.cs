@@ -14,10 +14,8 @@ public enum Sfx
     Attack,
 }
 
-public class AudioManager : MonoBehaviour
+public class AudioManager : Singleton<AudioManager>
 {
-    public static AudioManager Instance { get; private set; }
-
     [Header("=== BGM ===")] 
     public AudioClip bgmClip;
     public float bgmVolume;
@@ -30,14 +28,6 @@ public class AudioManager : MonoBehaviour
     public int channels;
     private List<AudioSource> sfxPlayers;
     private int channelIndex;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-    }
 
     public void Init()
     {

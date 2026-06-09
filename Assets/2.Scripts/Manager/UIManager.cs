@@ -4,10 +4,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UIManager : MonoBehaviour
+public class UIManager : Singleton<UIManager>
 {
-    public static UIManager Instance { get; private set; }
-    
     private UIPage currentPage;
     
     [Header("=== Canvas References ===")]
@@ -23,6 +21,7 @@ public class UIManager : MonoBehaviour
     [Header("=== Main Top Panel ===")]
     [SerializeField] private RectTransform GoldPanel;
     [SerializeField] private RectTransform ExpPanel;
+    [SerializeField] private Button SetupBtn;
     private RectTransform GoldPanelIcon;
     private RectTransform ExpPanelIcon;
     private TextMeshProUGUI goldText;
@@ -56,14 +55,6 @@ public class UIManager : MonoBehaviour
     private bool isDragged;
 
     public event Action OnInitCompleted;
-    
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-    }
 
     public void Init()
     {
@@ -105,6 +96,8 @@ public class UIManager : MonoBehaviour
         ExpPanelIcon = ExpPanel.GetChild(0).GetComponent<RectTransform>();
         goldText = GoldPanel.GetChild(1).GetComponent<TextMeshProUGUI>();
         expText = ExpPanel.GetChild(1).GetComponent<TextMeshProUGUI>();
+        SetupBtn.onClick.AddListener(() => PopupManager.Instance.ShowSetup());
+        SetupBtn.onClick.AddListener(() => UIEffect.Punch(SetupBtn.transform as RectTransform));
         
         // Training Panel
         trainingPanel.Init();

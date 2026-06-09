@@ -17,7 +17,7 @@ public enum UnitClass
     Healer,
 }
 
-public enum UnitGrade
+public enum UnitGradeType
 {
     Normal,     // 흰,회
     Rare,       // 하늘
@@ -43,7 +43,7 @@ public class Unit
     #endregion
 
     private const float ConstantDef = 200f;
-    public UnitGrade UnitGrade;
+    public UnitGradeType unitGradeType;
     private int starGrade;
     public int StarGrade
     {
@@ -64,7 +64,7 @@ public class Unit
 
         StarGrade = TeamType == TeamType.Player ? (Data as PlayerUnitData).StartStarGrade : 1;
         // TODO UnitGrade 나중에 로직 추가
-        UnitGrade = UnitGrade.Normal;
+        unitGradeType = UnitGradeType.Normal;
         
         if (saveData != null)
         {

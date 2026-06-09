@@ -28,9 +28,8 @@ public enum UnitName
     Lancer,
 }
 
-public class UnitManager : MonoBehaviour
+public class UnitManager : Singleton<UnitManager>
 {
-    public static UnitManager Instance { get; private set; }
     public Dictionary<UnitName, UnitData> UnitDataDic { get; private set; }
     private Dictionary<UnitName, GameObject> unitPrefabDic;
     private Dictionary<UnitName, List<UnitController>> unitPoolsDic;
@@ -65,14 +64,6 @@ public class UnitManager : MonoBehaviour
     public event Action<string, long> OnEnemyDied;
 
     #endregion
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-    }
 
     public void Init(List<UnitSaveData> UnitSaveDatas = null, PartySaveData partySaveData = null)
     {

@@ -2,24 +2,14 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoolManager : MonoBehaviour
+public class PoolManager : Singleton<PoolManager>
 {
-    public static PoolManager Instance { get; private set; }
-    
     private Dictionary<Type, Stack<Poolable>> poolDic;
     private Dictionary<Type, GameObject> prefabDic;
     private Dictionary<Type, Transform> parentDic;
 
     [Header("=== Prefabs ===")]
     [SerializeField] private List<ObjPrefab> prefabs;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-    }
 
     public void Init()
     {

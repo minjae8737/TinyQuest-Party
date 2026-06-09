@@ -1,24 +1,10 @@
-using System;
-using System.IO;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
-    public static GameManager Instance { get; private set; }
-    
     private SaveData saveData;
-
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-        }
-    }
 
     private async void Start()
     {
@@ -33,8 +19,11 @@ public class GameManager : MonoBehaviour
         }
         
         string uid = FirebaseAuthManager.Instance.CurrentUser?.UserId;
-
+        
+        await FirestoreManager.Instance.Init();
         saveData = await FirestoreManager.Instance.LoadPlayerData(uid);
+        
+        GachaManager.Instance.Init();
         
         AudioManager.Instance.Init();
 

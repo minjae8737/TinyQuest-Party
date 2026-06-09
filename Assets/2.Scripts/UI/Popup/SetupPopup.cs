@@ -8,5 +8,6 @@ public class SetupPopup : UniquePopupUI
     private void Awake()
     {
         closeBtn.onClick.AddListener(Close);
+        closeBtn.onClick.AddListener(() => UIEffect.Punch(closeBtn.transform as RectTransform));
     }
 }

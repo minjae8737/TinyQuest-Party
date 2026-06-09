@@ -19,7 +19,10 @@ public class AccountPopup : UniquePopupUI
     private void Awake()
     {
         closeBtn.onClick.AddListener(Close);
+        closeBtn.onClick.AddListener(() => UIEffect.Punch(closeBtn.transform as RectTransform));
+
         loginBtn.onClick.AddListener(OnClickLoginBtn);
+        loginBtn.onClick.AddListener(() => UIEffect.Punch(loginBtn.transform as RectTransform));
     }
 
     public override void Show()
