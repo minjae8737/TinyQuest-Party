@@ -5,7 +5,6 @@ using UnityEngine;
 public class UnitLevel
 {
     [SerializeField, ReadOnly] private int level;
-    [SerializeField, ReadOnly] private long exp;
     private long maxExp => ExpCalculator.Instance.GetMaxExp(level);
     
     #region Property
@@ -19,12 +18,6 @@ public class UnitLevel
         }
     }
 
-    public long Exp
-    {
-        get => exp;
-        set { exp = value; }
-    }
-
     public long MaxExp => maxExp;
     public int MaxLevel => ExpCalculator.Instance.GetMaxLevel();
 
@@ -35,7 +28,6 @@ public class UnitLevel
     public void Init()
     {
         level = 1;
-        exp = 0;
     }
 
     public (bool,int) LevelUp()

@@ -10,6 +10,7 @@ public class UnitInfoDTO
     public int UnitLevel { get; set; }
     public int UnitMaxLevel { get; set; }
     public int StarGrade { get; set; }
+    public UnitGradeType UnitGradeType { get; set; }
     
     public UnitInfoDTO()
     {
@@ -28,7 +29,8 @@ public class UnitInfoDTO
         UnitClass = data.UnitClass;
         UnitSprite = data.Icon;
         Stat = Unit.Stat;
-        StarGrade = Unit.StarGrade;
+        StarGrade = Unit.Grade.StarGrade;
+        UnitGradeType = Unit.Grade.UnitGradeType;
         UnitLevel = Unit.Level.Level;
         UnitMaxLevel = Unit.Level.MaxLevel;
     }

@@ -22,7 +22,7 @@ public class UnitSlotDTO
         UnitName = data.UnitName;
         UnitClass = data.UnitClass;
         Data = data;
-        StarGrade = unitController.Model.StarGrade;
+        StarGrade = unitController.Model.Grade.StarGrade;
         UnitLevel = unitController.Model.Level.Level;
     }
 

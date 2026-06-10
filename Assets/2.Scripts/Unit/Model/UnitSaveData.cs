@@ -12,12 +12,12 @@ public class UnitSaveData
     
     [FirestoreProperty]
     public int Level { get; set; }
-    
-    [FirestoreProperty]
-    public long Exp { get; set; }
 
     [FirestoreProperty]
     public int StarGrade { get; set; }
+    
+    [FirestoreProperty] 
+    public int Fragments { get; set; }
     
     // UnitEquipment
     // public Dictionary<EquipPart, string> Equipments;

@@ -20,4 +20,4 @@ MonoBehaviour:
     def: 15
     speed: 3
   UnitClass: 0
-  StartStarGrade: 3
+  UnitGradeType: 2

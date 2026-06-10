@@ -9,9 +9,11 @@ const GACHA_TABLE = [
     { unitName: "Armored_Axeman", grade: "R",   weight: 70 },
     { unitName: "Soldier",        grade: "R",   weight: 70 },
     { unitName: "Knight",         grade: "R",   weight: 70 },
+    
     { unitName: "Archer",         grade: "SR",  weight: 25 },
     { unitName: "Swordsman",      grade: "SR",  weight: 25 },
     { unitName: "Lancer",         grade: "SR",  weight: 25 },
+    
     { unitName: "Knight_Templar", grade: "SSR", weight: 5  },
     { unitName: "Wizard",         grade: "SSR", weight: 5  },
     { unitName: "Priest",         grade: "SSR", weight: 5  },

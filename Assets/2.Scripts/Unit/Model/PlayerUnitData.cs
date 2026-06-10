@@ -6,7 +6,5 @@ public class PlayerUnitData : UnitData
     public override TeamType TeamType => TeamType.Player;
     
     public UnitClass UnitClass;
-    [Range(1,3)] public int StartStarGrade;
-    
-
+    public UnitGradeType UnitGradeType;
 }

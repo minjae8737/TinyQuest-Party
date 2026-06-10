@@ -17,15 +17,6 @@ public enum UnitClass
     Healer,
 }
 
-public enum UnitGradeType
-{
-    Normal,     // 흰,회
-    Rare,       // 하늘
-    Epic,       // 보라
-    Legendary,  // 노랑,주황, 금
-    Mythic      // 무지개
-}
-
 [Serializable]
 public class Unit
 {
@@ -37,22 +28,13 @@ public class Unit
     public UnitStat Stat;
     public UnitEquipment Equipment;
     public UnitStatus Status;
+    public UnitGrade Grade;
     
     public List<Skill> Skills;
     
     #endregion
 
     private const float ConstantDef = 200f;
-    public UnitGradeType unitGradeType;
-    private int starGrade;
-    public int StarGrade
-    {
-        get => starGrade;
-        set
-        {
-            starGrade = Math.Clamp(value, 1, 5);
-        }
-    }
     
     public bool IsDeath => Status.IsDeath;
     
@@ -61,17 +43,14 @@ public class Unit
     public void Init(UnitSaveData saveData)
     {
         Level.Init();
-
-        StarGrade = TeamType == TeamType.Player ? (Data as PlayerUnitData).StartStarGrade : 1;
-        // TODO UnitGrade 나중에 로직 추가
-        unitGradeType = UnitGradeType.Normal;
+        Grade.Init(Data);
         
         if (saveData != null)
         {
             ApplySaveData(saveData);
         }
 
-        Stat.SetBaseStat(UnitStatCalculator.GetBaseStat(Data, Level.Level, StarGrade));
+        Stat.SetBaseStat(UnitStatCalculator.GetBaseStat(Data, Level.Level, Grade.StarGrade));
         Stat.SetTrainingStat(UnitStatCalculator.GetTrainingStat(Data));
         
         Stat.RefreshStat();
@@ -81,11 +60,11 @@ public class Unit
     public void ApplySaveData(UnitSaveData saveData)
     {
         // Load SaveData
-        // UnitLevel
+        // Level
         Level.Level = saveData.Level;
-        Level.Exp = saveData.Exp;
-        
-        StarGrade = saveData.StarGrade;
+
+        // Grade
+        Grade.ApplySaveData(saveData.StarGrade, saveData.Fragments);
 
         // TODO Equipment 
         // foreach (KeyValuePair<EquipPart, string> equipment in saveData.Equipments)
@@ -176,7 +155,7 @@ public class Unit
         (bool didLevelUp, int level) = Level.LevelUp();
         if (didLevelUp)
         {
-            Stat.SetBaseStat(UnitStatCalculator.GetBaseStat(Data, Level.Level, StarGrade));
+            Stat.SetBaseStat(UnitStatCalculator.GetBaseStat(Data, Level.Level, Grade.StarGrade));
             Stat.RefreshStat();
             Status.Init(Stat.MaxHp, Status.Hp);
         }
@@ -238,8 +217,8 @@ public class Unit
 
         saveData.UnitName = Data.UnitName;
         saveData.Level = Level.Level;
-        saveData.Exp = Level.Exp;
-        saveData.StarGrade = StarGrade;
+        saveData.StarGrade = Grade.StarGrade;
+        saveData.Fragments = Grade.Fragments;
         
         // TODO 장비시스템 추가시 수정
         // saveData.Equipments = new Dictionary<EquipPart, string>(Equipment.Equipments);
