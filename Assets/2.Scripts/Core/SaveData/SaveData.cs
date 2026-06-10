@@ -6,9 +6,13 @@ public class SaveData
 {
     [FirestoreProperty] 
     public string UserId { get; set; } // 유저 아이디
+    
     [FirestoreProperty] 
     public string Nickname { get; set; } // 닉네임
-
+    
+    [FirestoreProperty] 
+    public int PityCount { get; set; }  // 가챠 천장스택
+    
     // 유저 데이터
     [FirestoreProperty] 
     public CurrencySaveData CurrencySaveData { get; set; }
