@@ -29,7 +29,7 @@ public class FirebaseFunctionsManager : Singleton<FirebaseFunctionsManager>
                 .Cast<Dictionary<string, object>>()
                 .Select(r => new GachaResult
                 {
-                    UnitName = r["unitName"] as string,
+                    UnitName = Enum.Parse<UnitName>(r["unitName"] as string),
                     Grade = Enum.Parse<UnitGradeType>(r["grade"] as string)
                 })
                 .ToList();
@@ -44,7 +44,7 @@ public class FirebaseFunctionsManager : Singleton<FirebaseFunctionsManager>
         catch (FunctionsException e)
         {
             Debug.LogError($"뽑기 실패: {e.ErrorCode} - {e.Message}");
-            return null;
+            throw e;
         }
         catch (Exception e)
         {

@@ -248,6 +248,25 @@ public class UnitManager : Singleton<UnitManager>
             }
         }
     }
+
+    public PlayerUnitData GetPlayerUnitData(UnitName unitName)
+    {
+        UnitDataDic.TryGetValue(unitName, out var unitData);
+        return unitData as PlayerUnitData;
+    }
+
+    public void AddUnitFragment(UnitName unitName)
+    {
+        unitPoolsDic.TryGetValue(unitName, out var controllers);
+        
+        if (controllers == null) return;
+
+        UnitController unitController = controllers.FirstOrDefault();
+
+        if (unitController == null) return;
+
+        unitController.Model.Grade.AddFragments(1);
+    }
     
     #endregion
 
