@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     private SaveData saveData;
+    public string UserId => saveData.UserId;
 
     private async void Start()
     {
@@ -53,7 +54,7 @@ public class GameManager : Singleton<GameManager>
         saveData.CurrencySaveData = CurrencyManager.Instance.GetCurrencySaveData();
         saveData.UnitSaveDatas = UnitManager.Instance.GetUnitSaveDatas();
         saveData.PartySaveData = UnitManager.Instance.GetPartySaveData();
-        saveData.StageSaveData = StageManager.Instance.GetPartySaveData();
+        saveData.StageSaveData = StageManager.Instance.GetStageSaveData();
         saveData.TrainingSaveData = TrainingManager.Instance.GetSaveData();
         saveData.QuestSaveData = QuestManager.Instance.GetQuestSaveData();
         saveData.PityCount = GachaManager.Instance.PityCount;
