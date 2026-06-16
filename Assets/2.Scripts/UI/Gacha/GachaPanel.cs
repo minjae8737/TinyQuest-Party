@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -12,6 +13,13 @@ public class GachaPanel : UIPage
 
     [SerializeField] private TMP_Text goldText;
     [SerializeField] private TMP_Text pityCountText;
+
+    [Header("=== Loading Panel ===")] 
+    [SerializeField] private GameObject loadingPanel;
+    [SerializeField] private TMP_Text loadingText;
+    private string[] loadingTexts = { "소환중 .", "소환중 ..", "소환중 ..." };
+    private WaitForSeconds loadingTextDelay = new WaitForSeconds(0.4f);
+    private Coroutine loadingCoroutine;
     
     [Header("=== Result Panel ===")]
     [SerializeField] private GameObject resultPanel;
@@ -36,6 +44,9 @@ public class GachaPanel : UIPage
         summonBtn1.onClick.AddListener(() => UIEffect.Punch(summonBtn1.transform as RectTransform));
         summonBtn10.onClick.AddListener(() => OnclickSummonBtn(10));
         summonBtn10.onClick.AddListener(() => UIEffect.Punch(summonBtn10.transform as RectTransform));
+        
+        // Waitting Panel
+        loadingPanel.SetActive(false);
         
         // Result Panel
         exitBtn.onClick.AddListener(HideGachaResultPanel);
@@ -69,11 +80,19 @@ public class GachaPanel : UIPage
 
     private async void OnclickSummonBtn(int count)
     {
-        List<GachaResultData> gachaResultDatas = await GachaManager.Instance.DoGacha(count);
-        if (gachaResultDatas == null) return;
+        ShowLoadingPanel();
         
+        List<GachaResultData> gachaResultDatas = await GachaManager.Instance.DoGacha(count);
+        if (gachaResultDatas == null)
+        {
+            HideLoadingPanel();
+            return;
+        }
+        
+
         RefreshResultPanel(gachaResultDatas);
         ShowGachaResultPanel();
+        HideLoadingPanel();
     }
     
     public void RefreshGoldPanel(long amount)
@@ -87,6 +106,42 @@ public class GachaPanel : UIPage
         pityCountText.text = $"{90 - GachaManager.Instance.PityCount} 회";
     }
 
+    #endregion
+
+    #region Loading Panel
+
+    private void ShowLoadingPanel()
+    {
+        loadingPanel.SetActive(true);
+        loadingCoroutine = StartCoroutine(LoadingTextRoutine());
+    }
+
+    private void HideLoadingPanel()
+    {
+        loadingPanel.SetActive(false);
+    
+        if (loadingCoroutine != null)
+        {
+            StopCoroutine(loadingCoroutine);
+            loadingCoroutine = null;
+        }
+    }
+
+    private IEnumerator LoadingTextRoutine()
+    {
+        while (true)
+        {
+            loadingText.text = loadingTexts[0];
+            yield return loadingTextDelay;
+        
+            loadingText.text = loadingTexts[1];
+            yield return loadingTextDelay;
+        
+            loadingText.text = loadingTexts[2];
+            yield return loadingTextDelay;
+        }
+    }
+    
     #endregion
 
     #region Result Panel
