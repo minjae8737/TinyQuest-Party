@@ -32,6 +32,11 @@ public class GachaManager : Singleton<GachaManager>
 
     public event Action<int> OnChangedPityCount;
 
+    public void Init(int savedPityCount = 0)
+    {
+        pityCount = savedPityCount;
+    }
+
     public async Task<List<GachaResultData>> DoGacha(int count = 1)
     {
         try

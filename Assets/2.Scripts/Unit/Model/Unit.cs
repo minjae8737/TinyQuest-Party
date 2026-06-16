@@ -163,6 +163,19 @@ public class Unit
         return (didLevelUp, level);
     }
 
+    public (bool, int) Promote()
+    {
+        (bool didPromote, int grade)  = Grade.Promote();
+        if (didPromote)
+        {
+            Stat.SetBaseStat(UnitStatCalculator.GetBaseStat(Data, Level.Level, Grade.StarGrade));
+            Stat.RefreshStat();
+            Status.Init(Stat.MaxHp, Status.Hp);
+        }
+
+        return (didPromote, grade);
+    }
+
     #endregion
 
     #region Skill

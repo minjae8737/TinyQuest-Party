@@ -29,4 +29,9 @@ public class UnitCardUI : ClickCardUI
     {
         unitLevelText.text = $"Lv.{level}";
     }
+
+    public void SetStars(int grade)
+    {
+        StarGradeUI.SetStars(grade);
+    }
 }

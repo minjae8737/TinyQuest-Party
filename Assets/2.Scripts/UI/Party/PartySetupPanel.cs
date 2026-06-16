@@ -27,7 +27,7 @@ public class PartySetupPanel : UIPage
     private Vector2 toggleHighlightOriginSize;
     
     private List<PartySlotUI> partySlotUis;
-    private List<PartyCardUI> unitSlotUis;
+    private List<PartyCardUI> partyCardUis;
 
     private PartySlotUI curPartySlot;
     private PartyCardUI curPartyCard;
@@ -48,7 +48,7 @@ public class PartySetupPanel : UIPage
         RefreshPartyPanel();
         
         // UnitListPanel
-        unitSlotUis = new();
+        partyCardUis = new();
         InitUnitListPanel();
         
         classToggleGroup[0].isOn = true;
@@ -64,6 +64,7 @@ public class PartySetupPanel : UIPage
         toggleHighlightOriginSize = toggleHighlight.rectTransform.sizeDelta;
         
         UnitManager.Instance.OnPartyChanged += RefreshPartyPanel;
+        
     }
     
     public override void Show()
@@ -105,7 +106,7 @@ public class PartySetupPanel : UIPage
         {
             UnitSlotDTO unitSlotDto = unitSlotDtos[i];
             
-            partySlotUis[i].SetSlot(unitSlotDto, starGradeSprites[unitSlotDto.StarGrade], i);
+            partySlotUis[i].SetSlot(unitSlotDto, starGradeSprites[(int)unitSlotDto.UnitGradeType], i);
         }
     }
     
@@ -164,21 +165,28 @@ public class PartySetupPanel : UIPage
         }
 
         unitSlot.partySetupPanel = this;
-        unitSlot.SetSlot(unitSlotDto, starGradeSprites[unitSlotDto.StarGrade]);
+        unitSlot.SetSlot(unitSlotDto, starGradeSprites[(int)unitSlotDto.UnitGradeType]);
 
-        unitSlotUis.Add(unitSlot);
+        partyCardUis.Add(unitSlot);
 
         return unitSlot;
     }
 
-    private void RefreshUnitListPanel(int selectedClass)
+    public void SetPartyCard(UnitName unitName, int grade)
     {
-        foreach (var unitSlot in unitSlotUis)
+        var partyCard = partyCardUis.Find(c => c.UnitName == unitName);
+        
+        partyCard?.SetStars(grade);
+    }
+    
+    private void SortUnitListPanel(int selectedClass)
+    {
+        foreach (var partyCard in partyCardUis)
         {
-            bool isMatch = unitSlot.UnitClass == (UnitClass)selectedClass 
+            bool isMatch = partyCard.UnitClass == (UnitClass)selectedClass 
                            || !Enum.IsDefined(typeof(UnitClass),selectedClass); // -1 == AllClass
             
-            unitSlot.transform.parent.gameObject.SetActive(isMatch);
+            partyCard.transform.parent.gameObject.SetActive(isMatch);
         }
     }
 
@@ -199,7 +207,7 @@ public class PartySetupPanel : UIPage
         }
         
         // unit 클래스 정렬
-        RefreshUnitListPanel(isOnIndex - 1);
+        SortUnitListPanel(isOnIndex - 1);
     }
 
     public void SelectUnitSlot(PartyCardUI partyCard)

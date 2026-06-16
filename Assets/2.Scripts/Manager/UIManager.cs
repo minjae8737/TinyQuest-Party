@@ -113,6 +113,10 @@ public class UIManager : Singleton<UIManager>
         
         RefreshGoldPanel(0);
         RefreshExpPanel(0);
+
+        unitManagementPanel.OnUnitPromote += partySetupPanel.SetPartyCard;
+        CurrencyManager.Instance.OnGoldChanged += gachaPanel.RefreshGoldPanel;
+        GachaManager.Instance.OnChangedPityCount += _ => gachaPanel.RefreshPityCountPanel();
         
         OnInitCompleted?.Invoke();
     }

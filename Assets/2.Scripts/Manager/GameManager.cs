@@ -25,7 +25,6 @@ public class GameManager : Singleton<GameManager>
         
         saveData = await FirestoreManager.Instance.LoadPlayerData(uid);
         
-        
         AudioManager.Instance.Init();
 
         MapManager.Instance.Init();
@@ -35,6 +34,7 @@ public class GameManager : Singleton<GameManager>
         StageManager.Instance.Init(saveData.StageSaveData);
         CurrencyManager.Instance.Init(saveData.CurrencySaveData);
         QuestManager.Instance.Init(saveData.QuestSaveData);
+        GachaManager.Instance.Init(saveData.PityCount);
 
         UIManager.Instance.Init();
 
@@ -56,6 +56,7 @@ public class GameManager : Singleton<GameManager>
         saveData.StageSaveData = StageManager.Instance.GetPartySaveData();
         saveData.TrainingSaveData = TrainingManager.Instance.GetSaveData();
         saveData.QuestSaveData = QuestManager.Instance.GetQuestSaveData();
+        saveData.PityCount = GachaManager.Instance.PityCount;
 
         string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
 

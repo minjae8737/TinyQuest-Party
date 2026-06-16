@@ -9,6 +9,9 @@ public class GachaPanel : UIPage
     [SerializeField] private GameObject summonPanel;
     [SerializeField] private Button summonBtn1;
     [SerializeField] private Button summonBtn10;
+
+    [SerializeField] private TMP_Text goldText;
+    [SerializeField] private TMP_Text pityCountText;
     
     [Header("=== Result Panel ===")]
     [SerializeField] private GameObject resultPanel;
@@ -44,6 +47,9 @@ public class GachaPanel : UIPage
 
         // Caching
         panelOriginPos = (summonPanel.transform as RectTransform).anchoredPosition;
+        
+        RefreshGoldPanel(0);
+        RefreshPityCountPanel();
     }
 
     public override void Show()
@@ -64,9 +70,21 @@ public class GachaPanel : UIPage
     private async void OnclickSummonBtn(int count)
     {
         List<GachaResultData> gachaResultDatas = await GachaManager.Instance.DoGacha(count);
-
+        if (gachaResultDatas == null) return;
+        
         RefreshResultPanel(gachaResultDatas);
         ShowGachaResultPanel();
+    }
+    
+    public void RefreshGoldPanel(long amount)
+    {
+        long gold = CurrencyManager.Instance.Gold;
+        UIEffect.CounterTo(goldText, gold - amount, gold, 0.7f);
+    }
+
+    public void RefreshPityCountPanel()
+    {
+        pityCountText.text = $"{90 - GachaManager.Instance.PityCount} 회";
     }
 
     #endregion

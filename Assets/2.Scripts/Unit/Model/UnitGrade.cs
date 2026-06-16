@@ -42,7 +42,8 @@ public class UnitGrade
     }
 
     public bool CanPromote => starGrade < MaxStarGrade && MaxFragments[StarGrade - 1] <= Fragments;
-
+    public int CurMaxFragments => MaxFragments[StarGrade - 1];
+    
     #endregion
 
     public event Action OnStarGradeChanged;
@@ -57,14 +58,15 @@ public class UnitGrade
         }
     }
 
-    public void Promote()
+    public (bool, int) Promote()
     {
-        if (!CanPromote) return;
+        if (!CanPromote) return (false, StarGrade);
 
         Fragments -= MaxFragments[StarGrade - 1];
         StarGrade++;
         
         OnStarGradeChanged?.Invoke();
+        return (true, StarGrade);
     }
 
     public void AddFragments(int amount)

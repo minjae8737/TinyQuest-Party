@@ -77,7 +77,7 @@ exports.gacha = onCall(async (request) => {
     }
 
     // 현재 pity 카운터 가져오기
-    let pityCount = playerData.GachaSaveData?.PityCount ?? 0;
+    let pityCount = playerData.PityCount ?? 0;
 
     const results = [];
 
@@ -95,7 +95,7 @@ exports.gacha = onCall(async (request) => {
     // Gold 차감 + pity 갱신을 한 번에
     await docRef.update({
         "CurrencySaveData.Gold":    admin.firestore.FieldValue.increment(-cost),
-        "GachaSaveData.PityCount":  pityCount,
+        "PityCount":  pityCount,
     });
 
     return {
