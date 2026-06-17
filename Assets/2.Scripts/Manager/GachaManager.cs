@@ -95,8 +95,13 @@ public class GachaManager : Singleton<GachaManager>
             
             case FunctionsErrorCode.NotFound:           // 유저 없음
                 break;
-            
+
             case FunctionsErrorCode.FailedPrecondition: // 골드가 부족합니다
+                PopupManager.Instance.ShowConfirm(
+                    title: "일림",
+                    message: "골드가 부족합니다.",
+                    confirm: "확인"
+                );
                 break;
             
             default:
@@ -104,28 +109,4 @@ public class GachaManager : Singleton<GachaManager>
                 break;
         }
     }
-
-    // private async void TestGacha()
-    // {
-    //     GachaResponse result = await DoGacha(10);
-    //     StringBuilder sb = new();
-    //
-    //     sb.AppendLine($"PityCount : {result.PityCount}");
-    //
-    //     foreach (var gachaResult in result.Results)
-    //     {
-    //         sb.Append($"UnitName : {gachaResult.UnitName} / {gachaResult.Grade} \n");
-    //     }
-    //
-    //
-    //     Debug.Log(sb);
-    // }
-    
-    // private async void LateUpdate()
-    // {
-    //     if (Input.GetKeyDown(KeyCode.Space))
-    //     {
-    //         TestGacha();
-    //     }
-    // }
 }
