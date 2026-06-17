@@ -33,6 +33,8 @@ public class AudioManager : Singleton<AudioManager>
     {
         //BGM
         GameObject bgmObj = new GameObject("BgmPlayer");
+        bgmObj.transform.parent = transform;
+
         bgmPlayer = bgmObj.AddComponent<AudioSource>();
         bgmPlayer.playOnAwake = false;
         bgmPlayer.loop = true;
@@ -42,6 +44,7 @@ public class AudioManager : Singleton<AudioManager>
         //SFX
         sfxPlayers = new();
         GameObject sfxObj = new GameObject("SfxPlayer");
+        sfxObj.transform.parent = transform;
         
         for (int i = 0; i < channels; i++)
         {

@@ -23,18 +23,6 @@ public class CurrencyManager : Singleton<CurrencyManager>
     public event Action<string, long> OnAddGold;
     public event Action<string, long> OnAddExp;
 
-    private void OnEnable()
-    {
-        OnGoldChanged += UIManager.Instance.RefreshGoldPanel;
-        OnExpChanged += UIManager.Instance.RefreshExpPanel;
-    }
-
-    private void OnDisable()
-    {
-        OnGoldChanged -= UIManager.Instance.RefreshGoldPanel;
-        OnExpChanged -= UIManager.Instance.RefreshExpPanel;
-    }
-
     public void Init(CurrencySaveData saveData = null)
     {
         Gold = 0L;

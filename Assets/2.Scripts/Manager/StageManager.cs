@@ -39,6 +39,8 @@ public class StageManager : Singleton<StageManager>
     public int CurIslandIdx => curIslandIdx;
     public int CurIslandCount => CurStageData.IslandDatas.Count;
 
+    private Coroutine stageRoutine;
+
     #endregion
 
     public event Action OnStageChanged;
@@ -94,7 +96,9 @@ public class StageManager : Singleton<StageManager>
     
     public void StartStage()
     {
-        StartCoroutine(StageRoutine());
+        if (stageRoutine != null) return;
+        
+        stageRoutine = StartCoroutine(StageRoutine());
     }
 
     private IEnumerator StageRoutine()

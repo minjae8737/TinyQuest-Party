@@ -21,7 +21,7 @@ public class RewardEffect
         // 생성
         for (int i = 0; i < count; i++)
         {
-            RewardEffectItem item = PoolManager.Instance.Get<RewardEffectItem>();
+            RewardEffectItem item = BattlePoolManager.Instance.Get<RewardEffectItem>();
             item.Init(sprite);
             rewardEffectItems.Add(item);
             
@@ -59,7 +59,7 @@ public class RewardEffect
                     .OnComplete(() =>
                     {
                         // 반환
-                        PoolManager.Instance.Release(rewardEffectItems[idx]);
+                        BattlePoolManager.Instance.Release(rewardEffectItems[idx]);
                         onComplete?.Invoke();
                     });
 

@@ -35,7 +35,7 @@ public class FloatingText : Poolable
 
     private void OnComplete()
     {
-        PoolManager.Instance.Release(this);
+        BattlePoolManager.Instance.Release(this);
     }
 
 }

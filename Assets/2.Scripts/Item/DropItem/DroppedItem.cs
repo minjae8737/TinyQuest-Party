@@ -48,7 +48,7 @@ public class DroppedItem : Poolable
     private void OnCompletePickup()
     {
         data.OnPickup();
-        PoolManager.Instance.Release(this);
+        BattlePoolManager.Instance.Release(this);
     }
 
     private Vector3 GetTargetPickupPos()

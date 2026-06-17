@@ -4,42 +4,54 @@ using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    private SaveData saveData;
-    public string UserId => saveData.UserId;
+    public SaveData SaveData { get; private set; }
+    public string UserId => SaveData.UserId;
+
+    protected override void Awake()
+    {
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
 
     private async void Start()
     {
-        bool isSuccess = await FirebaseAuthManager.Instance.InitAndSignIn();
-
-        if (!isSuccess)
-        {
-            // 재시도 로직
-            // 재시도 UI팝업 재생
-            // 확인누르면 씬 재로드
-            return;
-        }
-        
-        string uid = FirebaseAuthManager.Instance.CurrentUser?.UserId;
-        
-        await FirestoreManager.Instance.Init();
-        await FirebaseFunctionsManager.Instance.Init();
-        
-        saveData = await FirestoreManager.Instance.LoadPlayerData(uid);
-        
-        AudioManager.Instance.Init();
-
-        MapManager.Instance.Init();
-        PoolManager.Instance.Init();
-        TrainingManager.Instance.Init(saveData.TrainingSaveData);
-        UnitManager.Instance.Init(saveData.UnitSaveDatas, saveData.PartySaveData);
-        StageManager.Instance.Init(saveData.StageSaveData);
-        CurrencyManager.Instance.Init(saveData.CurrencySaveData);
-        QuestManager.Instance.Init(saveData.QuestSaveData);
-        GachaManager.Instance.Init(saveData.PityCount);
-
-        UIManager.Instance.Init();
-
-        GameStart();
+        // bool isSuccess = await FirebaseAuthManager.Instance.InitAndSignIn();
+        //
+        // if (!isSuccess)
+        // {
+        //     // 재시도 로직
+        //     // 재시도 UI팝업 재생
+        //     // 확인누르면 씬 재로드
+        //     return;
+        // }
+        //
+        // string uid = FirebaseAuthManager.Instance.CurrentUser?.UserId;
+        //
+        // await FirestoreManager.Instance.Init();
+        // await FirebaseFunctionsManager.Instance.Init();
+        //
+        // SaveData = await FirestoreManager.Instance.LoadPlayerData(uid);
+        //
+        // AudioManager.Instance.Init();
+        //
+        // MapManager.Instance.Init();
+        // PoolManager.Instance.Init();
+        // TrainingManager.Instance.Init(SaveData.TrainingSaveData);
+        // UnitManager.Instance.Init(SaveData.UnitSaveDatas, SaveData.PartySaveData);
+        // StageManager.Instance.Init(SaveData.StageSaveData);
+        // CurrencyManager.Instance.Init(SaveData.CurrencySaveData);
+        // QuestManager.Instance.Init(SaveData.QuestSaveData);
+        // GachaManager.Instance.Init(SaveData.PityCount);
+        //
+        // UIManager.Instance.Init();
+        //
+        // GameStart();
     }
 
     private void OnApplicationQuit()
@@ -51,27 +63,32 @@ public class GameManager : Singleton<GameManager>
 
     private async Task<bool> Save()
     {
-        saveData.CurrencySaveData = CurrencyManager.Instance.GetCurrencySaveData();
-        saveData.UnitSaveDatas = UnitManager.Instance.GetUnitSaveDatas();
-        saveData.PartySaveData = UnitManager.Instance.GetPartySaveData();
-        saveData.StageSaveData = StageManager.Instance.GetStageSaveData();
-        saveData.TrainingSaveData = TrainingManager.Instance.GetSaveData();
-        saveData.QuestSaveData = QuestManager.Instance.GetQuestSaveData();
-        saveData.PityCount = GachaManager.Instance.PityCount;
+        SaveData.CurrencySaveData = CurrencyManager.Instance.GetCurrencySaveData();
+        SaveData.UnitSaveDatas = UnitManager.Instance.GetUnitSaveDatas();
+        SaveData.PartySaveData = UnitManager.Instance.GetPartySaveData();
+        SaveData.StageSaveData = StageManager.Instance.GetStageSaveData();
+        SaveData.TrainingSaveData = TrainingManager.Instance.GetSaveData();
+        SaveData.QuestSaveData = QuestManager.Instance.GetQuestSaveData();
+        SaveData.PityCount = GachaManager.Instance.PityCount;
 
-        string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
+        string json = JsonConvert.SerializeObject(SaveData, Formatting.Indented);
 
-        await FirestoreManager.Instance.SavePlayerData(saveData);
+        await FirestoreManager.Instance.SavePlayerData(SaveData);
         
         Debug.Log($"SaveData = \n{json}");
         return true;
+    }
+    
+    public void SetSaveData(SaveData data)
+    {
+        SaveData = data;
     }
 
     #endregion
 
     #region Stage
 
-    private void GameStart()
+    public void GameStart()
     {
         StageManager.Instance.StartStage();
     }
@@ -94,7 +111,7 @@ public class GameManager : Singleton<GameManager>
                 Amount = reward.Gold
             };
 
-            DroppedItem droppedItem = PoolManager.Instance.Get<DroppedItem>();
+            DroppedItem droppedItem = BattlePoolManager.Instance.Get<DroppedItem>();
             droppedItem.Init(data);
             droppedItem.transform.position = unitPos;
         }
@@ -110,7 +127,7 @@ public class GameManager : Singleton<GameManager>
                 Amount = reward.Exp
             };
 
-            DroppedItem droppedItem = PoolManager.Instance.Get<DroppedItem>();
+            DroppedItem droppedItem = BattlePoolManager.Instance.Get<DroppedItem>();
             droppedItem.Init(data);
             droppedItem.transform.position = unitPos;
         }
@@ -126,7 +143,7 @@ public class GameManager : Singleton<GameManager>
                 // item = 
             };
 
-            DroppedItem droppedItem = PoolManager.Instance.Get<DroppedItem>();
+            DroppedItem droppedItem = BattlePoolManager.Instance.Get<DroppedItem>();
             droppedItem.Init(data);
             droppedItem.transform.position = unitPos;
         }

@@ -51,8 +51,8 @@ public class UnitManager : Singleton<UnitManager>
     [Header("=== Unit Prefabs ===")]
     [SerializeField] private List<GameObject> unitPrefabs;
     
-    [Header("=== Unit HP Bar ===")]
-    [SerializeField] private RectTransform unitHpBarParent;
+    // [Header("=== Unit HP Bar ===")]
+    // [SerializeField] private RectTransform unitHpBarParent;
     
     [Header("=== Effect Prefabs ===")]
     [SerializeField] private GameObject skillEffectPrefab;
@@ -216,7 +216,7 @@ public class UnitManager : Singleton<UnitManager>
     
     public UnitHpBar GetUnitHpBar()
     {
-        UnitHpBar hpBar = PoolManager.Instance.Get<UnitHpBar>();
+        UnitHpBar hpBar = BattlePoolManager.Instance.Get<UnitHpBar>();
         if (hpBar == null) return null;
         
         return hpBar;
@@ -224,7 +224,7 @@ public class UnitManager : Singleton<UnitManager>
 
     public void ReleaseUnitHpBar(UnitHpBar hpBar)
     {
-        PoolManager.Instance.Release(hpBar);
+        BattlePoolManager.Instance.Release(hpBar);
     }
     
     public void CombatEnabled(bool enabled)

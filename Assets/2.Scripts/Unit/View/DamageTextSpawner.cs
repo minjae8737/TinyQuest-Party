@@ -4,7 +4,7 @@ public class DamageTextSpawner
 {
     public void Spawn(Vector2 unitPos, float damage)
     {
-        FloatingText floatingText = PoolManager.Instance.Get<FloatingText>();
+        FloatingText floatingText = BattlePoolManager.Instance.Get<FloatingText>();
 
         if (floatingText == null)
         {
