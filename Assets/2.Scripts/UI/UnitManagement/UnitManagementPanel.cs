@@ -10,7 +10,7 @@ public class UnitManagementPanel : UIPage
     [Header("=== Reference ===")] 
     [SerializeField] private RectTransform contentRect;
     
-    [Header("=== Unit  ===")] 
+    [Header("=== Unit ===")] 
     [SerializeField] private TMP_Text UnitNameText;
     [SerializeField] private StarGradeUI StarGradeUI;
     [SerializeField] private TMP_Text LevelText;
@@ -25,7 +25,8 @@ public class UnitManagementPanel : UIPage
     [Header("=== Upgrade ===")] 
     [SerializeField] private Button levelUpgradeBtn;
     [SerializeField] private TMP_Text levelBtnText;
-    [SerializeField] private Button starUpgradeBtn;
+    [SerializeField] private Button starPromoteBtn;
+    [SerializeField] private TMP_Text promoteBtnText;
 
     [Header("=== UnitCardList ===")] 
     [SerializeField] private RectTransform UnitCardParent;
@@ -48,6 +49,8 @@ public class UnitManagementPanel : UIPage
 
     #endregion
 
+    public event Action<UnitName, int> OnUnitPromote;
+
     public void Init()
     {
         unitCards = new();
@@ -58,11 +61,16 @@ public class UnitManagementPanel : UIPage
         
         InitUnitListPanel();
 
+        // Upgrade
         levelUpgradeBtn.onClick.AddListener(() => UIEffect.Punch(levelUpgradeBtn.transform as RectTransform));
         levelUpgradeBtn.onClick.AddListener(OnClickLevelUpButton);
         levelUpgradeBtn.onClick.AddListener(() => AudioManager.Instance.PlaySfx(Sfx.UIUpgrade));
-        // starUpgradeBtn.onClick.AddListener(() => UIEffect.Punch(starUpgradeBtn.transform as RectTransform));
-        starUpgradeBtn.enabled = false; //TODO 승급시스템 개발중
+        
+        starPromoteBtn.onClick.AddListener(OnClickPromoteButton);
+        starPromoteBtn.onClick.AddListener(() => UIEffect.Punch(starPromoteBtn.transform as RectTransform));
+        starPromoteBtn.onClick.AddListener(() => AudioManager.Instance.PlaySfx(Sfx.UIUpgrade));
+
+        
         UIEffect.PunchLoop(tapToggleHighlight.rectTransform);
         
         // Card - ClassToggle
@@ -103,7 +111,7 @@ public class UnitManagementPanel : UIPage
         }
         
         UnitNameText.text = curUnitInfoDTO.UnitName.ToString();
-        StarGradeUI.SetStars(curUnitInfoDTO.StarGrade, starGradeSprites[curUnitInfoDTO.StarGrade]);
+        StarGradeUI.SetStars(curUnitInfoDTO.StarGrade, starGradeSprites[(int)curUnitInfoDTO.UnitGradeType]);
         LevelText.text = $"Lv.{curUnitInfoDTO.UnitLevel} / {curUnitInfoDTO.UnitMaxLevel}";
         unitSprite.sprite = curUnitInfoDTO.UnitSprite;
 
@@ -112,6 +120,7 @@ public class UnitManagementPanel : UIPage
         hpStatText.text = $"{curUnitInfoDTO.Stat.MaxHp}";
 
         RefreshLevelUpButton();
+        RefreshStarPromoteButton();
     }
 
     private void RefreshLevelUpButton()
@@ -124,6 +133,14 @@ public class UnitManagementPanel : UIPage
         string color = canLevelUp ? "white" : "red";
         levelUpgradeBtn.enabled = canLevelUp;
         levelBtnText.text = $"<color={color}>{curExpStr}</color> / {requiredExpStr}";
+    }
+
+    private void RefreshStarPromoteButton()
+    {
+        bool canPromote = curUnitInfoDTO.Unit.Grade.CanPromote;
+        string color = canPromote ? "white" : "red";
+        starPromoteBtn.enabled = canPromote;
+        promoteBtnText.text = $"<color={color}>{curUnitInfoDTO.Unit.Grade.Fragments}</color> / {curUnitInfoDTO.Unit.Grade.CurMaxFragments}";
     }
 
     private void InitUnitListPanel()
@@ -156,7 +173,7 @@ public class UnitManagementPanel : UIPage
             return null;
         }
 
-        card.SetSlot(unitSlotDto, starGradeSprites[unitSlotDto.StarGrade]);
+        card.SetSlot(unitSlotDto, starGradeSprites[(int)unitSlotDto.UnitGradeType]);
 
         unitCards.Add(card);
 
@@ -174,7 +191,20 @@ public class UnitManagementPanel : UIPage
             unitInfoCardUI?.SetLevel(level);
         }
     }
-    
+
+    private void OnClickPromoteButton()
+    {
+        (bool didPromote, int grade) = curUnitInfoDTO.Unit.Promote();
+        
+        if (didPromote)
+        {
+            UpdateUnitInfo(curUnitInfoDTO.UnitName);
+            UnitInfoCardUI unitInfoCardUI = unitCards.Find(card => { return card.UnitName == curUnitInfoDTO.UnitName; });
+            unitInfoCardUI?.SetStars(grade);
+            OnUnitPromote?.Invoke(curUnitInfoDTO.UnitName, grade);
+        }
+    }
+
     private void OnChangedClassToggle(bool isOn)
     {
         int isOnIndex = 0;
@@ -194,7 +224,7 @@ public class UnitManagementPanel : UIPage
         // unit 클래스 정렬
         RefreshUnitList(isOnIndex - 1);
     }
-    
+
     private void RefreshUnitList(int selectedClass)
     {
         foreach (var card in unitCards)

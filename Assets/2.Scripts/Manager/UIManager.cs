@@ -47,6 +47,9 @@ public class UIManager : Singleton<UIManager>
     [Header("=== MainQuest Panel ===")] 
     [SerializeField] private MainQuestPanel mainQuestPanel;
 
+    [Header("=== Gacha Panel ===")] 
+    [SerializeField] private GachaPanel gachaPanel; 
+
     [Header("=== Prefab ===")] 
     [SerializeField] private GameObject DragItemUIPrefab;
 
@@ -105,8 +108,15 @@ public class UIManager : Singleton<UIManager>
         // Main Quest Panel
         mainQuestPanel.Init();
         
+        // Gacha Panel
+        gachaPanel.Init();
+        
         RefreshGoldPanel(0);
         RefreshExpPanel(0);
+
+        unitManagementPanel.OnUnitPromote += partySetupPanel.SetPartyCard;
+        CurrencyManager.Instance.OnGoldChanged += gachaPanel.RefreshGoldPanel;
+        GachaManager.Instance.OnChangedPityCount += _ => gachaPanel.RefreshPityCountPanel();
         
         OnInitCompleted?.Invoke();
     }

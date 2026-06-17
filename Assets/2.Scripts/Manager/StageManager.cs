@@ -189,6 +189,12 @@ public class StageManager : Singleton<StageManager>
             curStageLevel = Math.Clamp(curStageLevel, 0, GetMaxStageLevel());
         }
         
+        // 서버에 재화, 스테이지 진행도 업데이트 요청
+        FirestoreManager.Instance.UpdatePlayerProgress(
+            CurrencyManager.Instance.GetCurrencySaveData(),
+            GetStageSaveData()
+        );
+        
         yield return new WaitForSeconds(2f);
     }
 
@@ -234,7 +240,7 @@ public class StageManager : Singleton<StageManager>
 
     #region SaveData
 
-    public StageSaveData GetPartySaveData()
+    public StageSaveData GetStageSaveData()
     {
         return new StageSaveData(curStageLevel, curIslandIdx);
     }

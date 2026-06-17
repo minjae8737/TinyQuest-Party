@@ -5,6 +5,7 @@ public class UnitSlotDTO
     public UnitData Data { get; set; }
     public int UnitLevel { get; set; }
     public int StarGrade { get; set; }
+    public UnitGradeType UnitGradeType { get; set; }
 
     public bool HasUnit => UnitName != UnitName.None;
 
@@ -22,7 +23,8 @@ public class UnitSlotDTO
         UnitName = data.UnitName;
         UnitClass = data.UnitClass;
         Data = data;
-        StarGrade = unitController.Model.StarGrade;
+        StarGrade = unitController.Model.Grade.StarGrade;
+        UnitGradeType = unitController.Model.Grade.UnitGradeType;
         UnitLevel = unitController.Model.Level.Level;
     }
 

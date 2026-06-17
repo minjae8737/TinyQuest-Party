@@ -5,6 +5,7 @@ using UnityEngine;
 public class GameManager : Singleton<GameManager>
 {
     private SaveData saveData;
+    public string UserId => saveData.UserId;
 
     private async void Start()
     {
@@ -21,9 +22,9 @@ public class GameManager : Singleton<GameManager>
         string uid = FirebaseAuthManager.Instance.CurrentUser?.UserId;
         
         await FirestoreManager.Instance.Init();
-        saveData = await FirestoreManager.Instance.LoadPlayerData(uid);
+        await FirebaseFunctionsManager.Instance.Init();
         
-        GachaManager.Instance.Init();
+        saveData = await FirestoreManager.Instance.LoadPlayerData(uid);
         
         AudioManager.Instance.Init();
 
@@ -34,6 +35,7 @@ public class GameManager : Singleton<GameManager>
         StageManager.Instance.Init(saveData.StageSaveData);
         CurrencyManager.Instance.Init(saveData.CurrencySaveData);
         QuestManager.Instance.Init(saveData.QuestSaveData);
+        GachaManager.Instance.Init(saveData.PityCount);
 
         UIManager.Instance.Init();
 
@@ -52,9 +54,10 @@ public class GameManager : Singleton<GameManager>
         saveData.CurrencySaveData = CurrencyManager.Instance.GetCurrencySaveData();
         saveData.UnitSaveDatas = UnitManager.Instance.GetUnitSaveDatas();
         saveData.PartySaveData = UnitManager.Instance.GetPartySaveData();
-        saveData.StageSaveData = StageManager.Instance.GetPartySaveData();
+        saveData.StageSaveData = StageManager.Instance.GetStageSaveData();
         saveData.TrainingSaveData = TrainingManager.Instance.GetSaveData();
         saveData.QuestSaveData = QuestManager.Instance.GetQuestSaveData();
+        saveData.PityCount = GachaManager.Instance.PityCount;
 
         string json = JsonConvert.SerializeObject(saveData, Formatting.Indented);
 

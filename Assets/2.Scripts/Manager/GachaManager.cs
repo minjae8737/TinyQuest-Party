@@ -6,59 +6,107 @@ using UnityEngine;
 
 public class GachaResult
 {
-    public string UnitName;
-    public string Grade;
+    public UnitName UnitName;
+    public UnitGradeType Grade;
+}
+
+public class GachaResponse
+{
+    public List<GachaResult> Results;
+    public int TotalCost;
+    public int PityCount;
+}
+
+public class GachaResultData
+{
+    public UnitName UnitName;
+    public Sprite Icon;
+    public UnitGradeType UnitGradeType;
 }
 
 public class GachaManager : Singleton<GachaManager>
 {
-    FirebaseFunctions functions;
+    private int pityCount; // 천장 스택
 
-    public async void Init()
+    public int PityCount => pityCount;
+
+    public event Action<int> OnChangedPityCount;
+
+    public void Init(int savedPityCount = 0)
     {
-        functions = FirebaseFunctions.GetInstance("us-central1");
-        Debug.Log("GachaManager Init Complete.");
+        pityCount = savedPityCount;
     }
 
-    public async Task<GachaResult> DoGacha()
+    public async Task<List<GachaResultData>> DoGacha(int count = 1)
     {
         try
         {
-            HttpsCallableReference callable = functions.GetHttpsCallable("gacha");
-            HttpsCallableResult result = await callable.CallAsync();
+            var gachaResult = await FirebaseFunctionsManager.Instance.RequestGacha(count);
+            
+            // 천장 스택 변경
+            pityCount = gachaResult.PityCount;
+            OnChangedPityCount?.Invoke(pityCount);
+            
+            // 재화 소모
+            CurrencyManager.Instance.SpendGold(gachaResult.TotalCost);
+            
+            // 패널용 데이터 가공
+            List<GachaResultData> results = new();
 
-            // 결과 파싱
-            var data = result.Data as Dictionary<string, object>;
-            return new GachaResult
+            foreach (var result in gachaResult.Results)
             {
-                UnitName = data["unitName"].ToString(),
-                Grade    = data["grade"].ToString(),
-            };
+                GachaResultData resultData = new();
+                PlayerUnitData unitData = UnitManager.Instance.GetPlayerUnitData(result.UnitName);
+                if (unitData != null)
+                {
+                    resultData.UnitName = result.UnitName;
+                    resultData.Icon = unitData.Icon;
+                    resultData.UnitGradeType = unitData.UnitGradeType;
+                    results.Add(resultData);
+                }
+                else
+                {
+                    Debug.LogError($"Gacha: {result.UnitName} UnitData is null.");
+                }
+
+
+                // 프래그먼츠 처리
+                UnitManager.Instance.AddUnitFragment(result.UnitName);
+            }
+            
+            return results;
         }
         catch (FunctionsException e)
         {
-            Debug.LogError($"뽑기 실패: {e.ErrorCode} - {e.Message}");
-            return null;
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"Exception: {e.GetType().Name} - {e.Message}");
+            HandleFunctionsException(e);
             return null;
         }
     }
 
-    private async void TestGacha()
+    private void HandleFunctionsException(FunctionsException e)
     {
-        GachaResult result = await DoGacha();
-        if (result != null)
-            Debug.Log($"결과: {result.Grade} {result.UnitName}");
-    }
-    
-    private async void LateUpdate()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
+        switch (e.ErrorCode)
         {
-            TestGacha();
+            case FunctionsErrorCode.Unauthenticated:    // 로그인이 필요합니다
+                break;
+            
+            case FunctionsErrorCode.InvalidArgument:    // 유효하지 않은 뽑기 수입니다
+                break;
+            
+            case FunctionsErrorCode.NotFound:           // 유저 없음
+                break;
+
+            case FunctionsErrorCode.FailedPrecondition: // 골드가 부족합니다
+                PopupManager.Instance.ShowConfirm(
+                    title: "일림",
+                    message: "골드가 부족합니다.",
+                    confirm: "확인"
+                );
+                break;
+            
+            default:
+                Debug.LogError($"알 수 없는 오류: {e.ErrorCode} - {e.Message}");
+                break;
         }
     }
 }

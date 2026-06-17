@@ -1,4 +1,4 @@
-using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Firebase.Firestore;
 using UnityEngine;
@@ -21,6 +21,26 @@ public class FirestoreManager : Singleton<FirestoreManager>
 
         await docRef.SetAsync(data);
         Debug.Log("저장 완료");
+    }
+
+    public async Task UpdatePlayerProgress(CurrencySaveData currencySaveData, StageSaveData stageSaveData)
+    {
+        DocumentReference docRef = db
+            .Collection("players")
+            .Document(GameManager.Instance.UserId);
+
+        Dictionary<string, object> updates = new()
+        {
+            {"CurrencySaveData", currencySaveData},
+            {"StageSaveData", stageSaveData}
+        };
+
+        docRef.UpdateAsync(updates)
+            .ContinueWith(task =>
+            {
+                if (task.IsFaulted)
+                    Debug.LogWarning($"Firebase 갱신 실패: {task.Exception}");
+            });
     }
 
     // 불러오기

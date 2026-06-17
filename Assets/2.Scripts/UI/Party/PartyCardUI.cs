@@ -23,6 +23,11 @@ public class PartyCardUI : UnitCardUI
         StarGradeUI.SetStars(dto.StarGrade, starSprite);
     }
 
+    public void SetStars(int grade)
+    {
+        StarGradeUI.SetStars(grade);
+    }
+
     protected override void OnClickCard()
     {
         partySetupPanel.SelectUnitSlot(this);
