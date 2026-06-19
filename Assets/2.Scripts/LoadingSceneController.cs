@@ -8,14 +8,21 @@ using UnityEngine.UI;
 
 public class LoadingSceneController : MonoBehaviour
 {
+    [SerializeField] private RectTransform logo;
+    
     [SerializeField] private GameObject progressBar;
     [SerializeField] private Image progressFill;
+    
     [SerializeField] private TMP_Text statusText;
     [SerializeField] private TMP_Text startText;
+
+    #region Runtime
 
     private SaveData saveData;
     private Tween blinkTween;
     private Coroutine getAnyKeyCoroutine;
+
+    #endregion
     
     private async void Start()
     {
@@ -37,6 +44,8 @@ public class LoadingSceneController : MonoBehaviour
     
     private IEnumerator LoadingRoutine()
     {
+        ShowTitleLogo();
+        
         SetStatus("서버 연결 중 ...");
         bool authSuccess = false;
         yield return StartCoroutine(InitFirebaseRoutine(success => authSuccess = success));
@@ -116,6 +125,38 @@ public class LoadingSceneController : MonoBehaviour
         GachaManager.Instance.Init(saveData.PityCount);
     }
 
+    private IEnumerator GetAnyKeyRoutine()
+    {
+        while (true)
+        {
+            if (Input.anyKeyDown)
+            {
+                SceneManager.LoadScene("2.MainScene");
+                yield break;
+            }
+            
+            yield return null;
+        }
+    }
+
+    private void ShowTitleLogo()
+    {
+        logo.gameObject.SetActive(true);
+        
+        logo.localScale = Vector3.zero;
+        Sequence seq = DOTween.Sequence();
+
+        seq.Append(
+            logo.DOScale(Vector3.one * 1.2f, 0.3f)
+                .SetEase(Ease.OutBack)
+        );
+
+        seq.Append(
+            logo.DOScale(Vector3.one, 0.3f)
+                .SetEase(Ease.OutQuad)
+        );
+    }
+
     private void SetProgress(float fillAmount)
     {
         progressFill.DOFillAmount(fillAmount, 0.3f);
@@ -133,19 +174,5 @@ public class LoadingSceneController : MonoBehaviour
         blinkTween = startText.DOFade(0f, 0.8f)
             .SetLoops(-1, LoopType.Yoyo)
             .SetEase(Ease.InOutSine);
-    }
-
-    private IEnumerator GetAnyKeyRoutine()
-    {
-        while (true)
-        {
-            if (Input.anyKeyDown)
-            {
-                SceneManager.LoadScene("2.MainScene");
-                yield break;
-            }
-            
-            yield return null;
-        }
     }
 }
