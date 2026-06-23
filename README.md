@@ -16,7 +16,7 @@ MVC 구조를 중심으로 전투, 성장, 편성 루프를 구현하여 결합�
 ## 🎮 플레이 영상
 
 <p align="center">
-  <a href="https://youtu.be/AvWh1-JCYxA">
+  <a href="https://youtu.be/VIRMDKTU5RI">
     <img src="https://github.com/user-attachments/assets/e784267a-7273-4f74-af67-9010a78c74dd" height="450" alt="게임 플레이 영상">
   </a>
 </p>
@@ -216,6 +216,65 @@ public void OnBeginDrag(PointerEventData eventData)
 ```
 </details>
 
+- **Firebase 서버 연결**
+    - Firestore를 이용하여 세이브 데이터를 서버에 저장.
+    - 클라이언트에서 보유 재화 및 가챠 결과를 직접 결정하지 않고 서버 검증 후 결과를 수신하도록 설계.
+    - 클라이언트 데이터 변조 대응.
+    - 비정상 재화 증가 방지.
+    - 계정 기반 데이터 동기화 가능.
+<details>
+<summary>코드</summary>
+  
+```csharp
+    public async Task<List<GachaResultData>> DoGacha(int count = 1)
+    {
+        try
+        {
+            var gachaResult = await FirebaseFunctionsManager.Instance.RequestGacha(count);
+            
+            // 천장 스택 변경
+            pityCount = gachaResult.PityCount;
+            OnChangedPityCount?.Invoke(pityCount);
+            
+            // 재화 소모
+            CurrencyManager.Instance.SpendGold(gachaResult.TotalCost);
+            
+            // 패널용 데이터 가공
+            List<GachaResultData> results = new();
+
+            foreach (var result in gachaResult.Results)
+            {
+                GachaResultData resultData = new();
+                PlayerUnitData unitData = UnitManager.Instance.GetPlayerUnitData(result.UnitName);
+                if (unitData != null)
+                {
+                    resultData.UnitName = result.UnitName;
+                    resultData.Icon = unitData.Icon;
+                    resultData.UnitGradeType = unitData.UnitGradeType;
+                    results.Add(resultData);
+                }
+                else
+                {
+                    Debug.LogError($"Gacha: {result.UnitName} UnitData is null.");
+                }
+
+
+                // 프래그먼츠 처리
+                UnitManager.Instance.AddUnitFragment(result.UnitName);
+            }
+            
+            return results;
+        }
+        catch (FunctionsException e)
+        {
+            HandleFunctionsException(e);
+            return null;
+        }
+    }
+```
+
+</details>
+
 ---
 
 ## 🧩 Assets & Credits
@@ -223,6 +282,7 @@ public void OnBeginDrag(PointerEventData eventData)
   - Cinemachine
   - TextMeshPro
   - DOTween
+  - Firebase (Firestore, Authentication, Cloud Functions)
 
 - **Graphics**
   - Character: https://zerie.itch.io/tiny-rpg-character-asset-pack
